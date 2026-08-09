@@ -21,6 +21,7 @@ import {
   Headphones,
   History,
   LayoutDashboard,
+  Layers3,
   LoaderCircle,
   LockKeyhole,
   Network,
@@ -49,6 +50,12 @@ import { evaluateCommitment } from "@/lib/evaluate";
 import { validateRecoveryIncident } from "@/lib/incident";
 import { normalizeCalleCommitment } from "@/lib/normalize";
 import { E164_PATTERN } from "@/lib/phone";
+import {
+  DEFAULT_PLAYBOOK,
+  getRecoveryPlaybook,
+  materializePlaybookIncident,
+  RECOVERY_PLAYBOOKS,
+} from "@/lib/recovery-playbooks";
 import { buildCommitmentCsv, buildRecoveryDossier } from "@/lib/recovery-dossier";
 import type {
   LiveRecipient,
@@ -206,6 +213,8 @@ export function CapacityLineApp() {
   const [query, setQuery] = useState("");
   const [showGuide, setShowGuide] = useState(false);
   const [showBrief, setShowBrief] = useState(false);
+  const [showPlaybooks, setShowPlaybooks] = useState(false);
+  const [playbookId, setPlaybookId] = useState(DEFAULT_PLAYBOOK.id);
   const [runMode, setRunMode] = useState<LaunchMode>("demo");
   const [runStartedAt, setRunStartedAt] = useState<number | null>(null);
   const [decisionReadyAt, setDecisionReadyAt] = useState<number | null>(null);
@@ -213,6 +222,15 @@ export function CapacityLineApp() {
   const timers = useRef<number[]>([]);
   const searchInput = useRef<HTMLInputElement>(null);
   const shell = useRef<HTMLDivElement>(null);
+  const timingInitialized = useRef(false);
+
+  const activePlaybook = getRecoveryPlaybook(playbookId);
+
+  useEffect(() => {
+    if (timingInitialized.current) return;
+    timingInitialized.current = true;
+    setIncident(materializePlaybookIncident(DEFAULT_PLAYBOOK));
+  }, []);
 
   useEffect(() => {
     fetch("/api/health")
@@ -299,6 +317,7 @@ export function CapacityLineApp() {
         setShowLaunch(false);
         setShowGuide(false);
         setShowBrief(false);
+        setShowPlaybooks(false);
         setSelectedSupplierId(null);
       }
     };
@@ -322,10 +341,10 @@ export function CapacityLineApp() {
     [incident.requirements, updateSupplierStatus],
   );
 
-  const reset = useCallback(() => {
+  const resetRun = useCallback((roster: Supplier[]) => {
     clearTimers();
     setPhase("ready");
-    setSuppliers(DEMO_SUPPLIERS.map((item) => ({ ...item })));
+    setSuppliers(roster.map((item) => ({ ...item, status: "ready" })));
     setCommitments({});
     setSelectedSupplierId(null);
     setApprovedSupplierId(null);
@@ -337,6 +356,22 @@ export function CapacityLineApp() {
     setDecisionReadyAt(null);
     setAuthorityRecord(null);
   }, [clearTimers]);
+
+  const reset = useCallback(() => {
+    resetRun(activePlaybook.suppliers);
+  }, [activePlaybook.suppliers, resetRun]);
+
+  function applyPlaybook(playbookIdToApply: string) {
+    const playbook = getRecoveryPlaybook(playbookIdToApply);
+    resetRun(playbook.suppliers);
+    setPlaybookId(playbook.id);
+    setIncident(materializePlaybookIncident(playbook));
+    setLiveSupplierNames(Object.fromEntries(playbook.suppliers.map((supplier) => [supplier.id, supplier.name])));
+    setLiveRegions(Object.fromEntries(playbook.suppliers.map((supplier) => [supplier.id, supplier.countryCode])));
+    setLiveLocales(Object.fromEntries(playbook.suppliers.map((supplier) => [supplier.id, supplier.locale])));
+    setView("desk");
+    setShowPlaybooks(false);
+  }
 
   async function runDemo() {
     setError(null);
@@ -469,7 +504,7 @@ export function CapacityLineApp() {
       setAuthorityRecord({ operatorName: operatorName.trim(), consentReference: consentReference.trim() });
     } catch (caught) {
       setPhase("ready");
-      setSuppliers(DEMO_SUPPLIERS.map((item) => ({ ...item })));
+      setSuppliers(activePlaybook.suppliers.map((item) => ({ ...item, status: "ready" })));
       setError(caught instanceof Error ? caught.message : "Unable to start live calls.");
     }
   }
@@ -539,6 +574,7 @@ export function CapacityLineApp() {
       partName: String(form.get("partName") ?? ""),
       incumbentSupplier: String(form.get("incumbentSupplier") ?? ""),
       shortfall: Number(form.get("shortfall")),
+      quantityUnit: String(form.get("quantityUnit") ?? ""),
       lineStopAt: lineStopLocal || `${needBy}T09:30:00Z`,
       estimatedDowntimeCost: Number(form.get("estimatedDowntimeCost")),
       requirements: {
@@ -562,9 +598,7 @@ export function CapacityLineApp() {
   }
 
   function restoreReferenceBrief() {
-    reset();
-    setIncident(DEMO_INCIDENT);
-    setShowBrief(false);
+    applyPlaybook(DEFAULT_PLAYBOOK.id);
   }
 
   function exportEvidence(format: "json" | "csv") {
@@ -594,7 +628,7 @@ export function CapacityLineApp() {
   }
 
   const activityItems = [
-    { time: "09:31", title: "Supply exception opened", detail: `${incident.shortfall.toLocaleString()}-unit shortfall threatens ${incident.productionLine}`, tone: "danger" },
+    { time: "09:31", title: "Supply exception opened", detail: `${incident.shortfall.toLocaleString()} ${incident.quantityUnit} short against ${incident.productionLine}`, tone: "danger" },
     ...(phase !== "ready"
       ? [{ time: "09:32", title: "Recovery replay launched", detail: "Five approved supplier calls simulated in parallel", tone: "active" }]
       : []),
@@ -704,7 +738,7 @@ export function CapacityLineApp() {
             {[0, 1].map((copy) => (
               <div className="signal-ticker-set" key={copy}>
                 <span><i /> INCIDENT {incident.id}</span>
-                <span>{incident.shortfall.toLocaleString()} UNIT SHORTFALL</span>
+                <span>{incident.shortfall.toLocaleString()} {incident.quantityUnit.toUpperCase()} SHORT</span>
                 <span>{incident.plant.toUpperCase()} / {incident.productionLine.toUpperCase()}</span>
                 <span>{phase === "ready" ? "ZERO-CALL PUBLIC DEMO" : phase === "running" ? "DECISION REPLAY RUNNING" : "DECISION EVIDENCE READY"}</span>
                 <span>HUMAN AUTHORITY REQUIRED</span>
@@ -732,6 +766,7 @@ export function CapacityLineApp() {
               ) : <kbd>Ctrl K</kbd>}
             </label>
             <button className="guide-button brief-button" onClick={() => setShowBrief(true)}><FilePenLine size={14} /> Recovery brief</button>
+            <button className="guide-button" onClick={() => setShowPlaybooks(true)}><Layers3 size={14} /> Playbooks</button>
             <button className="guide-button" onClick={() => setShowGuide(true)}><Route size={14} /> Demo guide</button>
             <a className="pilot-button" href="/pilot"><LockKeyhole size={14} /> Private pilot</a>
             <div className="demo-chip"><Sparkles size={14} /> Zero-call demo</div>
@@ -748,6 +783,14 @@ export function CapacityLineApp() {
 
         {view === "desk" && (
           <div className="page-stack">
+            <section className="playbook-bar" aria-label="Active recovery playbook">
+              <div>
+                <span><Layers3 size={14} /> ACTIVE PLAYBOOK / {activePlaybook.sector}</span>
+                <strong>{activePlaybook.label}</strong>
+                <p>{activePlaybook.promise}</p>
+              </div>
+              <button onClick={() => setShowPlaybooks(true)}>Switch use case <ArrowRight size={14} /></button>
+            </section>
             <section className="incident-hero">
               <div className="incident-copy">
                 <div className="hero-badges">
@@ -757,12 +800,11 @@ export function CapacityLineApp() {
                 </div>
                 <h2><span>Recover supply.</span><em>Before the line stops.</em></h2>
                 <p>
-                  {incident.incumbentSupplier} reported an unplanned outage. Verify live capacity
-                  across approved backups and surface the first actionable fallback.
+                  {incident.cause}. Verify live capacity across approved backups and surface the first actionable fallback.
                 </p>
                 <div className="incident-facts">
                   <span><Building2 size={15} /> {incident.productionLine}</span>
-                  <span><Target size={15} /> {incident.shortfall.toLocaleString()} units short</span>
+                  <span><Target size={15} /> {incident.shortfall.toLocaleString()} {incident.quantityUnit} short</span>
                   <span><CircleDollarSign size={15} /> {formatMoney(incident.estimatedDowntimeCost)} / day at risk</span>
                 </div>
               </div>
@@ -843,7 +885,7 @@ export function CapacityLineApp() {
                     <span className="country-code large">{recommendedSupplier.countryCode}</span>
                     <div className="spotlight-copy">
                       <h3>{recommendedSupplier.name}</h3>
-                      <p>{recommendedCommitment.substitutePart === incident.partNumber ? "Exact part" : `Approved ${recommendedCommitment.substitutePart}`} · {recommendedCommitment.quantityAvailable?.toLocaleString()} units · ships {formatDate(recommendedCommitment.earliestShipDate)}</p>
+                      <p>{recommendedCommitment.substitutePart === incident.partNumber ? "Exact part" : `Approved ${recommendedCommitment.substitutePart}`} · {recommendedCommitment.quantityAvailable?.toLocaleString()} {incident.quantityUnit} · ships {formatDate(recommendedCommitment.earliestShipDate)}</p>
                     </div>
                     <div className="spotlight-score"><strong>8/8</strong><span>guardrails</span></div>
                     <button className="primary-button" onClick={() => setSelectedSupplierId(recommendedSupplier.id)}>
@@ -919,7 +961,7 @@ export function CapacityLineApp() {
                           {supplier.status === "calling" ? (
                             <span className="calling-wave"><i /><i /><i /><i /><small>CALL-E speaking</small></span>
                           ) : commitment ? (
-                            <><strong>{commitment.quantityAvailable?.toLocaleString() ?? "—"} units</strong><small>{formatDate(commitment.earliestShipDate)} · {commitment.currency} {commitment.unitPrice?.toFixed(2) ?? "—"}</small></>
+                            <><strong>{commitment.quantityAvailable?.toLocaleString() ?? "—"} {incident.quantityUnit}</strong><small>{formatDate(commitment.earliestShipDate)} · {commitment.currency} {commitment.unitPrice?.toFixed(2) ?? "—"}</small></>
                           ) : supplier.status === "unreachable" ? (
                             <><strong>No answer</strong><small>Attempt closed safely</small></>
                           ) : (
@@ -950,7 +992,7 @@ export function CapacityLineApp() {
                     <LockKeyhole size={17} />
                   </div>
                   <div className="guardrail-list">
-                    <div><span>Quantity</span><strong>≥ {incident.requirements.quantity.toLocaleString()} units</strong></div>
+                    <div><span>Quantity</span><strong>≥ {incident.requirements.quantity.toLocaleString()} {incident.quantityUnit}</strong></div>
                     <div><span>Ship no later than</span><strong>{formatDate(incident.requirements.needBy)}</strong></div>
                     <div><span>Unit price</span><strong>≤ {incident.requirements.currency} {incident.requirements.maxUnitPrice.toFixed(2)}</strong></div>
                     <div><span>Approved parts</span><strong>{incident.requirements.approvedSubstituteParts.join(" + ")}</strong></div>
@@ -990,6 +1032,7 @@ export function CapacityLineApp() {
 
         {view === "ledger" && (
           <LedgerView
+            quantityUnit={incident.quantityUnit}
             suppliers={suppliers}
             commitments={commitments}
             evaluations={evaluations}
@@ -1002,6 +1045,34 @@ export function CapacityLineApp() {
 
         {view === "graph" && <SupplierGraph incident={incident} suppliers={suppliers} commitments={commitments} recommendedId={recommendedSupplier?.id} />}
       </main>
+
+      {showPlaybooks && (
+        <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowPlaybooks(false)}>
+          <section className="playbook-modal" role="dialog" aria-modal="true" aria-labelledby="playbook-title" onMouseDown={(event) => event.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowPlaybooks(false)} aria-label="Close recovery playbooks"><X size={18} /></button>
+            <div className="playbook-modal-heading">
+              <span className="modal-symbol"><Layers3 size={23} /></span>
+              <div><span className="panel-kicker">RECOVERY PLAYBOOK LIBRARY</span><h2 id="playbook-title">One decision engine. Six operating contexts.</h2></div>
+            </div>
+            <p>Choose a fictional scenario. CapacityLine changes the incident, supplier roster, quantity unit, policy, and evidence fields—while keeping the same governed recovery loop.</p>
+            <div className="playbook-grid">
+              {RECOVERY_PLAYBOOKS.map((playbook, index) => (
+                <button
+                  key={playbook.id}
+                  className={playbook.id === playbookId ? "selected" : ""}
+                  onClick={() => applyPlaybook(playbook.id)}
+                >
+                  <span>0{index + 1} / {playbook.sector}</span>
+                  <strong>{playbook.label}</strong>
+                  <p>{playbook.promise}</p>
+                  <em>{playbook.id === playbookId ? "Active now" : "Load scenario"} <ArrowRight size={13} /></em>
+                </button>
+              ))}
+            </div>
+            <div className="playbook-proof"><ShieldCheck size={15} /><span>All public playbooks are fictional zero-call replays. Live use remains paid, allow-listed, disclosed, and human-authorized.</span></div>
+          </section>
+        </div>
+      )}
 
       {showBrief && (
         <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowBrief(false)}>
@@ -1022,6 +1093,7 @@ export function CapacityLineApp() {
               <label><span>Part number</span><input name="partNumber" defaultValue={incident.partNumber} required /></label>
               <label><span>Part name</span><input name="partName" defaultValue={incident.partName} required /></label>
               <label><span>Shortfall quantity</span><input name="shortfall" type="number" min="1" step="1" defaultValue={incident.shortfall} required /></label>
+              <label><span>Quantity unit</span><input name="quantityUnit" defaultValue={incident.quantityUnit} placeholder="units, tonnes, cases" required /></label>
               <label><span>Need-by date</span><input name="needBy" type="date" defaultValue={incident.requirements.needBy} required /></label>
               <label className="brief-wide"><span>Line-stop timestamp <small>ISO 8601 with UTC offset</small></span><input name="lineStopAt" defaultValue={incident.lineStopAt} placeholder="2026-08-11T09:30:00-05:00" required /></label>
               <label><span>Unit price ceiling</span><input name="maxUnitPrice" type="number" min="0.01" step="0.01" defaultValue={incident.requirements.maxUnitPrice} required /></label>
@@ -1170,6 +1242,7 @@ export function CapacityLineApp() {
           evaluation={selectedEvaluation}
           approved={approvedSupplierId === selectedSupplier.id}
           recommended={recommendedSupplier?.id === selectedSupplier.id}
+          quantityUnit={incident.quantityUnit}
           onClose={() => setSelectedSupplierId(null)}
           onApprove={() => approveSupplier(selectedSupplier.id)}
         />
@@ -1179,6 +1252,7 @@ export function CapacityLineApp() {
 }
 
 function LedgerView({
+  quantityUnit,
   suppliers,
   commitments,
   evaluations,
@@ -1187,6 +1261,7 @@ function LedgerView({
   onReturn,
   onExport,
 }: {
+  quantityUnit: string;
   suppliers: Supplier[];
   commitments: Record<string, SupplierCommitment | null | undefined>;
   evaluations: Record<string, SupplierEvaluation>;
@@ -1224,7 +1299,7 @@ function LedgerView({
                 {commitment ? (
                   <>
                     <blockquote>“{commitment.evidenceQuote}”</blockquote>
-                    <div className="ledger-facts"><span><strong>{commitment.quantityAvailable?.toLocaleString()}</strong> units</span><span><strong>{formatDate(commitment.earliestShipDate)}</strong> ship</span><span><strong>{Math.round(commitment.confidence * 100)}%</strong> confidence</span></div>
+                    <div className="ledger-facts"><span><strong>{commitment.quantityAvailable?.toLocaleString()}</strong> {quantityUnit}</span><span><strong>{formatDate(commitment.earliestShipDate)}</strong> ship</span><span><strong>{Math.round(commitment.confidence * 100)}%</strong> confidence</span></div>
                     <div className="check-dots" aria-label={`${evaluation?.score ?? 0} percent fit`}>
                       {evaluation?.checks.map((check) => <i key={check.key} className={check.passed ? "pass" : "fail"} title={check.label} />)}
                     </div>
@@ -1282,6 +1357,7 @@ function SupplierDrawer({
   evaluation,
   approved,
   recommended,
+  quantityUnit,
   onClose,
   onApprove,
 }: {
@@ -1290,6 +1366,7 @@ function SupplierDrawer({
   evaluation: SupplierEvaluation | undefined;
   approved: boolean;
   recommended: boolean;
+  quantityUnit: string;
   onClose: () => void;
   onApprove: () => void;
 }) {
@@ -1310,7 +1387,7 @@ function SupplierDrawer({
               <p>{evaluation?.explanation}</p>
             </section>
             <section className="commitment-summary">
-              <div><span>Quantity</span><strong>{commitment.quantityAvailable?.toLocaleString() ?? "—"}</strong><small>units</small></div>
+              <div><span>Quantity</span><strong>{commitment.quantityAvailable?.toLocaleString() ?? "—"}</strong><small>{quantityUnit}</small></div>
               <div><span>Earliest ship</span><strong>{formatDate(commitment.earliestShipDate)}</strong><small>{commitment.originCountry} origin</small></div>
               <div><span>Unit price</span><strong>{commitment.unitPrice ? `$${commitment.unitPrice.toFixed(2)}` : "—"}</strong><small>MOQ {commitment.moq?.toLocaleString() ?? "—"}</small></div>
             </section>

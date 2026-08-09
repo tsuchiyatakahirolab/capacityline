@@ -1,12 +1,12 @@
 # CapacityLine
 
-**Call suppliers. Secure capacity. Keep the line moving.**
+**Recover a verified commitment before operations stop.**
 
-CapacityLine is an AI supply recovery desk that calls pre-approved backup suppliers, obtains live quantity and delivery commitments, checks them against procurement requirements, and gives a buyer the first actionable fallback before production stops.
+CapacityLine is a commitment-recovery system that uses CALL-E to reach pre-approved business contacts, obtain time-bound operational commitments, check them against buyer policy, and give a human operator the first actionable fallback before delay compounds.
 
 Built for the **Most Practical Use Case** prize in [CALL-E: Your Code Is Calling](https://call-e.devpost.com/).
 
-**[Open the zero-call public demo](https://capacityline.vercel.app)** · **[Private Pilot](https://capacityline.vercel.app/pilot)** · **[Watch the 2:44 demo video](https://youtu.be/5ond4ajvsMg)**
+**[Open the zero-call public demo](https://capacityline.vercel.app/demo)** · **[Explore use cases](https://capacityline.vercel.app/solutions)** · **[Evaluation room](https://capacityline.vercel.app/evaluation)** · **[Private Pilot](https://capacityline.vercel.app/pilot)** · **[Watch the 2:44 demo video](https://youtu.be/5ond4ajvsMg)**
 
 Choose **Safe demo** to run the complete fictional scenario with no phone call.
 
@@ -36,6 +36,7 @@ The north-star metric is **Time to First Qualified Fallback**: elapsed time from
 ## What the demo proves
 
 - A 90-second in-product guide makes the complete buyer journey understandable without training.
+- Six executable playbooks cover manufacturing, MRO, construction, food and CPG, logistics, and wholesale replenishment while reusing one policy and evidence core.
 - Five fictional supplier outcomes are replayed in parallel without creating a phone call.
 - CALL-E is given a goal and a strict per-recipient JSON result schema.
 - Quantity, ship date, price, MOQ, exact/substitute part, origin, certifications, quote validity, respondent identity, authority, constraints, and an evidence statement are returned.
@@ -108,7 +109,7 @@ Live mode creates real outbound calls and may incur charges. It is reserved for 
 npm run check
 ```
 
-This runs ESLint, fifteen Vitest checks, TypeScript compilation, and a production Next.js build. Production dependencies currently report zero known `npm audit` vulnerabilities.
+This runs ESLint, the Vitest suite, TypeScript compilation, and a production Next.js build. Production dependencies currently report zero known `npm audit` vulnerabilities.
 
 ## Architecture
 
@@ -146,6 +147,7 @@ See [Architecture](docs/ARCHITECTURE.md), [Safety and Privacy](docs/SAFETY_AND_P
 - [Screenshot capture plan](docs/SCREENSHOT_PLAN.md)
 - [Release and submission runbook](docs/RELEASE_RUNBOOK.md)
 - [Judging strategy](docs/JUDGING_STRATEGY.md)
+- [Use-case and campaign system](docs/GTM_USE_CASE_MATRIX.md)
 - [Submission checklist](docs/SUBMISSION_CHECKLIST.md)
 - [Awesome Phone Call Agents PR draft](docs/AWESOME_PR_DRAFT.md)
 

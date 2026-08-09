@@ -38,10 +38,25 @@ Filename: `04-commitment-graph.png`
 - Include the tenant-private explanation, Northstar buyer node, five supplier edges, and the three moat cards.
 - Suggested caption: “Each recovery event compounds into a private graph of response behavior, authority, promises, and future delivery calibration.”
 
+## 5. Recovery Playbook library
+
+Filename: `05-recovery-playbooks.png`
+
+- Open **Playbooks** in `/demo`.
+- Include all six launch contexts and the active Line-stop recovery state.
+- Suggested caption: “One governed decision engine ships with six concrete operating playbooks—not six bespoke phone bots.”
+
+## 6. Evaluation room
+
+Filename: `06-evaluation-room.png`
+
+- Open `/evaluation` at the hero and keep the 90-second verification panel visible.
+- Suggested caption: “Every official judging criterion maps directly to visible product evidence.”
+
 ## Capture QA
 
 - No API keys, real phone numbers, personal data, bookmarks, notifications, or unrelated tabs.
 - No claims that `$420k` is proven savings; the UI labels it as modeled exposure.
 - PNG, sRGB, under Devpost's upload limit.
 - Text readable at 50% preview size.
-- Use the generated `/opengraph-image` as the social/thumbnail asset if the platform accepts a 1200 × 630 image.
+- Use `/og.png` for the main product social thumbnail and `/campaign-commitment-network.png` for use-case campaigns.

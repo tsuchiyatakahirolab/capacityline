@@ -75,7 +75,7 @@ export function buildRecoveryTask(incident: RecoveryIncident) {
     "This is an operational supplier-capacity verification call inside an authorized business relationship. It is not marketing or sales prospecting.",
     "At the start, identify yourself as an AI calling assistant, state the buyer organization and recovery purpose, explain that the conversation will be transcribed for a decision record, and ask permission to continue.",
     `The approved part is ${incident.partNumber} (${incident.partName}).`,
-    `Ask whether the supplier can commit ${req.quantity} units for shipment no later than ${req.needBy}.`,
+    `Ask whether the supplier can commit ${req.quantity} ${incident.quantityUnit} for shipment no later than ${req.needBy}.`,
     `Confirm unit price in ${req.currency} with a ceiling of ${req.maxUnitPrice}, MOQ, exact part or approved substitute (${req.approvedSubstituteParts.join(", ")}), country of origin, and current certifications (${req.requiredCertifications.join(", ")}).`,
     "Confirm the quote validity time, respondent name and title, and whether they are authorized to state this allocation.",
     "Read back quantity, date, price, part, origin, and certifications once for confirmation.",

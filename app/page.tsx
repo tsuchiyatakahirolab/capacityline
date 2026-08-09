@@ -6,14 +6,21 @@ import {
   Check,
   CircleStop,
   FileCheck2,
+  Factory,
   Globe2,
+  HardHat,
   LockKeyhole,
   Network,
+  PackageCheck,
   Play,
   Radio,
   ShieldCheck,
   TimerReset,
+  Truck,
+  Warehouse,
+  Wrench,
 } from "lucide-react";
+import { COMMERCIAL_USE_CASES } from "@/lib/use-cases";
 import "./lp.css";
 
 export const metadata: Metadata = {
@@ -31,6 +38,7 @@ const workflow = [
 ];
 
 const markets = ["NORTH AMERICA", "UNITED KINGDOM", "EUROPE", "SINGAPORE", "AUSTRALIA"];
+const useCaseIcons = [Factory, Wrench, HardHat, PackageCheck, Truck, Warehouse];
 
 export default function Home() {
   const productJsonLd = {
@@ -61,6 +69,7 @@ export default function Home() {
         <nav aria-label="Primary navigation">
           <a href="#product">Product</a>
           <a href="#workflow">Workflow</a>
+          <Link href="/solutions">Use cases</Link>
           <Link href="/trust">Trust</Link>
           <a href="#pricing">Pricing</a>
         </nav>
@@ -121,6 +130,28 @@ export default function Home() {
         <section className="category-strip">
           <p>MONITORING TELLS YOU <strong>WHAT BROKE.</strong></p>
           <p>CAPACITYLINE HELPS YOUR TEAM <strong>ACT NEXT.</strong></p>
+        </section>
+
+        <section className="lp-use-cases" id="use-cases">
+          <div className="use-case-heading">
+            <span className="lp-kicker">ONE ENGINE / SIX HIGH-COST EXCEPTIONS</span>
+            <h2>Not every team has a procurement suite.<br /><em>Every team has a moment when waiting costs.</em></h2>
+            <p>CapacityLine starts with a common operating job: recover a comparable commitment from approved business contacts before a real deadline.</p>
+            <Link href="/solutions">Explore the complete use-case system <ArrowRight size={15} /></Link>
+          </div>
+          <div className="use-case-list">
+            {COMMERCIAL_USE_CASES.filter((useCase) => useCase.initial).map((useCase, index) => {
+              const Icon = useCaseIcons[index];
+              return (
+                <Link href={`/solutions/${useCase.slug}`} className="use-case-row" key={useCase.slug}>
+                  <span className="use-case-index">0{index + 1}</span>
+                  <span className="use-case-icon"><Icon size={18} /></span>
+                  <span><small>{useCase.sector.toUpperCase()}</small><strong>{useCase.title}</strong><em>{useCase.adHeadline}</em></span>
+                  <ArrowRight size={16} />
+                </Link>
+              );
+            })}
+          </div>
         </section>
 
         <section className="lp-workflow" id="workflow">
@@ -211,6 +242,18 @@ export default function Home() {
           <p className="price-note">The private pilot is a managed early-access service, not a self-serve general-availability plan. Live calling is enabled only after deployment review.</p>
         </section>
 
+        <section className="scale-section">
+          <div className="section-heading compact-heading">
+            <span className="lp-kicker">SMALL-TEAM ENTRY / ENTERPRISE CONTROL</span>
+            <h2>Start with one exception.<br /><em>No transformation program required.</em></h2>
+          </div>
+          <div className="scale-grid">
+            <article><span>01</span><strong>No ERP prerequisite</strong><p>Begin from an approved contact list and a recovery brief. CSV and supplier-master integration are expansion paths, not blockers.</p></article>
+            <article><span>02</span><strong>Pay for governed recovery</strong><p>Public proof remains free. The founding pilot pays for policy configuration, a controlled live boundary, and monthly outcome review—not minutes of telephony.</p></article>
+            <article><span>03</span><strong>Scale after evidence</strong><p>Add sites, roles, regional policy, and reconciliation only after the first workflow proves lower time to qualified fallback or fewer manual touches.</p></article>
+          </div>
+        </section>
+
         <section className="final-cta">
           <span className="lp-kicker">NEXT SUPPLY EXCEPTION / CONTROL THE RESPONSE</span>
           <h2>Do not let the recovery decision live in five inboxes and a spreadsheet.</h2>
@@ -221,7 +264,7 @@ export default function Home() {
 
       <footer className="lp-footer">
         <div><strong>CapacityLine</strong><span>Supplier recovery, from exception to evidence.</span></div>
-        <div><Link href="/demo">Product</Link><Link href="/pilot">Pilot</Link><Link href="/trust">Trust</Link><a href="https://tsuchiyalab.com/privacy">Privacy</a><a href="https://tsuchiyalab.com/terms">Terms</a><a href="mailto:info@tsuchiyalab.com">Contact</a></div>
+        <div><Link href="/demo">Product</Link><Link href="/solutions">Use cases</Link><Link href="/pilot">Pilot</Link><Link href="/trust">Trust</Link><Link href="/evaluation">Evaluation</Link><a href="https://tsuchiyalab.com/privacy">Privacy</a><a href="https://tsuchiyalab.com/terms">Terms</a><a href="mailto:info@tsuchiyalab.com">Contact</a></div>
         <small>© 2026 TSUCHIYA LAB</small>
       </footer>
     </div>

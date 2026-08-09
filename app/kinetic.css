@@ -329,6 +329,28 @@ body {
   animation: page-materialize .55s cubic-bezier(.22,.78,.28,1) both;
 }
 
+.playbook-bar {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 17px;
+  color: #eaf0eb;
+  border: 1px solid rgba(215,255,99,.15);
+  background:
+    linear-gradient(90deg, rgba(215,255,99,.075), transparent 38%),
+    #0b1c13;
+  box-shadow: 0 14px 34px rgba(5,22,13,.08);
+}
+
+.playbook-bar > div { min-width: 0; display: grid; grid-template-columns: auto auto minmax(180px, 1fr); align-items: center; gap: 11px 16px; }
+.playbook-bar span { display: inline-flex; align-items: center; gap: 6px; color: var(--signal); font: 750 8px/1 Consolas, monospace; letter-spacing: .1em; }
+.playbook-bar strong { font-family: Georgia, serif; font-size: 18px; font-weight: 400; }
+.playbook-bar p { margin: 0; color: #8fa197; font-size: 9px; line-height: 1.5; }
+.playbook-bar button { min-height: 37px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; flex: 0 0 auto; color: #0b1710; border: 0; background: var(--signal); font-size: 9px; font-weight: 850; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
+.playbook-bar button:hover { transform: translateY(-2px); box-shadow: 0 9px 25px rgba(215,255,99,.12); }
+
 .incident-hero {
   grid-template-columns: minmax(0, 1fr) 410px;
   min-height: 326px;
@@ -861,6 +883,38 @@ body {
   animation: modal-rise .42s cubic-bezier(.18,.82,.22,1) both;
 }
 
+.playbook-modal {
+  position: relative;
+  width: min(990px, calc(100vw - 34px));
+  max-height: calc(100vh - 34px);
+  overflow: auto;
+  padding: 32px;
+  color: #eff4ed;
+  border: 1px solid rgba(215,255,99,.24);
+  background:
+    radial-gradient(circle at 90% 8%, rgba(215,255,99,.14), transparent 25%),
+    linear-gradient(rgba(215,255,99,.024) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(215,255,99,.024) 1px, transparent 1px),
+    #08170f;
+  background-size: auto, 31px 31px, 31px 31px, auto;
+  box-shadow: 0 35px 90px rgba(2,12,7,.48);
+  animation: modal-rise .42s cubic-bezier(.18,.82,.22,1) both;
+}
+
+.playbook-modal-heading { display: flex; align-items: center; gap: 14px; padding-right: 42px; }
+.playbook-modal-heading h2 { margin-top: 4px; font-family: Georgia, serif; font-size: 32px; font-weight: 400; }
+.playbook-modal > p { max-width: 760px; margin: 18px 0 23px; color: #97a79e; font-size: 11px; line-height: 1.7; }
+.playbook-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+.playbook-grid button { min-height: 170px; display: flex; flex-direction: column; align-items: flex-start; padding: 18px; text-align: left; color: #e9f0ea; border: 1px solid rgba(215,255,99,.12); background: rgba(255,255,255,.035); cursor: pointer; transition: transform .22s ease, border-color .22s ease, background .22s ease; }
+.playbook-grid button:hover { transform: translateY(-3px); border-color: rgba(215,255,99,.34); background: rgba(215,255,99,.065); }
+.playbook-grid button.selected { border-color: rgba(215,255,99,.65); background: linear-gradient(145deg, rgba(215,255,99,.12), rgba(255,255,255,.025)); box-shadow: inset 3px 0 0 var(--signal); }
+.playbook-grid button > span { color: #73867b; font: 750 8px/1 Consolas, monospace; letter-spacing: .12em; }
+.playbook-grid button > strong { margin-top: 22px; font-family: Georgia, serif; font-size: 20px; font-weight: 400; }
+.playbook-grid button > p { margin: 9px 0 16px; color: #8fa197; font-size: 9px; line-height: 1.55; }
+.playbook-grid button > em { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; color: var(--signal); font: normal 750 8px/1 Consolas, monospace; letter-spacing: .07em; }
+.playbook-proof { display: flex; align-items: center; gap: 8px; margin-top: 18px; padding: 11px 13px; color: #b8c8bd; border-left: 2px solid var(--signal); background: rgba(215,255,99,.05); font-size: 9px; }
+.playbook-proof svg { flex: 0 0 auto; color: var(--signal); }
+
 .brief-heading { display: flex; align-items: center; gap: 14px; padding-right: 42px; }
 .brief-heading h2 { margin-top: 4px; font-family: Georgia, serif; font-size: 32px; font-weight: 400; }
 .brief-modal > p { max-width: 710px; margin: 18px 0 22px; color: #9daba3; font-size: 11px; line-height: 1.7; }
@@ -915,6 +969,9 @@ body {
   .brief-wide { grid-column: span 2; }
   .brief-button { display: none !important; }
   .approval-actions { justify-content: flex-start; }
+  .playbook-grid { grid-template-columns: 1fr 1fr; }
+  .playbook-bar > div { grid-template-columns: 1fr; gap: 5px; }
+  .playbook-bar p { display: none; }
 }
 
 @media (max-width: 520px) {
@@ -923,6 +980,12 @@ body {
   .brief-wide { grid-column: span 1; }
   .brief-heading h2 { font-size: 27px; }
   .export-buttons { flex-direction: column; }
+  .playbook-modal { width: calc(100vw - 18px); max-height: calc(100vh - 18px); padding: 22px 16px; }
+  .playbook-grid { grid-template-columns: 1fr; }
+  .playbook-grid button { min-height: 145px; }
+  .playbook-modal-heading h2 { font-size: 27px; }
+  .playbook-bar { align-items: flex-start; gap: 11px; }
+  .playbook-bar button { width: 38px; padding: 0; font-size: 0; }
 }
 
 @keyframes ticker {
@@ -1013,6 +1076,7 @@ body {
 @media (max-width: 920px) {
   .app-shell { display: block; }
   .sidebar { position: static; height: auto; padding: 13px 16px; }
+  .nav-list button { font-size: 0; }
   .signal-ticker { height: 24px; }
   .signal-ticker-set { height: 24px; }
   .incident-hero { grid-template-columns: 1fr; }

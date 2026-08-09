@@ -12,6 +12,7 @@ export const DEMO_INCIDENT: RecoveryIncident = {
   partName: "Inverter coolant pump",
   incumbentSupplier: "Orion Thermal Systems",
   shortfall: 6_000,
+  quantityUnit: "units",
   lineStopAt: "2026-08-11T09:30:00+09:00",
   estimatedDowntimeCost: 420_000,
   requirements: {
@@ -216,7 +217,8 @@ export function buildDemoCommitments(incident: RecoveryIncident): Record<string,
   const allCertifications = [...req.requiredCertifications];
   const missingOneCertification = allCertifications.slice(1);
   const money = (value: number) => `${req.currency} ${value.toFixed(2)}`;
-  const quantity = Math.ceil(req.quantity / 100) * 100;
+  const quantity = req.quantity;
+  const quantityUnit = incident.quantityUnit;
 
   return {
     "sup-kanto": {
@@ -235,21 +237,21 @@ export function buildDemoCommitments(incident: RecoveryIncident): Record<string,
       respondentTitle: "Sales Operations Director",
       authorityConfirmed: true,
       constraints: ["Expedited freight required for the first tranche"],
-      evidenceQuote: `I can commit ${quantity.toLocaleString()} ${exactPart} units for shipment by ${shiftDate(req.needBy, -1)}.`,
+      evidenceQuote: `I can commit ${quantity.toLocaleString()} ${quantityUnit} of ${exactPart} for shipment by ${shiftDate(req.needBy, -1)}.`,
       confidence: 0.96,
       callDurationSeconds: 132,
       transcript: [
         { speaker: "agent", offsetSeconds: 4, text: `I’m calling about approved part ${exactPart}. I’m not placing an order. May I confirm live capacity and delivery?` },
         { speaker: "supplier", offsetSeconds: 19, text: "Yes. I’m the Sales Operations Director and authorized to confirm current allocation." },
-        { speaker: "agent", offsetSeconds: 43, text: `Can you commit ${req.quantity.toLocaleString()} units by ${req.needBy}, under ${money(req.maxUnitPrice)} per unit?` },
-        { speaker: "supplier", offsetSeconds: 58, text: `I can commit ${quantity.toLocaleString()} ${exactPart} units for shipment by ${shiftDate(req.needBy, -1)} at ${money(rounded(req.maxUnitPrice * 0.96))}.` },
+        { speaker: "agent", offsetSeconds: 43, text: `Can you commit ${req.quantity.toLocaleString()} ${quantityUnit} by ${req.needBy}, under ${money(req.maxUnitPrice)} each?` },
+        { speaker: "supplier", offsetSeconds: 58, text: `I can commit ${quantity.toLocaleString()} ${quantityUnit} of ${exactPart} for shipment by ${shiftDate(req.needBy, -1)} at ${money(rounded(req.maxUnitPrice * 0.96))}.` },
         { speaker: "supplier", offsetSeconds: 102, text: `The required certifications are current. Expedited freight is the only stated condition.` },
       ],
     },
     "sup-pacific": {
       supplierId: "sup-pacific",
       availabilityStatus: "available",
-      quantityAvailable: Math.ceil(req.quantity * 1.2 / 100) * 100,
+      quantityAvailable: Math.ceil(req.quantity * 1.2),
       earliestShipDate: req.needBy,
       unitPrice: rounded(req.maxUnitPrice * 0.91),
       currency: req.currency,
@@ -292,7 +294,7 @@ export function buildDemoCommitments(incident: RecoveryIncident): Record<string,
       confidence: 0.94,
       callDurationSeconds: 118,
       transcript: [
-        { speaker: "agent", offsetSeconds: 5, text: `Can you commit ${req.quantity.toLocaleString()} ${exactPart} units by ${req.needBy}?` },
+        { speaker: "agent", offsetSeconds: 5, text: `Can you commit ${req.quantity.toLocaleString()} ${quantityUnit} of ${exactPart} by ${req.needBy}?` },
         { speaker: "supplier", offsetSeconds: 36, text: `${Math.floor(req.quantity * 0.67).toLocaleString()} are possible, but the earliest departure is ${shiftDate(req.needBy, 1)}.` },
         { speaker: "supplier", offsetSeconds: 81, text: "The price and certifications are within the requested terms." },
       ],
@@ -300,7 +302,7 @@ export function buildDemoCommitments(incident: RecoveryIncident): Record<string,
     "sup-delta": {
       supplierId: "sup-delta",
       availabilityStatus: "available",
-      quantityAvailable: Math.ceil(req.quantity * 1.15 / 100) * 100,
+      quantityAvailable: Math.ceil(req.quantity * 1.15),
       earliestShipDate: shiftDate(req.needBy, -1),
       unitPrice: rounded(req.maxUnitPrice * 0.82),
       currency: req.currency,

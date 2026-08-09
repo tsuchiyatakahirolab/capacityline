@@ -1,4 +1,4 @@
-# CapacityLine demo video — 2:44 target
+# CapacityLine demo video — 2:52 target
 
 The video must be public on YouTube or Vimeo, in English, and under three minutes. Record at 1440p or 1080p, browser zoom 100–110%, with the cursor visible. Use the working product as the primary visual; no slide deck. Do not use copyrighted music or visible third-party trademarks.
 
@@ -50,21 +50,29 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 > Kanto passes all eight guardrails, including approved-part validation. The buyer can inspect the exact supporting words, respondent authority, confidence, and freight condition before acting. A human approves an RFQ handoff. CapacityLine never places an order, promises payment, or forms a contract.
 
-## 2:02–2:25 — The measurable result
+## 2:02–2:20 — The measurable result
 
-**Screen:** Close the drawer; show the approved banner, 12m 41s KPI, five outcomes, then open Commitment ledger.
+**Screen:** Close the drawer; show the approved banner, measured replay latency, five outcomes, then open Commitment ledger.
 
 **Narration:**
 
-> The north-star metric is Time to First Qualified Fallback: twelve minutes and forty-one seconds in this synthetic scenario, versus an eight-hour synthetic manual baseline. Every outcome remains traceable, including no answer. The four-hundred-twenty-thousand-dollar exposure is modeled—not claimed savings.
+> The north-star metric is Time to First Qualified Fallback. The product measures elapsed time from launch to the first complete commitment that passes every hard rule. Every answered outcome remains transcript-grounded, while no answer stays unknown. The exposure figure is modeled—not claimed savings.
 
-## 2:25–2:44 — Why this becomes a company
+## 2:20–2:38 — One engine, multiple operations
+
+**Screen:** Open **Playbooks**, switch from Line-stop recovery to Critical spare, then show the changed incident, supplier roster, quantity unit, and buyer policy.
+
+**Narration:**
+
+> This is not a one-off automotive phone bot. The same governed recovery loop ships with playbooks for MRO, construction, food and packaging, logistics, and stockout replenishment. Each changes the commitment contract without changing who retains authority.
+
+## 2:38–2:52 — Why this becomes a company
 
 **Screen:** Open Supplier graph; end on the CapacityLine name and tagline, or the generated Open Graph image.
 
 **Narration:**
 
-> Manufacturers operate it; procurement and operations leaders pay for it. Over time, each tenant builds a private commitment graph: who answers, who has authority, what they promise, and what they deliver. CapacityLine: call suppliers, secure capacity, keep the line moving.
+> Lean teams can start from an approved list without an ERP project; enterprises can add identity, regional policy, and reconciliation. Each tenant builds a private commitment graph: who answers, what they promise, and what they deliver. CapacityLine: recover a verified commitment before operations stop.
 
 ## Required live proof insert
 
@@ -78,7 +86,7 @@ Replace no more than 10–12 seconds of the 0:30–1:08 section. Never publish t
 
 ## Final edit QA
 
-- 2:55 maximum, 2:44 target.
+- 2:55 maximum, 2:52 target.
 - Product text remains readable on a laptop at normal playback size.
 - No pauses longer than one second; cut loading time except for the short result-resolution sequence.
 - The green recommendation and red certification block are both visible before architecture or moat claims.

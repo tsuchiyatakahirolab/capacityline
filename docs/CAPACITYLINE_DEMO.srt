@@ -10,7 +10,7 @@ can actually commit capacity today?
 
 3
 00:00:14,000 --> 00:00:22,000
-CapacityLine is an AI supply recovery desk
+CapacityLine is a commitment-recovery system
 for the procurement team that owns this exposure.
 
 4
@@ -64,21 +64,31 @@ A human approves an RFQ handoff.
 CapacityLine never places an order or forms a contract.
 
 14
-00:02:02,000 --> 00:02:13,500
-Time to First Qualified Fallback is twelve minutes, forty-one seconds
-in this synthetic scenario, versus an eight-hour synthetic baseline.
+00:02:02,000 --> 00:02:11,000
+The product measures Time to First Qualified Fallback:
+launch to the first complete option that passes every hard rule.
 
 15
-00:02:13,500 --> 00:02:25,000
-Every outcome remains traceable. The four-hundred-twenty-thousand-dollar
-exposure is modeled—not claimed savings.
+00:02:11,000 --> 00:02:20,000
+Every answer is transcript-grounded; no answer stays unknown.
+The exposure is modeled—not claimed savings.
 
 16
-00:02:25,000 --> 00:02:34,500
-Manufacturers operate it; procurement and operations leaders pay.
-Each tenant builds a private commitment graph.
+00:02:20,000 --> 00:02:29,000
+This is not a one-off automotive phone bot.
+The same recovery loop ships with six operating playbooks.
 
 17
-00:02:34,500 --> 00:02:44,000
-Who answers, who has authority, what they promise, what they deliver.
-CapacityLine: call suppliers, secure capacity, keep the line moving.
+00:02:29,000 --> 00:02:38,000
+MRO, construction, food and packaging, logistics,
+and stockout recovery reuse the same authority model.
+
+18
+00:02:38,000 --> 00:02:45,000
+Lean teams start from an approved list; enterprises add identity,
+regional policy, integration, and reconciliation.
+
+19
+00:02:45,000 --> 00:02:52,000
+Each tenant builds a private commitment graph.
+CapacityLine: recover a verified commitment before operations stop.

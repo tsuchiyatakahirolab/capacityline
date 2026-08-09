@@ -13,6 +13,8 @@ Evidence in the product:
 - approved supplier list rather than cold discovery;
 - Time to First Qualified Fallback;
 - human RFQ handoff.
+- six executable recovery playbooks that prove the operating model generalizes without changing the core decision engine;
+- a dedicated `/evaluation` route that maps every official criterion to visible product evidence.
 
 Do not lead with geopolitical risk. Lead with a routine supplier outage; explain that the same workflow covers quality failures, logistics issues, sanctions, tariffs, and export controls.
 
@@ -59,6 +61,17 @@ The demo narrative is one continuous decision:
 5. inspect exact transcript evidence;
 6. approve an RFQ handoff;
 7. show the commitment graph as the commercial moat.
+
+After the reference scenario, switch once to the MRO or logistics playbook. Spend no more than ten seconds on this. The point is not feature breadth; it is that the same commitment contract handles a different operating context without becoming a bespoke phone bot.
+
+## 90-second judge path
+
+1. Open `/evaluation` and state the one-sentence problem.
+2. Open `/demo`, run the six-second reference replay, and show the best fallback.
+3. Open the cheaper blocked supplier and point to the failed certification guardrail and supporting transcript.
+4. Approve the RFQ-review handoff and export the Evidence Pack.
+5. Open Playbooks and switch to MRO or Logistics.
+6. Close on the managed pilot, live-operation boundary, and promise-to-delivery data moat.
 
 ## Claims discipline
 

@@ -7,6 +7,7 @@ describe("validateRecoveryIncident", () => {
     const result = validateRecoveryIncident({
       ...DEMO_INCIDENT,
       shortfall: "6000",
+      quantityUnit: "units",
       requirements: { ...DEMO_INCIDENT.requirements, quantity: 1, currency: "usd" },
     });
 

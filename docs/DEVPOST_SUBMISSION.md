@@ -6,11 +6,11 @@ CapacityLine
 
 ## Tagline
 
-Call suppliers. Secure capacity. Keep the line moving.
+Recover a verified commitment before operations stop.
 
 ## One-line description
 
-CapacityLine is an AI supply recovery desk that calls pre-approved backup suppliers, obtains live quantity and delivery commitments, checks them against procurement requirements, and gives buyers the first actionable fallback before production stops.
+CapacityLine turns time-critical supply exceptions into comparable, transcript-grounded commitments from approved business contacts, then gives a human operator the first policy-qualified fallback.
 
 ## Inspiration
 
@@ -26,7 +26,9 @@ A deterministic policy engine then checks eight buyer guardrails, including appr
 
 The operator experience follows the same governed control loop throughout: Detect → Call → Verify → Decide. After outreach completes, a decision spotlight places the best exact-part fallback next to the cheaper offer that policy blocked, so a buyer can understand both the recommendation and the refusal before opening either evidence record. A built-in 90-second guide explains the complete flow for first-time users.
 
-The demo follows a fictional automotive plant facing a 6,000-unit coolant-pump shortfall and a line stop in 47 hours. Five backup suppliers produce two qualified options, one partial option for review, one attractive but uncertified offer that is blocked, and one unanswered call. The first qualified fallback appears in 12 minutes and 41 seconds of accelerated scenario time.
+Six executable Recovery Playbooks prove that the core is reusable rather than a bespoke automotive demo: manufacturing line stop, critical MRO spare, construction material, food and CPG packaging allocation, carrier capacity, and wholesale replenishment. Each playbook changes the incident, supplier roster, quantity unit, evidence fields, and policy while preserving the same governed exception-to-commitment loop.
+
+The demo follows a fictional automotive plant facing a 6,000-unit coolant-pump shortfall and a line stop in 47 hours. Five backup suppliers produce two qualified options, one partial option for review, one attractive but uncertified offer that is blocked, and one unanswered call. The public replay resolves in about six seconds and reports its actual replay latency; it does not claim a synthetic manual benchmark or avoided savings.
 
 ## How we built it
 
@@ -53,6 +55,7 @@ We also had to make parallel outreach comparable. Different suppliers express da
 - Every decision is inspectable from the requirement to the transcript.
 - The full no-call flow works without credentials, while the same UI can create real authorized CALL-E tasks.
 - The product has a credible buyer, budget owner, pricing path, and compounding tenant-private data asset.
+- The same product supports six concrete launch playbooks without relaxing the operating boundary.
 
 ## What we learned
 
@@ -62,9 +65,9 @@ We also learned that “unreachable” is valuable data only when it remains sep
 
 ## What's next for CapacityLine
 
-The first pilot will shadow real procurement exceptions at one plant and compare CapacityLine's Time to First Qualified Fallback with the current manual process. After a consent-first supplier pilot, we will add durable tenant storage, SSO, ERP exception intake, RFQ export, and delivery reconciliation.
+The first pilot will shadow real procurement exceptions at one plant, site, lane, or category and compare CapacityLine's Time to First Qualified Fallback and manual buyer touches with the current process. After a consent-first supplier pilot, we will add durable tenant storage, SSO, ERP exception intake, RFQ export, and delivery reconciliation.
 
-That reconciliation creates the long-term moat: a tenant-private supplier commitment graph showing who responds, who has authority, what they promise under pressure, and whether they deliver it. Longer term, the same recovery layer can respond to quality holds, logistics failures, demand spikes, sanctions, tariffs, and export-control changes.
+That reconciliation creates the long-term moat: a tenant-private supplier commitment graph showing who responds, who has authority, what they promise under pressure, and whether they deliver it. The same recovery layer already has public playbooks for MRO, construction, food and CPG, logistics, and stockout replenishment. Energy or healthcare extensions require stricter incident-command and regulatory boundaries and are not presented as autonomous workflows.
 
 ## Built with
 
@@ -72,15 +75,16 @@ CALL-E · TypeScript · Next.js · React · Vitest
 
 ## Testing instructions
 
-1. Open [capacityline.vercel.app](https://capacityline.vercel.app).
-2. Click **Run recovery sprint**.
-3. Keep **Safe demo** selected and click **Run 12-minute scenario**. No calls are created.
+1. Open [capacityline.vercel.app/evaluation](https://capacityline.vercel.app/evaluation) for the criteria-to-proof map, then open the product.
+2. In `/demo`, click **Run zero-call demo**.
+3. Keep **Safe demo** selected and click **Run 6-second decision replay**. No calls are created.
 4. Wait approximately six seconds for the accelerated results.
 5. Inspect the automatically opened Kanto Flow Systems evidence record.
 6. Review all eight passed guardrails and the CALL-E transcript.
 7. Click **Approve RFQ handoff**.
 8. Open **Commitment ledger**, then inspect Delta Fluidics to see a hard certification failure.
-9. Open **Supplier graph** to see the commercial data model.
+9. Open **Playbooks**, switch to **Critical spare** or **Carrier capacity**, and confirm that the incident, roster, units, and policy change.
+10. Open **Supplier graph** to see the commercial data model.
 
 First-time testers can instead click **Demo guide** and follow the same path from the four-step product tour.
 
@@ -88,7 +92,9 @@ Live testing is opt-in and requires the entrant-provided server configuration pl
 
 ## Submission links
 
-- Demo app: https://capacityline.vercel.app
+- Evaluation room: https://capacityline.vercel.app/evaluation
+- Demo app: https://capacityline.vercel.app/demo
+- Use cases: https://capacityline.vercel.app/solutions
 - Source repository: https://github.com/tsuchiyatakahirolab/capacityline
 - CALL-E awesome repository pull request: https://github.com/CALLE-AI/awesome-phone-call-agents/pull/129
 - YouTube video: https://youtu.be/5ond4ajvsMg

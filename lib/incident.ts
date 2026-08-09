@@ -79,6 +79,7 @@ export function validateRecoveryIncident(value: unknown): ValidationResult {
         partName: cleanText(value.partName, "Part name"),
         incumbentSupplier: cleanText(value.incumbentSupplier, "Incumbent supplier"),
         shortfall,
+        quantityUnit: cleanText(value.quantityUnit, "Quantity unit", 32),
         lineStopAt,
         estimatedDowntimeCost: cleanNumber(value.estimatedDowntimeCost, "Downtime exposure", 10_000_000_000),
         requirements: {

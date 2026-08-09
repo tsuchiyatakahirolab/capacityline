@@ -30,6 +30,7 @@ export interface RecoveryIncident {
   partName: string;
   incumbentSupplier: string;
   shortfall: number;
+  quantityUnit: string;
   lineStopAt: string;
   estimatedDowntimeCost: number;
   requirements: IncidentRequirements;
