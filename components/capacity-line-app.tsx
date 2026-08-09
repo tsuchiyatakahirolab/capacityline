@@ -789,7 +789,7 @@ export function CapacityLineApp() {
                 <strong>{activePlaybook.label}</strong>
                 <p>{activePlaybook.promise}</p>
               </div>
-              <button onClick={() => setShowPlaybooks(true)}>Switch use case <ArrowRight size={14} /></button>
+              <button aria-label="Change playbook" onClick={() => setShowPlaybooks(true)}>Change <ArrowRight size={14} /></button>
             </section>
             <section className="incident-hero">
               <div className="incident-copy">

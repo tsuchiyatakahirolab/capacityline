@@ -238,3 +238,17 @@
   .gate-orbit,
   .gate-lock-line { animation: none !important; }
 }
+
+/* Readability floor. */
+.pilot-page { font-size:16px; }
+.pilot-brand small,.pilot-kicker,.gate-node,.offer-terms span,.boundary-sequence span,.pilot-operating-model span,.pilot-result > p:first-of-type { font-size:11px;line-height:1.4; }
+.pilot-header nav a,.offer-action button,.result-actions a { font-size:13px; }
+.pilot-intro p { font-size:17px;line-height:1.7; }
+.pilot-intro span,.pilot-notice { font-size:13px;line-height:1.5; }
+.offer-register span,.offer-terms p,.pilot-terms-check,.offer-action small,.boundary-sequence p,.pilot-operating-model p { font-size:14px;line-height:1.6; }
+.offer-terms strong,.boundary-sequence strong { font-size:16px; }
+.active-entitlement { font-size:13px; }
+.pilot-footer { font-size:12px;line-height:1.5; }
+.result-copy { font-size:15px;line-height:1.7; }
+
+@media (max-width:650px){.pilot-intro p{font-size:16px}}

@@ -89,3 +89,20 @@
 .evaluation-page :is(.evaluation-hero h1,.evaluation-heading h2,.architecture-copy h2,.evaluation-final h2) { font-family:var(--font-display),sans-serif; }
 .evaluation-page :is(.evaluation-hero h1 em,.evaluation-command h2,.criteria-card h3,.commercial-grid h3) { font-family:var(--font-editorial),serif; }
 .evaluation-page :is(.evaluation-kicker,.evaluation-command > span,.criteria-top,.architecture-flow em,.commercial-grid span) { font-family:var(--font-technical),monospace; }
+
+/* Readability floor. */
+.evaluation-page { font-size:16px; }
+.evaluation-nav nav a,.architecture-copy a,.evaluation-final a { font-size:13px; }
+.evaluation-kicker,.evaluation-command > span,.criteria-top > span:last-child,.commercial-grid span { font-size:11px;line-height:1.45; }
+.evaluation-hero-copy > p { font-size:17px;line-height:1.7; }
+.evaluation-proofline span,.evaluation-run a > span,.criteria-top > span:first-child { font-size:10px; }
+.evaluation-run strong,.architecture-flow strong { font-size:15px; }
+.evaluation-run small,.architecture-flow small { font-size:13px;line-height:1.5; }
+.evaluation-heading p,.criteria-card > p,.architecture-copy p,.commercial-grid p { font-size:15px;line-height:1.65; }
+.criteria-card li { font-size:14px;line-height:1.55; }
+.architecture-flow em { font-size:10px; }
+.evaluation-footer { font-size:12px;line-height:1.5; }
+
+@media (max-width:620px) {
+  .evaluation-hero-copy > p { font-size:16px; }
+}

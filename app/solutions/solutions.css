@@ -156,3 +156,21 @@
 .solutions-page :is(.solutions-hero h1,.solutions-heading h2,.solution-detail-copy h1,.solutions-cta h2) { font-family:var(--font-display),sans-serif; }
 .solutions-page :is(.solutions-hero h1 em,.solutions-invariant h2,.solution-card h3,.solution-card blockquote,.ad-section h2,.ad-rail strong,.entry-grid h3,.detail-brief blockquote,.detail-situation h3,.proof-field-grid div,.detail-boundary h3) { font-family:var(--font-editorial),serif; }
 .solutions-page :is(.solution-kicker,.solution-card-top,.solution-status,.invariant-flow > div > span,.ad-rail article > span,.campaign-visual figcaption,.entry-grid article > span) { font-family:var(--font-technical),monospace; }
+
+/* Readability floor. */
+.solutions-page { font-size:16px; }
+.solutions-brand small,.solution-kicker,.solutions-invariant > span,.solution-card-top,.entry-grid span,.detail-audience,.detail-brief span { font-size:11px;line-height:1.45; }
+.solutions-nav nav a,.solutions-hero-actions a,.solution-card > span:last-child,.entry-grid a,.solutions-cta a { font-size:13px; }
+.solutions-hero-copy > p,.solution-detail-copy > p { font-size:17px;line-height:1.7; }
+.invariant-flow strong { font-size:14px; }
+.invariant-flow small { font-size:13px;line-height:1.5; }
+.solutions-heading p,.solution-card > p,.ad-section-copy p,.detail-brief p,.detail-situation p,.detail-boundary p { font-size:15px;line-height:1.65; }
+.solution-card blockquote { font-size:19px;line-height:1.45; }
+.campaign-visual figcaption { font-size:10px; }
+.ad-rail p,.entry-grid p { font-size:14px;line-height:1.6; }
+.proof-field-grid span,.ad-rail article > span,.invariant-flow > div > span { font-size:10px; }
+.solutions-footer { font-size:12px;line-height:1.5; }
+
+@media (max-width:620px) {
+  .solutions-hero-copy > p,.solution-detail-copy > p { font-size:16px; }
+}

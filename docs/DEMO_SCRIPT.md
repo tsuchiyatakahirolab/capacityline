@@ -4,7 +4,7 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 ## 0:00–0:14 — The operational problem
 
-**Screen:** Open on the landing-page brand film as it moves from **Exception** to **Evidence** (four to five seconds), then hard-cut to the Recovery desk hero, 47-hour countdown, 6,000-unit shortfall, and modeled exposure. The opening film is an original brand visualization—not the live-call proof.
+**Screen:** Open for two seconds on the **Recover the commitment** campaign image, then hard-cut to the Recovery desk hero, 47-hour countdown, 6,000-unit shortfall, and modeled exposure.
 
 **Narration:**
 
@@ -24,7 +24,7 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 **Narration:**
 
-> One recovery sprint creates parallel, goal-driven CALL-E conversations. The live path uses the official server SDK, strict structured results, transcript evidence, and idempotency. This accelerated path replays fictional results and makes no calls; live mode requires authorized numbers and explicit confirmation.
+> One recovery sprint creates parallel, goal-driven CALL-E conversations. The live path uses the official CALL-E SDK, structured results, transcript evidence, and repeat-safe launch controls. This sandbox uses sample results and makes no calls; live operations require approved recipients and explicit confirmation.
 
 ## 0:48–1:08 — Parallel commitments
 
@@ -40,7 +40,7 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 **Narration:**
 
-> The command center recommends Kanto's exact-part commitment, while calling out a cheaper offer it refused. Delta can ship faster at sixty-eight dollars and fifty cents, but cannot establish the required IATF certification. Conversation gathers facts; deterministic policy classifies them; uncertainty fails closed.
+> The command center recommends Kanto's exact-part commitment, while calling out a cheaper offer it refused. Delta can ship faster at sixty-eight dollars and fifty cents, but cannot establish the required IATF certification. Conversation gathers facts; explicit buyer policy classifies them; uncertainty goes to human review.
 
 ## 1:33–2:02 — Evidence and human authority
 
@@ -72,7 +72,7 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 **Narration:**
 
-> Lean teams can start from an approved list without an ERP project; enterprises can add identity, regional policy, and reconciliation. Each tenant builds a private commitment graph: who answers, what they promise, and what they deliver. CapacityLine: recover a verified commitment before operations stop.
+> Lean teams can start from an approved list without an ERP project; enterprises can add identity, regional policy, and reconciliation. Each customer builds a private commitment graph: who answers, what they promise, and what they deliver. CapacityLine: recover a verified commitment before operations stop.
 
 ## Required live proof insert
 
@@ -84,15 +84,11 @@ Before the final edit, record one short CALL-E call to the entrant's or a teamma
 
 Replace no more than 10–12 seconds of the 0:30–1:08 section. Never publish the API key or full phone number. If a live insert cannot be completed, do not imply that a live call was executed; say that the live integration is implemented and use the safe demo honestly.
 
-## Ready-to-record visual assets
+## Ready-to-record visual asset
 
-- `/capacityline-recovery-film.mp4` — 12-second muted 1280 × 720 brand film; use only the opening four to five seconds in the submission edit.
-- `/recovery-film-01-exception.webp` — film poster and Exception still.
-- `/recovery-film-02-evidence.webp` — Evidence chapter still.
-- `/recovery-film-03-decision.webp` — Human decision chapter still.
-- `/capacityline-manifesto-v2.webp` — final campaign frame.
+- `/capacityline-manifesto-v2.webp` — opening and final campaign frame.
 
-Keep the generated brand sequence visually and verbally distinct from the later consenting CALL-E recording. Only the CALL-E insert may be labeled live proof.
+Only the consenting CALL-E insert may be labeled live proof.
 
 ## Final edit QA
 

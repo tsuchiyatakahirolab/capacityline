@@ -39,3 +39,16 @@
 @keyframes trust-orbit { to { transform: rotate(360deg); } }
 @media (max-width: 920px) { .trust-hero,.scope-section,.control-section,.regional-section { grid-template-columns: 1fr; }.scope-seal { width: 250px; }.control-heading { position: static; }.truth-grid { grid-template-columns: 1fr; }.truth-grid article + article { border-top: 1px solid rgba(18,48,31,.13); border-left: 0; }.trust-contact { grid-template-columns: auto 1fr; }.trust-contact > a { grid-column: 2; width: max-content; } }
 @media (max-width: 620px) { .trust-header nav a:nth-child(2) { display: none; }.trust-hero { padding: 70px 20px; }.scope-statements article { grid-template-columns: 28px 1fr; padding: 22px 0; }.scope-statements p { grid-column: 2; }.trust-controls article div { grid-template-columns: 1fr; gap: 7px; padding: 20px 0; }.regional-section,.scope-section,.control-section,.truth-section { padding-left: 20px; padding-right: 20px; }.source-list a { grid-template-columns: 1fr; gap: 8px; padding: 18px 0; }.trust-contact { grid-template-columns: 1fr; }.trust-contact > a { grid-column: auto; width: 100%; justify-content: center; }.trust-footer { align-items: flex-start; flex-direction: column; padding-block: 25px; }.trust-footer div { flex-wrap: wrap; } }
+
+/* Readability floor. */
+.trust-page { font-size:16px; }
+.trust-header nav a,.trust-contact > a { font-size:13px; }
+.trust-contact span,.scope-seal span,.trust-controls article > span,.truth-grid article > span,.source-list a span { font-size:11px;line-height:1.4; }
+.trust-hero p { font-size:17px;line-height:1.7; }
+.scope-statements p,.control-heading p,.trust-controls p,.truth-copy p,.regional-copy > p { font-size:15px;line-height:1.65; }
+.trust-controls strong,.scope-statements strong { font-size:21px; }
+.truth-grid li { font-size:14px;line-height:1.55; }
+.source-list strong { font-size:14px;line-height:1.4; }
+.trust-footer { font-size:12px;line-height:1.5; }
+
+@media(max-width:620px){.trust-hero p{font-size:16px}}
