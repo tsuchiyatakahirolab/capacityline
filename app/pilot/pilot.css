@@ -241,7 +241,7 @@
 
 /* Readability floor. */
 .pilot-page { font-size:16px; }
-.pilot-brand small,.pilot-kicker,.gate-node,.offer-terms span,.boundary-sequence span,.pilot-operating-model span,.pilot-result > p:first-of-type { font-size:11px;line-height:1.4; }
+.pilot-brand small,.pilot-kicker,.pilot-hero-copy > p,.boundary-heading > p,.offer-register > p,.gate-node,.offer-terms span,.boundary-sequence span,.pilot-operating-model span,.pilot-result > p:first-of-type { font-size:11px;line-height:1.4; }
 .pilot-header nav a,.offer-action button,.result-actions a { font-size:13px; }
 .pilot-intro p { font-size:17px;line-height:1.7; }
 .pilot-intro span,.pilot-notice { font-size:13px;line-height:1.5; }
