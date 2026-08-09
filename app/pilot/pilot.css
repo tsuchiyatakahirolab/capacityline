@@ -148,6 +148,9 @@
 .offer-terms p { margin: 3px 0 0; color: #6e7a73; font-size: 10px; line-height: 1.55; }
 .offer-action { display: flex; flex-direction: column; justify-content: center; gap: 12px; border-left: 1px solid rgba(14,36,24,.16); background: rgba(255,255,255,.28); }
 .offer-action form { display: grid; gap: 10px; }
+.pilot-terms-check { display: flex; align-items: flex-start; gap: 8px; color: #617168; font-size: 8px; line-height: 1.5; }
+.pilot-terms-check input { flex: 0 0 auto; margin-top: 1px; accent-color: #2c704d; }
+.pilot-terms-check a { color: #285f43; font-weight: 750; }
 .offer-action button,
 .offer-action > a,
 .result-actions button {

@@ -37,6 +37,7 @@ const BILLING_MESSAGES: Record<string, string> = {
   incomplete: "Payment is not complete. Live access remains locked.",
   session_expired: "Your secure billing session expired. Start checkout again to continue.",
   portal_error: "The billing portal could not be opened. Please try again.",
+  terms_required: "Accept the pilot terms and privacy notice before continuing to checkout.",
 };
 
 async function getPilotState() {
@@ -138,6 +139,10 @@ export default async function PilotPage({
               </>
             ) : pilot.configured ? (
               <form action="/api/billing/checkout" method="post">
+                <label className="pilot-terms-check">
+                  <input type="checkbox" name="accept_terms" value="accepted" required />
+                  <span>I agree to the <a href="https://tsuchiyalab.com/terms" target="_blank" rel="noreferrer">Terms</a> and acknowledge the <a href="https://tsuchiyalab.com/privacy" target="_blank" rel="noreferrer">Privacy Notice</a>.</span>
+                </label>
                 <button type="submit">Continue to secure checkout <ArrowRight size={15} /></button>
                 <small>Stripe-hosted checkout · no free live trial · payment alone never creates or authorizes a call</small>
               </form>

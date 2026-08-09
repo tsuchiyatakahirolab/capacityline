@@ -19,6 +19,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid checkout origin." }, { status: 403 });
   }
 
+  let termsAccepted = false;
+  try {
+    const form = await request.formData();
+    termsAccepted = form.get("accept_terms") === "accepted";
+  } catch {
+    termsAccepted = false;
+  }
+  if (!termsAccepted) {
+    return NextResponse.redirect(`${origin}/pilot?billing=terms_required`, 303);
+  }
+
   const { checkoutReady, priceId } = getBillingConfig();
   if (!checkoutReady) {
     return NextResponse.redirect(`${origin}/pilot?billing=unavailable`, 303);
@@ -34,7 +45,6 @@ export async function POST(request: Request) {
       cancel_url: `${origin}/pilot?billing=cancelled`,
       billing_address_collection: "required",
       tax_id_collection: { enabled: true },
-      consent_collection: { terms_of_service: "required" },
       custom_fields: [
         {
           key: "company",
@@ -46,7 +56,7 @@ export async function POST(request: Request) {
       ],
       custom_text: {
         submit: {
-          message: "Live calling is enabled only after recipient-consent and allow-list review.",
+          message: "Your subscription activates a managed pilot. Live calling remains locked until recipient-consent and allow-list review.",
         },
       },
       subscription_data: {
