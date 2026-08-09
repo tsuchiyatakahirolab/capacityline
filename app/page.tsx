@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -130,6 +131,33 @@ export default function Home() {
         <section className="category-strip">
           <p>MONITORING TELLS YOU <strong>WHAT BROKE.</strong></p>
           <p>CAPACITYLINE HELPS YOUR TEAM <strong>ACT NEXT.</strong></p>
+        </section>
+
+        <section className="manifesto-section" aria-labelledby="manifesto-title">
+          <div className="manifesto-frame">
+            <Image
+              className="manifesto-photo"
+              src="/capacityline-manifesto-v2.webp"
+              alt="An operations leader reviews recovery evidence beside an idle precision production line as verified supplier signals converge"
+              fill
+              loading="eager"
+              sizes="100vw"
+            />
+            <div className="manifesto-scan" aria-hidden="true" />
+            <div className="manifesto-coordinates" aria-hidden="true"><span>35.1815° N</span><i /><span>RECOVERY SIGNAL / ACTIVE</span><i /><span>HUMAN AUTHORITY</span></div>
+            <div className="manifesto-proof" aria-hidden="true"><span>VERIFIED</span><strong>8 / 8</strong><small>POLICY MATCH</small></div>
+            <div className="manifesto-pulse" aria-hidden="true"><i /><i /><i /><i /></div>
+          </div>
+          <div className="manifesto-caption">
+            <div>
+              <span className="lp-kicker">HUMAN AUTHORITY / MACHINE SPEED</span>
+              <h2 id="manifesto-title">The system accelerates evidence.<br /><em>Your team still decides.</em></h2>
+            </div>
+            <div>
+              <p>CapacityLine compresses the scramble between a broken supplier promise and a reviewable fallback. It does not hide uncertainty, relax policy, or buy on your behalf.</p>
+              <div className="manifesto-facts"><span><i /> KNOWN NETWORK</span><span><i /> GROUNDED EVIDENCE</span><span><i /> HUMAN RELEASE</span></div>
+            </div>
+          </div>
         </section>
 
         <section className="lp-use-cases" id="use-cases">

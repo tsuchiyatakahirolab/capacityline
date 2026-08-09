@@ -2,6 +2,10 @@
 
 Capture these from the final HTTPS deployment at 1440 × 900 or larger, browser zoom 100%, with no browser chrome in the crop. Run the safe demo first. All visible data is fictional.
 
+## Campaign cover
+
+Use `/og.png` as the Devpost/social cover. It is a purpose-built photographic campaign card—not a product screenshot—and should precede the gallery without replacing the functional evidence below.
+
 ## 1. Decision command center
 
 Filename: `01-decision-command-center.png`
@@ -59,4 +63,4 @@ Filename: `06-evaluation-room.png`
 - No claims that `$420k` is proven savings; the UI labels it as modeled exposure.
 - PNG, sRGB, under Devpost's upload limit.
 - Text readable at 50% preview size.
-- Use `/og.png` for the main product social thumbnail and `/campaign-commitment-network.png` for use-case campaigns.
+- Use `/og.png` for the main product social thumbnail, `/capacityline-manifesto-v2.png` for full-width campaign placements, and `/campaign-commitment-network.png` for use-case campaigns.

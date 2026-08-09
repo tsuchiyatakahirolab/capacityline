@@ -330,6 +330,7 @@ body {
 }
 
 .playbook-bar {
+  position: relative;
   min-height: 72px;
   display: flex;
   align-items: center;
@@ -342,7 +343,11 @@ body {
     linear-gradient(90deg, rgba(215,255,99,.075), transparent 38%),
     #0b1c13;
   box-shadow: 0 14px 34px rgba(5,22,13,.08);
+  overflow: hidden;
 }
+
+.playbook-bar::before { content:"";position:absolute;right:0;bottom:0;left:0;height:1px;background:linear-gradient(90deg,transparent,var(--signal),transparent);background-size:38% 100%;background-repeat:no-repeat;animation:data-sweep 5.8s ease-in-out infinite;opacity:.72; }
+.playbook-bar::after { content:"";position:absolute;right:22%;bottom:-3px;width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 18px rgba(215,255,99,.8);animation:playbook-node 2.4s ease-in-out infinite; }
 
 .playbook-bar > div { min-width: 0; display: grid; grid-template-columns: auto auto minmax(180px, 1fr); align-items: center; gap: 11px 16px; }
 .playbook-bar span { display: inline-flex; align-items: center; gap: 6px; color: var(--signal); font: 750 8px/1 Consolas, monospace; letter-spacing: .1em; }
@@ -363,6 +368,7 @@ body {
     linear-gradient(117deg, #07140e, #10271c 64%, #0a1811);
   background-size: 31px 31px, 31px 31px, auto, auto;
   box-shadow: 0 26px 65px rgba(5, 22, 13, .16);
+  animation: incident-field 16s linear infinite alternate;
 }
 
 .incident-hero::before {
@@ -419,7 +425,13 @@ body {
   font-size: .82em;
   font-weight: 400;
   letter-spacing: -.055em;
+  animation: commitment-breathe 4.6s ease-in-out infinite alternate;
 }
+
+.primary-button { position:relative;overflow:hidden; }
+.primary-button::after { content:"";position:absolute;inset:-35% auto -35% -38%;width:24%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg);animation:button-sweep 5.4s ease-in-out infinite;pointer-events:none; }
+[data-phase="running"] .playbook-bar::before { animation-duration:1.8s; }
+[data-phase="complete"] .incident-hero { box-shadow:0 30px 90px rgba(5,22,13,.24),0 0 0 1px rgba(215,255,99,.16),inset 0 0 90px rgba(215,255,99,.025); }
 
 .incident-copy > p {
   max-width: 630px;
@@ -1063,6 +1075,12 @@ body {
   from { opacity: 0; transform: translateY(24px) scale(.975); }
   to { opacity: 1; transform: none; }
 }
+
+@keyframes data-sweep { 0%,100% { background-position:-65% 0;opacity:.15; } 48%,65% { background-position:165% 0;opacity:.9; } }
+@keyframes playbook-node { 0%,100% { transform:scale(.55);opacity:.35; } 50% { transform:scale(1);opacity:1; } }
+@keyframes incident-field { to { background-position:15px 15px,-15px 8px,0 0,0 0; } }
+@keyframes commitment-breathe { to { text-shadow:0 0 28px rgba(215,255,99,.18);transform:translateX(3px); } }
+@keyframes button-sweep { 0%,67% { left:-45%;opacity:0; } 74% { opacity:.78; } 88%,100% { left:125%;opacity:0; } }
 
 @media (max-width: 1260px) {
   .app-shell { grid-template-columns: 220px minmax(0, 1fr); }

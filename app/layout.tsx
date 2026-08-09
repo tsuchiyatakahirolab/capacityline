@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: "Parallel outreach. Verified commitments. Human authority.",
     type: "website",
     siteName: "CapacityLine",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "CapacityLine supplier recovery platform" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "CapacityLine — recover the commitment" }],
   },
   twitter: {
     card: "summary_large_image",

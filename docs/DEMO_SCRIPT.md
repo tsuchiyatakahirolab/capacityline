@@ -4,7 +4,7 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 ## 0:00–0:14 — The operational problem
 
-**Screen:** Recovery desk hero, 47-hour countdown, 6,000-unit shortfall, and modeled exposure.
+**Screen:** Open for two seconds on the **Recover the commitment** campaign image, then cut directly to the Recovery desk hero, 47-hour countdown, 6,000-unit shortfall, and modeled exposure.
 
 **Narration:**
 
@@ -20,7 +20,7 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 ## 0:30–0:48 — CALL-E is the core
 
-**Screen:** Click **Run recovery sprint**; show Safe demo and Live CALL-E. Briefly cut to a six-second code overlay showing `recipientResultSchema` and the official SDK call. Return and start the safe scenario.
+**Screen:** Click **Run zero-call demo**, show the public replay and private-live boundary, then choose **Run 6-second decision replay**. Briefly cut to a six-second code overlay showing `recipientResultSchema` and the official SDK call. Return as the replay starts.
 
 **Narration:**
 
@@ -68,7 +68,7 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 ## 2:38–2:52 — Why this becomes a company
 
-**Screen:** Open Supplier graph; end on the CapacityLine name and tagline, or the generated Open Graph image.
+**Screen:** Open Supplier graph; end on the new photographic **RECOVER THE COMMITMENT.** campaign image.
 
 **Narration:**
 
