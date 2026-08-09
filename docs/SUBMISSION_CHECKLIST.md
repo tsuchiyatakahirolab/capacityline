@@ -12,6 +12,8 @@ The [Devpost overview](https://call-e.devpost.com/) and [official rules](https:/
 - [ ] Repository contains no API keys, real phone numbers, transcripts with personal data, or unlicensed media.
 - [ ] `npm run check` passes from a clean install.
 - [ ] Safe demo works without credentials.
+- [x] Guided demo, result comparison, evidence drawer, search, RFQ approval, ledger, and graph work in a production build.
+- [x] Generated application icon and Open Graph image build successfully.
 - [ ] Live CALL-E path is verified once with a consenting test number.
 
 ## Required CALL-E repository PR
@@ -28,10 +30,12 @@ The [Devpost overview](https://call-e.devpost.com/) and [official rules](https:/
 ## Demo deployment
 
 - [ ] Deploy a production build over HTTPS.
+- [ ] Set `NEXT_PUBLIC_APP_URL` to the final HTTPS origin before the deployment build.
 - [ ] Set `CALLE_API_KEY` only as a server secret if live judge testing is offered.
 - [ ] Set `CALLE_ALLOWED_NUMBERS` for coordinated live testing.
 - [ ] Confirm `/api/health` returns `ok: true` without exposing secrets.
 - [ ] Test desktop and mobile layouts.
+- [ ] Confirm `/opengraph-image` renders on the deployed origin and social preview text is readable.
 - [ ] Provide simple Safe demo testing instructions; judges are not required to test.
 - [ ] Keep the app available free of charge through the end of judging.
 

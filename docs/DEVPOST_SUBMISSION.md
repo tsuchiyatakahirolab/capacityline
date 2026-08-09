@@ -24,6 +24,8 @@ CapacityLine starts from a known supply exception and an approved backup-supplie
 
 A deterministic policy engine then checks seven buyer guardrails. Results are labeled Qualified, Review, Ineligible, or Unreachable. Unknown answers fail closed. Every recommendation stays attached to the supporting transcript. The buyer—not the AI—approves an RFQ handoff. CapacityLine never places an order or forms a contract.
 
+The operator experience follows the same governed control loop throughout: Detect → Call → Verify → Decide. After outreach completes, a decision spotlight places the best exact-part fallback next to the cheaper offer that policy blocked, so a buyer can understand both the recommendation and the refusal before opening either evidence record. A built-in 90-second guide explains the complete flow for first-time users.
+
 The demo follows a fictional automotive plant facing a 6,000-unit coolant-pump shortfall and a line stop in 47 hours. Five backup suppliers produce two qualified options, one partial option for review, one attractive but uncertified offer that is blocked, and one unanswered call. The first qualified fallback appears in 12 minutes and 41 seconds of accelerated scenario time.
 
 ## How we built it
@@ -47,6 +49,7 @@ We also had to make parallel outreach comparable. Different suppliers express da
 
 - CALL-E is the core execution layer rather than an added voice feature.
 - The demo makes a counterintuitive but important decision: the lowest-price, fastest supplier is blocked because a required certification is not established.
+- The completed screen explains the recommended and blocked paths side by side instead of making the buyer interpret a score table.
 - Every decision is inspectable from the requirement to the transcript.
 - The full no-call flow works without credentials, while the same UI can create real authorized CALL-E tasks.
 - The product has a credible buyer, budget owner, pricing path, and compounding tenant-private data asset.
@@ -78,6 +81,8 @@ CALL-E · TypeScript · Next.js · React · Vitest
 7. Click **Approve RFQ handoff**.
 8. Open **Commitment ledger**, then inspect Delta Fluidics to see a hard certification failure.
 9. Open **Supplier graph** to see the commercial data model.
+
+First-time testers can instead click **Demo guide** and follow the same path from the four-step product tour.
 
 Live testing is opt-in and requires the entrant-provided server configuration plus consenting E.164 test numbers. Judges should use Safe demo unless live testing has been coordinated.
 

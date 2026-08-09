@@ -48,14 +48,17 @@ In the video, show one payload/schema glimpse for no more than six seconds. Spen
 
 **Judge takeaway:** A buyer can understand the incident, launch safely, see why an attractive offer failed, inspect evidence, and approve the next step without training.
 
+The in-product 90-second guide and Detect → Call → Verify → Decide control loop make the workflow legible before the first click. After the calls resolve, the decision spotlight immediately compares the recommended exact-part fallback with the cheaper offer blocked for missing certification.
+
 The demo narrative is one continuous decision:
 
 1. line stops in 47 hours;
 2. start five parallel contacts;
 3. two qualify, one needs review, one is blocked, one is unreachable;
-4. inspect exact transcript evidence;
-5. approve an RFQ handoff;
-6. show the commitment graph as the commercial moat.
+4. compare the recommended fallback with the cheaper blocked offer;
+5. inspect exact transcript evidence;
+6. approve an RFQ handoff;
+7. show the commitment graph as the commercial moat.
 
 ## Claims discipline
 

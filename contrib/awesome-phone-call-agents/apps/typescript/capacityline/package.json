@@ -6,6 +6,7 @@
   "description": "Consent-first CALL-E supply recovery workflow with dry-run default",
   "scripts": {
     "demo": "node src/index.mjs",
+    "dry-run": "node src/index.mjs",
     "live": "node src/index.mjs --live",
     "test": "node --test test/*.test.mjs"
   },

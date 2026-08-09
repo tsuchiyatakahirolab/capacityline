@@ -5,6 +5,8 @@ import {
   AlertTriangle,
   ArrowRight,
   BadgeCheck,
+  Ban,
+  BookOpenCheck,
   Building2,
   Check,
   CheckCircle2,
@@ -22,7 +24,9 @@ import {
   Network,
   PhoneCall,
   Play,
+  Radio,
   RotateCcw,
+  Route,
   Search,
   ShieldCheck,
   Sparkles,
@@ -150,7 +154,10 @@ export function CapacityLineApp() {
   const [liveSupplierIds, setLiveSupplierIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [revealCount, setRevealCount] = useState(0);
+  const [query, setQuery] = useState("");
+  const [showGuide, setShowGuide] = useState(false);
   const timers = useRef<number[]>([]);
+  const searchInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch("/api/health")
@@ -181,6 +188,34 @@ export function CapacityLineApp() {
   const selectedEvaluation = selectedSupplierId ? evaluations[selectedSupplierId] : undefined;
   const qualifiedCount = suppliers.filter((supplier) => supplier.status === "qualified").length;
   const completedCount = suppliers.filter((supplier) => !["ready", "calling"].includes(supplier.status)).length;
+  const filteredSuppliers = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+    if (!normalizedQuery) return suppliers;
+    return suppliers.filter((supplier) =>
+      [supplier.name, supplier.location, supplier.countryCode, supplier.approvalTier].some((value) =>
+        value.toLowerCase().includes(normalizedQuery),
+      ),
+    );
+  }, [query, suppliers]);
+  const recommendedSupplier = useMemo(() => {
+    return suppliers
+      .filter((supplier) => supplier.status === "qualified")
+      .sort((left, right) => {
+        const leftCommitment = commitments[left.id];
+        const rightCommitment = commitments[right.id];
+        const exactPartDelta =
+          Number(rightCommitment?.substitutePart === DEMO_INCIDENT.partNumber) -
+          Number(leftCommitment?.substitutePart === DEMO_INCIDENT.partNumber);
+        if (exactPartDelta) return exactPartDelta;
+        const dateDelta = (leftCommitment?.earliestShipDate ?? "9999").localeCompare(
+          rightCommitment?.earliestShipDate ?? "9999",
+        );
+        return dateDelta || right.historicalReliability - left.historicalReliability;
+      })[0];
+  }, [commitments, suppliers]);
+  const recommendedCommitment = recommendedSupplier ? commitments[recommendedSupplier.id] : undefined;
+  const blockedSupplier = suppliers.find((supplier) => supplier.status === "ineligible");
+  const blockedCommitment = blockedSupplier ? commitments[blockedSupplier.id] : undefined;
 
   const clearTimers = useCallback(() => {
     timers.current.forEach((timer) => window.clearTimeout(timer));
@@ -188,6 +223,22 @@ export function CapacityLineApp() {
   }, []);
 
   useEffect(() => clearTimers, [clearTimers]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        searchInput.current?.focus();
+      }
+      if (event.key === "Escape") {
+        setShowLaunch(false);
+        setShowGuide(false);
+        setSelectedSupplierId(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const updateSupplierStatus = useCallback((supplierId: string, status: SupplierStatus) => {
     setSuppliers((current) =>
@@ -374,6 +425,33 @@ export function CapacityLineApp() {
       : []),
   ];
 
+  const recoverySteps = [
+    {
+      label: "Detect",
+      detail: "Exception opened",
+      icon: <AlertTriangle size={16} />,
+      state: "complete",
+    },
+    {
+      label: "Call",
+      detail: phase === "ready" ? "5 backups queued" : phase === "running" ? "CALL-E active" : "5 attempts closed",
+      icon: <Radio size={16} />,
+      state: phase === "ready" ? "pending" : phase === "running" ? "active" : "complete",
+    },
+    {
+      label: "Verify",
+      detail: phase === "ready" ? "7 rules waiting" : phase === "running" ? `${completedCount}/5 evaluated` : `${qualifiedCount} qualified`,
+      icon: <ShieldCheck size={16} />,
+      state: phase === "ready" ? "pending" : phase === "running" ? "active" : "complete",
+    },
+    {
+      label: "Decide",
+      detail: phase === "approved" ? "RFQ handoff approved" : recommendedSupplier ? "Buyer review ready" : "Human authority",
+      icon: <BookOpenCheck size={16} />,
+      state: phase === "approved" ? "complete" : recommendedSupplier ? "active" : "pending",
+    },
+  ];
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -429,9 +507,18 @@ export function CapacityLineApp() {
           <div className="topbar-actions">
             <label className="search-box">
               <Search size={16} />
-              <input aria-label="Search" placeholder="Search recovery records" />
-              <kbd>⌘ K</kbd>
+              <input
+                ref={searchInput}
+                aria-label="Search suppliers"
+                placeholder="Search suppliers"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+              {query ? (
+                <button type="button" onClick={() => setQuery("")} aria-label="Clear search"><X size={13} /></button>
+              ) : <kbd>Ctrl K</kbd>}
             </label>
+            <button className="guide-button" onClick={() => setShowGuide(true)}><Route size={14} /> Demo guide</button>
             <div className="demo-chip"><Sparkles size={14} /> Accelerated demo</div>
           </div>
         </header>
@@ -480,6 +567,26 @@ export function CapacityLineApp() {
               </div>
             </section>
 
+            <section className="recovery-flow" aria-label="Recovery workflow progress">
+              <div className="flow-intro">
+                <span className="panel-kicker">RECOVERY CONTROL LOOP</span>
+                <strong>Conversation becomes a governed decision.</strong>
+              </div>
+              <div className="flow-steps" aria-live="polite">
+                {recoverySteps.map((step, index) => (
+                  <article
+                    className={`flow-step flow-${step.state}`}
+                    key={step.label}
+                    aria-current={step.state === "active" ? "step" : undefined}
+                  >
+                    <span className="flow-icon">{step.state === "complete" ? <Check size={15} /> : step.icon}</span>
+                    <div><small>0{index + 1}</small><strong>{step.label}</strong><span>{step.detail}</span></div>
+                    {index < recoverySteps.length - 1 && <ArrowRight size={14} className="flow-arrow" />}
+                  </article>
+                ))}
+              </div>
+            </section>
+
             {phase === "approved" && (
               <section className="approval-banner">
                 <div className="approval-icon"><FileCheck2 size={22} /></div>
@@ -488,6 +595,35 @@ export function CapacityLineApp() {
                   <p>{suppliers.find((supplier) => supplier.id === approvedSupplierId)?.name} is ready for RFQ creation. CapacityLine has not placed an order.</p>
                 </div>
                 <span><Check size={15} /> Human-controlled</span>
+              </section>
+            )}
+
+            {recommendedSupplier && recommendedCommitment && (
+              <section className="decision-spotlight">
+                <article className="recommended-path">
+                  <div className="spotlight-topline">
+                    <span><BadgeCheck size={15} /> ACTIONABLE FALLBACK</span><em>BEST MATCH</em>
+                  </div>
+                  <div className="spotlight-content">
+                    <span className="country-code large">{recommendedSupplier.countryCode}</span>
+                    <div className="spotlight-copy">
+                      <h3>{recommendedSupplier.name}</h3>
+                      <p>Exact part · {recommendedCommitment.quantityAvailable?.toLocaleString()} units · ships {formatDate(recommendedCommitment.earliestShipDate)}</p>
+                    </div>
+                    <div className="spotlight-score"><strong>7/7</strong><span>guardrails</span></div>
+                    <button className="primary-button" onClick={() => setSelectedSupplierId(recommendedSupplier.id)}>
+                      Review evidence <ArrowRight size={14} />
+                    </button>
+                  </div>
+                  <div className="evidence-ribbon"><ShieldCheck size={14} /> {Math.round(recommendedCommitment.confidence * 100)}% evidence confidence · respondent authority confirmed · no order placed</div>
+                </article>
+                {blockedSupplier && blockedCommitment && (
+                  <button className="blocked-path" onClick={() => setSelectedSupplierId(blockedSupplier.id)}>
+                    <span className="blocked-icon"><Ban size={17} /></span>
+                    <span><small>POLICY CAUGHT THIS</small><strong>Cheapest offer blocked</strong><em>{blockedSupplier.name} · ${blockedCommitment.unitPrice?.toFixed(2)} · missing IATF 16949</em></span>
+                    <ChevronRight size={16} />
+                  </button>
+                )}
               </section>
             )}
 
@@ -527,7 +663,7 @@ export function CapacityLineApp() {
                   <span>SUPPLIER</span><span>RELIABILITY</span><span>LIVE COMMITMENT</span><span>FIT</span><span />
                 </div>
                 <div className="supplier-list">
-                  {suppliers.map((supplier) => {
+                  {filteredSuppliers.map((supplier) => {
                     const commitment = commitments[supplier.id];
                     const evaluation = evaluations[supplier.id];
                     return (
@@ -538,7 +674,7 @@ export function CapacityLineApp() {
                       >
                         <span className="supplier-identity">
                           <span className="country-code">{supplier.countryCode}</span>
-                          <span><strong>{supplier.name}</strong><small>{supplier.location} · {supplier.approvalTier}</small></span>
+                          <span><strong>{supplier.name}{recommendedSupplier?.id === supplier.id && <em className="best-match-inline">Best</em>}</strong><small>{supplier.location} · {supplier.approvalTier}</small></span>
                         </span>
                         <span className="reliability-cell">
                           <span className="reliability-track"><i style={{ width: `${supplier.historicalReliability}%` }} /></span>
@@ -563,6 +699,9 @@ export function CapacityLineApp() {
                       </button>
                     );
                   })}
+                  {filteredSuppliers.length === 0 && (
+                    <div className="search-empty"><Search size={18} /><span>No suppliers match “{query}”</span><button onClick={() => setQuery("")}>Clear search</button></div>
+                  )}
                 </div>
                 <div className="table-footnote">
                   <ShieldCheck size={15} /> Only pre-approved or conditionally approved contacts are callable. A human approves every commercial next step.
@@ -618,13 +757,35 @@ export function CapacityLineApp() {
             suppliers={suppliers}
             commitments={commitments}
             evaluations={evaluations}
+            recommendedId={recommendedSupplier?.id}
             onOpen={setSelectedSupplierId}
             onReturn={() => setView("desk")}
           />
         )}
 
-        {view === "graph" && <SupplierGraph suppliers={suppliers} commitments={commitments} />}
+        {view === "graph" && <SupplierGraph suppliers={suppliers} commitments={commitments} recommendedId={recommendedSupplier?.id} />}
       </main>
+
+      {showGuide && (
+        <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowGuide(false)}>
+          <section className="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-title" onMouseDown={(event) => event.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowGuide(false)} aria-label="Close demo guide"><X size={18} /></button>
+            <div className="guide-hero">
+              <span className="modal-symbol"><Route size={23} /></span>
+              <div><span className="panel-kicker">90-SECOND PRODUCT TOUR</span><h2 id="guide-title">See the decision, not just the calls.</h2></div>
+            </div>
+            <p>Run one fictional recovery sprint, then inspect why CapacityLine recommends one supplier and blocks a cheaper one.</p>
+            <div className="guide-steps">
+              <div><span>01</span><div><strong>Launch</strong><small>Start the safe six-second scenario. No phone calls are created.</small></div></div>
+              <div><span>02</span><div><strong>Compare</strong><small>Watch five supplier outcomes resolve into qualified, review, blocked, and no-answer states.</small></div></div>
+              <div><span>03</span><div><strong>Verify</strong><small>Open Kanto and trace all seven checks to respondent identity and transcript evidence.</small></div></div>
+              <div><span>04</span><div><strong>Approve</strong><small>Send the qualified option to RFQ review. CapacityLine never places the order.</small></div></div>
+            </div>
+            <div className="guide-disclaimer"><ShieldCheck size={15} /><span>Fictional scenario · synthetic 8-hour baseline · modeled $420k/day exposure</span></div>
+            <div className="modal-actions"><button className="secondary-button" onClick={() => setShowGuide(false)}>Close</button><button className="primary-button wide" onClick={() => { setShowGuide(false); setShowLaunch(true); }}><Play size={15} fill="currentColor" /> Start guided demo</button></div>
+          </section>
+        </div>
+      )}
 
       {showLaunch && (
         <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowLaunch(false)}>
@@ -650,7 +811,7 @@ export function CapacityLineApp() {
 
             {launchMode === "demo" ? (
               <div className="preview-box">
-                <div><strong>5</strong><small>parallel calls simulated</small></div>
+                <div><strong>5</strong><small>supplier calls replayed</small></div>
                 <ArrowRight size={17} />
                 <div><strong>7</strong><small>guardrails checked</small></div>
                 <ArrowRight size={17} />
@@ -703,6 +864,7 @@ export function CapacityLineApp() {
           commitment={selectedCommitment}
           evaluation={selectedEvaluation}
           approved={approvedSupplierId === selectedSupplier.id}
+          recommended={recommendedSupplier?.id === selectedSupplier.id}
           onClose={() => setSelectedSupplierId(null)}
           onApprove={() => approveSupplier(selectedSupplier.id)}
         />
@@ -715,12 +877,14 @@ function LedgerView({
   suppliers,
   commitments,
   evaluations,
+  recommendedId,
   onOpen,
   onReturn,
 }: {
   suppliers: Supplier[];
   commitments: Record<string, SupplierCommitment | null | undefined>;
   evaluations: Record<string, SupplierEvaluation>;
+  recommendedId?: string;
   onOpen: (id: string) => void;
   onReturn: () => void;
 }) {
@@ -739,9 +903,9 @@ function LedgerView({
             const commitment = commitments[supplier.id];
             const evaluation = evaluations[supplier.id];
             return (
-              <button className="ledger-card" key={supplier.id} onClick={() => onOpen(supplier.id)}>
+              <button className={`ledger-card ${recommendedId === supplier.id ? "ledger-recommended" : ""}`} key={supplier.id} onClick={() => onOpen(supplier.id)}>
                 <div className="ledger-card-top"><span className="country-code">{supplier.countryCode}</span><StatusBadge status={supplier.status} /></div>
-                <h3>{supplier.name}</h3>
+                <h3>{supplier.name}{recommendedId === supplier.id && <em className="best-match-inline">Best match</em>}</h3>
                 {commitment ? (
                   <>
                     <blockquote>“{commitment.evidenceQuote}”</blockquote>
@@ -763,7 +927,7 @@ function LedgerView({
   );
 }
 
-function SupplierGraph({ suppliers, commitments }: { suppliers: Supplier[]; commitments: Record<string, SupplierCommitment | null | undefined> }) {
+function SupplierGraph({ suppliers, commitments, recommendedId }: { suppliers: Supplier[]; commitments: Record<string, SupplierCommitment | null | undefined>; recommendedId?: string }) {
   return (
     <div className="page-stack graph-page">
       <section className="section-intro">
@@ -779,9 +943,9 @@ function SupplierGraph({ suppliers, commitments }: { suppliers: Supplier[]; comm
           {suppliers.map((supplier) => {
             const commitment = commitments[supplier.id];
             return (
-              <div className={`graph-node graph-${supplier.status}`} key={supplier.id}>
+              <div className={`graph-node graph-${supplier.status} ${recommendedId === supplier.id ? "graph-recommended" : ""}`} key={supplier.id}>
                 <span className="country-code">{supplier.countryCode}</span>
-                <div><strong>{supplier.name}</strong><small>{supplier.historicalReliability}% historical reliability</small></div>
+                <div><strong>{supplier.name}{recommendedId === supplier.id && <em className="best-match-inline">Best</em>}</strong><small>{supplier.historicalReliability}% historical reliability</small></div>
                 <div className="node-signal"><i style={{ width: `${supplier.historicalReliability}%` }} />{commitment && <em>live</em>}</div>
               </div>
             );
@@ -802,6 +966,7 @@ function SupplierDrawer({
   commitment,
   evaluation,
   approved,
+  recommended,
   onClose,
   onApprove,
 }: {
@@ -809,6 +974,7 @@ function SupplierDrawer({
   commitment: SupplierCommitment | null | undefined;
   evaluation: SupplierEvaluation | undefined;
   approved: boolean;
+  recommended: boolean;
   onClose: () => void;
   onApprove: () => void;
 }) {
@@ -825,7 +991,7 @@ function SupplierDrawer({
         ) : (
           <div className="drawer-body">
             <section className={`recommendation recommendation-${evaluation?.disposition}`}>
-              <div><StatusBadge status={supplier.status} /><strong>{evaluation?.score ?? 0}<small>/100 fit</small></strong></div>
+              <div><span className="recommendation-status"><StatusBadge status={supplier.status} />{recommended && <em>RECOMMENDED</em>}</span><strong>{evaluation?.score ?? 0}<small>/100 fit</small></strong></div>
               <p>{evaluation?.explanation}</p>
             </section>
             <section className="commitment-summary">

@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:14,000
+A supplier outage has left a fictional automotive plant six thousand coolant pumps short.
+The production line stops in forty-seven hours. Risk software can flag the disruption—but it cannot tell this buyer which approved backup can actually commit capacity today.
+
+2
+00:00:14,000 --> 00:00:30,000
+CapacityLine is an AI supply recovery desk for the procurement team that owns this downtime exposure.
+It starts with suppliers the buyer is already allowed to contact and rules the buyer controls: quantity, date, price, certification, origin, and decision authority.
+
+3
+00:00:30,000 --> 00:00:48,000
+One recovery sprint creates parallel, goal-driven CALL-E conversations.
+The live path uses the official server SDK, strict structured results, transcript evidence, and idempotency. This accelerated path replays fictional results and makes no calls; live mode requires authorized numbers and explicit confirmation.
+
+4
+00:00:48,000 --> 00:01:08,000
+CALL-E returns comparable commitments—not just summaries. Two suppliers qualify.
+One is short and late, one does not answer, and one appears best on quantity, speed, and price. The control loop is now waiting for the buyer, not guessing on the buyer's behalf.
+
+5
+00:01:08,000 --> 00:01:33,000
+The command center recommends Kanto's exact-part commitment, while calling out a cheaper offer it refused.
+Delta can ship faster at sixty-eight dollars and fifty cents, but cannot establish the required IATF certification. Conversation gathers facts; deterministic policy classifies them; uncertainty fails closed.
+
+6
+00:01:33,000 --> 00:02:02,000
+Kanto passes all seven guardrails. The buyer can inspect the exact supporting words, respondent authority, confidence, and freight condition before acting.
+A human approves an RFQ handoff. CapacityLine never places an order, promises payment, or forms a contract.
+
+7
+00:02:02,000 --> 00:02:25,000
+The north-star metric is Time to First Qualified Fallback: twelve minutes and forty-one seconds in this synthetic scenario, versus an eight-hour synthetic manual baseline.
+Every outcome remains traceable, including no answer. The four-hundred-twenty-thousand-dollar exposure is modeled—not claimed savings.
+
+8
+00:02:25,000 --> 00:02:44,000
+Manufacturers operate it; procurement and operations leaders pay for it.
+Over time, each tenant builds a private commitment graph: who answers, who has authority, what they promise, and what they deliver. CapacityLine: call suppliers, secure capacity, keep the line moving.

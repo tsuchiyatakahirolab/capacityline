@@ -31,11 +31,13 @@ The north-star metric is **Time to First Qualified Fallback**: elapsed time from
 
 ## What the demo proves
 
+- A 90-second in-product guide makes the complete buyer journey understandable without training.
 - Five approved or conditionally approved suppliers are contacted in parallel.
 - CALL-E is given a goal and a strict per-recipient JSON result schema.
 - Quantity, ship date, price, MOQ, exact/substitute part, origin, certifications, quote validity, respondent identity, authority, constraints, and an evidence statement are returned.
 - A deterministic policy engine classifies each result as `qualified`, `review`, `ineligible`, or `unreachable`.
 - A cheap and fast offer is correctly blocked when its IATF 16949 certification cannot be established.
+- The decision spotlight compares the recommended exact-part fallback with that cheaper blocked offer at a glance.
 - Every recommendation links back to the words in the transcript that support it.
 - A human can approve an RFQ handoff; CapacityLine never places an order or forms a contract.
 - A tenant-private commitment graph shows the future data moat: response behavior, promise integrity, and delivery calibration.
@@ -67,6 +69,8 @@ npm run dev
 ```
 
 Open <http://localhost:3000>. Choose **Safe demo** to run the complete scenario without credentials or phone side effects.
+
+For the shortest product tour, click **Demo guide**, then **Start guided demo**. The fictional scenario resolves in about six seconds and automatically opens the recommended supplier's evidence record. Search is functional and can be focused with `Ctrl+K` or `⌘K`.
 
 ### Opt-in live verification
 
@@ -114,6 +118,9 @@ See [Architecture](docs/ARCHITECTURE.md), [Safety and Privacy](docs/SAFETY_AND_P
 
 - [Devpost submission draft](docs/DEVPOST_SUBMISSION.md)
 - [Three-minute video script](docs/DEMO_SCRIPT.md)
+- [Timed English subtitles](docs/CAPACITYLINE_DEMO.srt)
+- [Screenshot capture plan](docs/SCREENSHOT_PLAN.md)
+- [Release and submission runbook](docs/RELEASE_RUNBOOK.md)
 - [Judging strategy](docs/JUDGING_STRATEGY.md)
 - [Submission checklist](docs/SUBMISSION_CHECKLIST.md)
 - [Awesome Phone Call Agents PR draft](docs/AWESOME_PR_DRAFT.md)
@@ -124,7 +131,7 @@ Next.js 16 · React 19 · TypeScript · CALL-E TypeScript SDK 0.6.0 · Vitest ·
 
 ## Status and scope
 
-This is a functional hackathon prototype created during the competition period. Demo mode is production-build tested. Live CALL-E integration is implemented but requires the entrant's key and consenting test numbers for the final recorded verification. ERP writeback, durable multi-tenant storage, SSO, and production supplier consent management are deliberately outside the prototype scope.
+This is a functional hackathon prototype created during the competition period. The complete safe-demo path, policy block, evidence inspection, RFQ approval, ledger, graph, search, keyboard dismissal, and production build are tested. Live CALL-E integration is implemented but requires the entrant's key and consenting test numbers for the final recorded verification. ERP writeback, durable multi-tenant storage, SSO, and production supplier consent management are deliberately outside the prototype scope.
 
 ## License
 
