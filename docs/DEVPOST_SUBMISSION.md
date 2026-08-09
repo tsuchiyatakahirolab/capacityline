@@ -22,7 +22,7 @@ Those answers arrive in conversations, notes, and spreadsheets while the line-st
 
 CapacityLine starts from a known supply exception and an approved backup-supplier list. It uses CALL-E to contact those suppliers in parallel, navigate real phone conversations, and return a strict structured commitment for each recipient: quantity, earliest ship date, unit price, MOQ, exact or substitute part, origin, certifications, quote validity, respondent identity and authority, constraints, and an evidence statement.
 
-A deterministic policy engine then checks seven buyer guardrails. Results are labeled Qualified, Review, Ineligible, or Unreachable. Unknown answers fail closed. Every recommendation stays attached to the supporting transcript. The buyer—not the AI—approves an RFQ handoff. CapacityLine never places an order or forms a contract.
+A deterministic policy engine then checks eight buyer guardrails, including approved-part validation. Results are labeled Qualified, Review, Ineligible, or Unreachable. Unknown answers fail closed. Every recommendation stays attached to the supporting transcript. The buyer—not the AI—approves an RFQ handoff. CapacityLine never places an order or forms a contract.
 
 The operator experience follows the same governed control loop throughout: Detect → Call → Verify → Decide. After outreach completes, a decision spotlight places the best exact-part fallback next to the cheaper offer that policy blocked, so a buyer can understand both the recommendation and the refusal before opening either evidence record. A built-in 90-second guide explains the complete flow for first-time users.
 
@@ -35,7 +35,7 @@ The demo follows a fictional automotive plant facing a 6,000-unit coolant-pump s
 - A goal-driven CALL-E task with explicit identity disclosure, permission, information boundaries, and a no-purchase rule.
 - Strict overall and per-recipient JSON schemas.
 - Durable idempotency keys to prevent duplicate call creation during retries.
-- A seven-check deterministic procurement policy engine with automated tests.
+- An eight-check deterministic procurement policy engine with automated tests.
 - A live polling route plus a terminal webhook receiver.
 - A safe fictional demo that never calls anyone and an opt-in live mode gated by API key, E.164 validation, explicit authorization, typed confirmation, and an optional server-side phone allow-list.
 
@@ -77,7 +77,7 @@ CALL-E · TypeScript · Next.js · React · Vitest
 3. Keep **Safe demo** selected and click **Run 12-minute scenario**. No calls are created.
 4. Wait approximately six seconds for the accelerated results.
 5. Inspect the automatically opened Kanto Flow Systems evidence record.
-6. Review all seven passed guardrails and the CALL-E transcript.
+6. Review all eight passed guardrails and the CALL-E transcript.
 7. Click **Approve RFQ handoff**.
 8. Open **Commitment ledger**, then inspect Delta Fluidics to see a hard certification failure.
 9. Open **Supplier graph** to see the commercial data model.

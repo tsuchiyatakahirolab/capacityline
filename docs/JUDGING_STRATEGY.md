@@ -36,7 +36,7 @@ The “cheap but uncertified” Delta result is essential. It proves that Capaci
 - goal-driven batch task;
 - strict overall and per-recipient result schemas;
 - transcript and evidence normalization;
-- deterministic seven-check engine;
+- deterministic eight-check engine, including approved-part validation;
 - idempotency key;
 - live polling and webhook receiver;
 - explicit safe demo and live-call gates;

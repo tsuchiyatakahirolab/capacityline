@@ -3,9 +3,10 @@ import { NextResponse } from "next/server";
 import { verifyBillingToken } from "@/lib/billing-token";
 import { createRecoveryCall } from "@/lib/calle";
 import { DEMO_INCIDENT } from "@/lib/demo-data";
+import { validateRecoveryIncident } from "@/lib/incident";
 import { E164_PATTERN, getAllowedNumbers, isRecipientAllowListConfigured } from "@/lib/phone";
 import { BILLING_COOKIE, getBillingConfig, hasActivePilotSubscription } from "@/lib/stripe";
-import type { LiveRecipient } from "@/lib/types";
+import type { LiveRecipient, RecoveryIncident } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -15,6 +16,7 @@ interface LaunchRequest {
   authorized?: boolean;
   confirmation?: string;
   runKey?: string;
+  incident?: RecoveryIncident;
 }
 
 function invalid(message: string, status = 400) {
@@ -44,6 +46,10 @@ export async function POST(request: Request) {
   if (body.authorized !== true || body.confirmation !== "AUTHORIZE CALLS") {
     return invalid("Live calls require explicit contact authorization and confirmation.", 403);
   }
+
+  const incidentResult = validateRecoveryIncident(body.incident ?? DEMO_INCIDENT);
+  if (!incidentResult.ok) return invalid(incidentResult.error);
+  const incident = incidentResult.value;
 
   if (process.env.ALLOW_UNBILLED_LIVE_CALLS !== "true") {
     const { checkoutReady, sessionSecret } = getBillingConfig();
@@ -84,10 +90,11 @@ export async function POST(request: Request) {
   }
 
   const safeRunKey = (body.runKey || crypto.randomUUID()).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 64);
-  const idempotencyKey = `capacityline_${DEMO_INCIDENT.id}_${safeRunKey}`;
+  const safeIncidentId = incident.id.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 48);
+  const idempotencyKey = `capacityline_${safeIncidentId}_${safeRunKey}`;
 
   try {
-    const call = await createRecoveryCall(DEMO_INCIDENT, recipients, idempotencyKey);
+    const call = await createRecoveryCall(incident, recipients, idempotencyKey);
     return NextResponse.json({
       mode: "live",
       call,

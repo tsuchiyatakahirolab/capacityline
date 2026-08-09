@@ -8,7 +8,7 @@ Filename: `01-decision-command-center.png`
 
 - Close the evidence drawer after the scenario completes.
 - Keep the hero, control loop, decision spotlight, four KPI cards, and top supplier rows visible.
-- Ensure the screen shows **Kanto Flow Systems — 7/7** beside **Cheapest offer blocked — missing IATF 16949**.
+- Ensure the screen shows **Kanto Flow Systems — 8/8** beside **Low-price offer blocked — hard policy failure**.
 - Suggested caption: “CapacityLine turns five live supplier outcomes into the first policy-compliant fallback.”
 
 This is the primary Devpost gallery image.
@@ -18,9 +18,9 @@ This is the primary Devpost gallery image.
 Filename: `02-evidence-record.png`
 
 - Open Kanto Flow Systems from **Review evidence**.
-- Frame the Qualified + Recommended header, 100/100 fit, three commitment cards, all seven policy checks, and the beginning of the evidence section.
+- Frame the Qualified + Recommended header, 100/100 fit, three commitment cards, all eight policy checks, and the beginning of the evidence section.
 - Keep the sticky **Approve RFQ handoff** button visible.
-- Suggested caption: “Every recommendation stays attached to respondent authority, exact words, and all seven buyer checks.”
+- Suggested caption: “Every recommendation stays attached to respondent authority, exact words, and all eight buyer checks.”
 
 ## 3. Policy refusal
 

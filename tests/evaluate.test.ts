@@ -26,6 +26,14 @@ describe("evaluateCommitment", () => {
     expect(result.checks.find((check) => check.key === "certifications")?.passed).toBe(false);
   });
 
+  it("blocks an unapproved substitute part even when every other value passes", () => {
+    const commitment = { ...DEMO_COMMITMENTS["sup-kanto"]!, substitutePart: "EP-999" };
+    const result = evaluateCommitment(DEMO_INCIDENT.requirements, commitment, "sup-kanto");
+
+    expect(result.disposition).toBe("ineligible");
+    expect(result.checks.find((check) => check.key === "part")?.passed).toBe(false);
+  });
+
   it("routes a non-compliant quantity and date to human review", () => {
     const result = evaluateCommitment(
       DEMO_INCIDENT.requirements,

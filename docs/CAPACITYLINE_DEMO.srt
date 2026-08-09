@@ -55,7 +55,7 @@ Facts come from conversation; policy fails uncertainty closed.
 
 12
 00:01:33,000 --> 00:01:47,000
-Kanto passes all seven guardrails. The buyer can inspect
+Kanto passes all eight guardrails. The buyer can inspect
 supporting words, authority, confidence, and conditions.
 
 13

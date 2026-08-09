@@ -75,7 +75,7 @@ export interface SupplierCommitment {
 }
 
 export interface ConstraintCheck {
-  key: "quantity" | "date" | "price" | "certifications" | "origin" | "authority" | "evidence";
+  key: "quantity" | "date" | "price" | "part" | "certifications" | "origin" | "authority" | "evidence";
   label: string;
   passed: boolean;
   detail: string;

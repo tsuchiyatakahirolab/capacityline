@@ -44,11 +44,11 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 ## 1:33–2:02 — Evidence and human authority
 
-**Screen:** Close Delta, open **Review evidence** for Kanto. Show 7/7, respondent authority, quote, and transcript. Click **Approve RFQ handoff**.
+**Screen:** Close Delta, open **Review evidence** for Kanto. Show 8/8, respondent authority, quote, and transcript. Click **Approve RFQ handoff**.
 
 **Narration:**
 
-> Kanto passes all seven guardrails. The buyer can inspect the exact supporting words, respondent authority, confidence, and freight condition before acting. A human approves an RFQ handoff. CapacityLine never places an order, promises payment, or forms a contract.
+> Kanto passes all eight guardrails, including approved-part validation. The buyer can inspect the exact supporting words, respondent authority, confidence, and freight condition before acting. A human approves an RFQ handoff. CapacityLine never places an order, promises payment, or forms a contract.
 
 ## 2:02–2:25 — The measurable result
 

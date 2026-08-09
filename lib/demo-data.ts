@@ -194,3 +194,132 @@ export const DEMO_COMMITMENTS: Record<string, SupplierCommitment | null> = {
 };
 
 export const DEMO_REVEAL_ORDER = ["sup-delta", "sup-kanto", "sup-rhein", "sup-pacific", "sup-summit"];
+
+function shiftDate(date: string, days: number) {
+  const parsed = new Date(`${date}T12:00:00Z`);
+  parsed.setUTCDate(parsed.getUTCDate() + days);
+  return parsed.toISOString().slice(0, 10);
+}
+
+function rounded(value: number) {
+  return Math.round(value * 100) / 100;
+}
+
+export function buildDemoCommitments(incident: RecoveryIncident): Record<string, SupplierCommitment | null> {
+  if (JSON.stringify(incident) === JSON.stringify(DEMO_INCIDENT)) return DEMO_COMMITMENTS;
+
+  const req = incident.requirements;
+  const exactPart = incident.partNumber;
+  const substitute = req.approvedSubstituteParts.find((part) => part !== exactPart) ?? exactPart;
+  const allCertifications = [...req.requiredCertifications];
+  const missingOneCertification = allCertifications.slice(1);
+  const money = (value: number) => `${req.currency} ${value.toFixed(2)}`;
+  const quantity = Math.ceil(req.quantity / 100) * 100;
+
+  return {
+    "sup-kanto": {
+      supplierId: "sup-kanto",
+      availabilityStatus: "available",
+      quantityAvailable: quantity,
+      earliestShipDate: shiftDate(req.needBy, -1),
+      unitPrice: rounded(req.maxUnitPrice * 0.96),
+      currency: req.currency,
+      moq: Math.max(1, Math.floor(quantity / 3)),
+      originCountry: "JP",
+      substitutePart: exactPart,
+      certifications: allCertifications,
+      quoteValidUntil: `${req.needBy}T17:00:00+09:00`,
+      respondentName: "Mika Sato",
+      respondentTitle: "Sales Operations Director",
+      authorityConfirmed: true,
+      constraints: ["Expedited freight required for the first tranche"],
+      evidenceQuote: `I can commit ${quantity.toLocaleString()} ${exactPart} units for shipment by ${shiftDate(req.needBy, -1)}.`,
+      confidence: 0.96,
+      callDurationSeconds: 132,
+      transcript: [
+        { speaker: "agent", offsetSeconds: 4, text: `I’m calling about approved part ${exactPart}. I’m not placing an order. May I confirm live capacity and delivery?` },
+        { speaker: "supplier", offsetSeconds: 19, text: "Yes. I’m the Sales Operations Director and authorized to confirm current allocation." },
+        { speaker: "agent", offsetSeconds: 43, text: `Can you commit ${req.quantity.toLocaleString()} units by ${req.needBy}, under ${money(req.maxUnitPrice)} per unit?` },
+        { speaker: "supplier", offsetSeconds: 58, text: `I can commit ${quantity.toLocaleString()} ${exactPart} units for shipment by ${shiftDate(req.needBy, -1)} at ${money(rounded(req.maxUnitPrice * 0.96))}.` },
+        { speaker: "supplier", offsetSeconds: 102, text: `The required certifications are current. Expedited freight is the only stated condition.` },
+      ],
+    },
+    "sup-pacific": {
+      supplierId: "sup-pacific",
+      availabilityStatus: "available",
+      quantityAvailable: Math.ceil(req.quantity * 1.2 / 100) * 100,
+      earliestShipDate: req.needBy,
+      unitPrice: rounded(req.maxUnitPrice * 0.91),
+      currency: req.currency,
+      moq: Math.max(1, Math.floor(req.quantity / 2)),
+      originCountry: "MY",
+      substitutePart: substitute,
+      certifications: allCertifications,
+      quoteValidUntil: `${req.needBy}T12:00:00+08:00`,
+      respondentName: "Daniel Lim",
+      respondentTitle: "Regional Commercial Manager",
+      authorityConfirmed: true,
+      constraints: substitute === exactPart ? ["Forecast release required today"] : [`Uses approved ${substitute} substitute`, "Forecast release required today"],
+      evidenceQuote: `${substitute} capacity is reserved and can ship by ${req.needBy}.`,
+      confidence: 0.92,
+      callDurationSeconds: 149,
+      transcript: [
+        { speaker: "agent", offsetSeconds: 3, text: `This is a capacity verification for ${incident.partName}. No purchase will be made on this call.` },
+        { speaker: "supplier", offsetSeconds: 27, text: "Understood. I can confirm allocation as Regional Commercial Manager." },
+        { speaker: "supplier", offsetSeconds: 61, text: `${substitute} capacity is reserved and can ship by ${req.needBy} at ${money(rounded(req.maxUnitPrice * 0.91))}.` },
+        { speaker: "supplier", offsetSeconds: 108, text: "The requested certifications are valid. We need the forecast released today to keep the slot." },
+      ],
+    },
+    "sup-rhein": {
+      supplierId: "sup-rhein",
+      availabilityStatus: "partial",
+      quantityAvailable: Math.max(1, Math.floor(req.quantity * 0.67)),
+      earliestShipDate: shiftDate(req.needBy, 1),
+      unitPrice: rounded(req.maxUnitPrice * 0.94),
+      currency: req.currency,
+      moq: Math.max(1, Math.floor(req.quantity / 5)),
+      originCountry: "DE",
+      substitutePart: exactPart,
+      certifications: allCertifications,
+      quoteValidUntil: `${shiftDate(req.needBy, 1)}T16:00:00+02:00`,
+      respondentName: "Anna Weber",
+      respondentTitle: "Key Account Manager",
+      authorityConfirmed: true,
+      constraints: ["Partial quantity only", "Ships one day after required date"],
+      evidenceQuote: `Partial quantity is possible, but the earliest departure is ${shiftDate(req.needBy, 1)}.`,
+      confidence: 0.94,
+      callDurationSeconds: 118,
+      transcript: [
+        { speaker: "agent", offsetSeconds: 5, text: `Can you commit ${req.quantity.toLocaleString()} ${exactPart} units by ${req.needBy}?` },
+        { speaker: "supplier", offsetSeconds: 36, text: `${Math.floor(req.quantity * 0.67).toLocaleString()} are possible, but the earliest departure is ${shiftDate(req.needBy, 1)}.` },
+        { speaker: "supplier", offsetSeconds: 81, text: "The price and certifications are within the requested terms." },
+      ],
+    },
+    "sup-delta": {
+      supplierId: "sup-delta",
+      availabilityStatus: "available",
+      quantityAvailable: Math.ceil(req.quantity * 1.15 / 100) * 100,
+      earliestShipDate: shiftDate(req.needBy, -1),
+      unitPrice: rounded(req.maxUnitPrice * 0.82),
+      currency: req.currency,
+      moq: Math.max(1, Math.floor(req.quantity / 2)),
+      originCountry: "VN",
+      substitutePart: exactPart,
+      certifications: missingOneCertification,
+      quoteValidUntil: `${req.needBy}T16:00:00+07:00`,
+      respondentName: "Minh Tran",
+      respondentTitle: "Sales Manager",
+      authorityConfirmed: true,
+      constraints: [`${allCertifications[0]} evidence is not current`],
+      evidenceQuote: `I cannot provide current evidence for ${allCertifications[0]} today.`,
+      confidence: 0.95,
+      callDurationSeconds: 101,
+      transcript: [
+        { speaker: "agent", offsetSeconds: 4, text: "Please confirm quantity, ship date, price, origin, approved part, and every required certification." },
+        { speaker: "supplier", offsetSeconds: 33, text: `We can cover the quantity by ${shiftDate(req.needBy, -1)} at ${money(rounded(req.maxUnitPrice * 0.82))}.` },
+        { speaker: "supplier", offsetSeconds: 67, text: `I cannot provide current evidence for ${allCertifications[0]} today.` },
+      ],
+    },
+    "sup-summit": null,
+  };
+}

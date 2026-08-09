@@ -35,6 +35,7 @@ export function evaluateCommitment(
     commitment.unitPrice !== null &&
     commitment.currency === requirements.currency &&
     commitment.unitPrice <= requirements.maxUnitPrice;
+  const partPassed = requirements.approvedSubstituteParts.includes(commitment.substitutePart);
   const certificationPassed = missingCertifications.length === 0;
   const originPassed = requirements.allowedOrigins.includes(commitment.originCountry);
   const authorityPassed = commitment.authorityConfirmed;
@@ -67,6 +68,13 @@ export function evaluateCommitment(
           ? "Not confirmed"
           : `${commitment.currency} ${commitment.unitPrice.toFixed(2)} / max ${requirements.maxUnitPrice.toFixed(2)}`,
       severity: "review",
+    },
+    {
+      key: "part",
+      label: "Approved part",
+      passed: partPassed,
+      detail: commitment.substitutePart || "Not confirmed",
+      severity: "hard",
     },
     {
       key: "certifications",
@@ -103,10 +111,11 @@ export function evaluateCommitment(
   const disposition = hardFailure ? "ineligible" : allPassed ? "qualified" : "review";
 
   const scoreWeights: Record<ConstraintCheck["key"], number> = {
-    quantity: 25,
-    date: 20,
-    price: 12,
-    certifications: 18,
+    quantity: 20,
+    date: 15,
+    price: 10,
+    part: 15,
+    certifications: 15,
     origin: 10,
     authority: 8,
     evidence: 7,

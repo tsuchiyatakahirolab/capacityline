@@ -72,7 +72,7 @@ export default async function PilotPage({
 }) {
   const [{ billing }, pilot] = await Promise.all([searchParams, getPilotState()]);
   const priceLabel =
-    pilot.stripePriceLabel || process.env.PILOT_PRICE_LABEL?.trim() || "Scoped monthly pilot";
+    pilot.stripePriceLabel || process.env.PILOT_PRICE_LABEL?.trim() || "¥39,800 / month";
 
   return (
     <div className="pilot-page">
@@ -120,12 +120,12 @@ export default async function PilotPage({
           <div className="offer-register">
             <p>FOUNDING PRIVATE PILOT</p>
             <strong>{priceLabel}</strong>
-            <span>Commercial scope confirmed before activation</span>
+            <span>Tax excluded · no setup fee · cancel monthly</span>
           </div>
           <div className="offer-terms">
-            <div><span>01</span><strong>One isolated workspace</strong><p>Customer-specific deployment, recipient allow-list, and call boundary.</p></div>
-            <div><span>02</span><strong>Metered recovery runs</strong><p>Every live run requires an active Stripe entitlement and explicit authorization.</p></div>
-            <div><span>03</span><strong>Founder-led onboarding</strong><p>Policy rules, suppliers, and consent workflow are reviewed before the switch turns on.</p></div>
+            <div><span>01</span><strong>10 governed recovery runs / month</strong><p>Up to five approved suppliers per incident, with explicit authorization before every live run.</p></div>
+            <div><span>02</span><strong>Custom policy + Evidence Pack</strong><p>Your incident brief drives eight guardrails; JSON audit record and CSV commitment matrix are included.</p></div>
+            <div><span>03</span><strong>Isolated setup + founder onboarding</strong><p>One private workspace, supplier allow-list, policy calibration, and monthly outcome review.</p></div>
           </div>
           <div className="offer-action">
             {pilot.active ? (
@@ -138,7 +138,7 @@ export default async function PilotPage({
             ) : pilot.configured ? (
               <form action="/api/billing/checkout" method="post">
                 <button type="submit">Continue to secure checkout <ArrowRight size={15} /></button>
-                <small>Stripe-hosted checkout · cancel any time · no call is created by payment</small>
+                <small>Stripe-hosted checkout · no free live trial · payment alone never creates a call</small>
               </form>
             ) : (
               <>
@@ -167,7 +167,7 @@ export default async function PilotPage({
         <section className="pilot-operating-model">
           <div><span>PUBLIC</span><strong>Zero-call product proof</strong><p>Free, deterministic, and safe for judges, prospects, and press.</p></div>
           <i />
-          <div><span>PRIVATE</span><strong>Paid operational pilot</strong><p>Isolated configuration, real recipients, metered provider access.</p></div>
+          <div><span>PRIVATE</span><strong>¥39,800 managed pilot</strong><p>Ten monthly runs, custom guardrails, evidence exports, and founder-led outcome review.</p></div>
           <i />
           <div><span>SCALE</span><strong>Multi-tenant SaaS</strong><p>Auth, durable data, pooled infrastructure, and usage metering after pilot evidence.</p></div>
         </section>

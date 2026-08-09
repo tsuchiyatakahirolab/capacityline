@@ -28,7 +28,7 @@ Outputs:
 6. The official CALL-E TypeScript SDK creates the call task with an idempotency key.
 7. The browser polls `GET /api/calls/{callId}` every seven seconds.
 8. Recipient results are normalized; unknown numeric values remain null.
-9. The policy engine evaluates seven checks. Missing hard requirements fail closed.
+9. The policy engine evaluates eight checks, including approved-part validation. Missing hard requirements fail closed.
 10. The buyer inspects the transcript and explicitly approves an RFQ handoff.
 
 ## Why policy evaluation is deterministic
