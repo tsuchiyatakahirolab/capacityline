@@ -145,7 +145,6 @@ export function CapacityLineApp() {
   const [approvedSupplierId, setApprovedSupplierId] = useState<string | null>(null);
   const [showLaunch, setShowLaunch] = useState(false);
   const [launchMode, setLaunchMode] = useState<LaunchMode>("demo");
-  const [apiKeyReady, setApiKeyReady] = useState(false);
   const [liveReady, setLiveReady] = useState(false);
   const [allowListEnabled, setAllowListEnabled] = useState(false);
   const [livePhones, setLivePhones] = useState<Record<string, string>>({});
@@ -164,8 +163,7 @@ export function CapacityLineApp() {
   useEffect(() => {
     fetch("/api/health")
       .then((response) => response.json())
-      .then((data: { apiKeyReady?: boolean; liveReady?: boolean; allowListEnabled?: boolean }) => {
-        setApiKeyReady(Boolean(data.apiKeyReady));
+      .then((data: { liveReady?: boolean; allowListEnabled?: boolean }) => {
         setLiveReady(Boolean(data.liveReady));
         setAllowListEnabled(Boolean(data.allowListEnabled));
       })
@@ -415,10 +413,10 @@ export function CapacityLineApp() {
   const activityItems = [
     { time: "09:31", title: "Supply exception opened", detail: "6,000-unit shortfall threatens E-Drive Line 2", tone: "danger" },
     ...(phase !== "ready"
-      ? [{ time: "09:32", title: "Recovery sprint launched", detail: "Approved backup suppliers contacted in parallel", tone: "active" }]
+      ? [{ time: "09:32", title: "Recovery replay launched", detail: "Five approved supplier calls simulated in parallel", tone: "active" }]
       : []),
     ...(revealCount > 0
-      ? [{ time: "09:36", title: "First live responses", detail: `${completedCount} commitments returned with transcript evidence`, tone: "active" }]
+      ? [{ time: "09:36", title: "Simulated responses returned", detail: `${completedCount} commitments grounded in replay evidence`, tone: "active" }]
       : []),
     ...(qualifiedCount > 0
       ? [{ time: "09:44", title: "Qualified fallback found", detail: "All seven procurement guardrails passed", tone: "success" }]
@@ -437,7 +435,7 @@ export function CapacityLineApp() {
     },
     {
       label: "Call",
-      detail: phase === "ready" ? "5 backups queued" : phase === "running" ? "CALL-E active" : "5 attempts closed",
+      detail: phase === "ready" ? "5 backups queued" : phase === "running" ? "CALL-E replay" : "5 attempts closed",
       icon: <Radio size={16} />,
       state: phase === "ready" ? "pending" : phase === "running" ? "active" : "complete",
     },
@@ -509,7 +507,7 @@ export function CapacityLineApp() {
         <div className="provider-card">
           <div><Zap size={15} fill="currentColor" /> Powered by CALL-E</div>
           <p>Goal-driven parallel calls with structured results and transcript evidence.</p>
-          <span className="connection-state"><i /> Integration ready</span>
+          <span className="connection-state"><i /> Public demo · zero calls</span>
         </div>
         <div className="profile-chip">
           <div className="avatar">TT</div>
@@ -525,7 +523,7 @@ export function CapacityLineApp() {
                 <span><i /> INCIDENT {DEMO_INCIDENT.id}</span>
                 <span>6,000 UNIT SHORTFALL</span>
                 <span>OSAKA / E-DRIVE LINE 2</span>
-                <span>{phase === "ready" ? "RECOVERY WINDOW OPEN" : phase === "running" ? "PARALLEL CALLS LIVE" : "DECISION EVIDENCE READY"}</span>
+                <span>{phase === "ready" ? "ZERO-CALL PUBLIC DEMO" : phase === "running" ? "DECISION REPLAY RUNNING" : "DECISION EVIDENCE READY"}</span>
                 <span>HUMAN AUTHORITY REQUIRED</span>
               </div>
             ))}
@@ -551,7 +549,7 @@ export function CapacityLineApp() {
               ) : <kbd>Ctrl K</kbd>}
             </label>
             <button className="guide-button" onClick={() => setShowGuide(true)}><Route size={14} /> Demo guide</button>
-            <div className="demo-chip"><Sparkles size={14} /> Accelerated demo</div>
+            <div className="demo-chip"><Sparkles size={14} /> Zero-call demo</div>
           </div>
         </header>
 
@@ -604,7 +602,7 @@ export function CapacityLineApp() {
                   <small>AUG 11 · 09:30 JST</small>
                   {phase === "ready" ? (
                     <button className="primary-button" onClick={() => setShowLaunch(true)}>
-                      <Play size={16} fill="currentColor" /> Run recovery sprint
+                      <Play size={16} fill="currentColor" /> Run zero-call demo
                     </button>
                   ) : (
                     <button className="secondary-button inverse" onClick={reset}>
@@ -703,7 +701,7 @@ export function CapacityLineApp() {
                 <div className="panel-header">
                   <div><span className="panel-kicker">PARALLEL OUTREACH</span><h3>Approved backup suppliers</h3></div>
                   <div className="panel-header-meta">
-                    {phase === "running" && <span className="live-pill"><i /> LIVE</span>}
+                    {phase === "running" && <span className="live-pill"><i /> REPLAY</span>}
                     <span>{completedCount} of {suppliers.length} returned</span>
                   </div>
                 </div>
@@ -790,7 +788,7 @@ export function CapacityLineApp() {
                     ))}
                     {phase === "running" && (
                       <div className="activity-item pending">
-                        <time>NOW</time><i /><div><strong>CALL-E is gathering commitments</strong><p>Adapting to holds, transfers, and incomplete answers</p></div>
+                        <time>NOW</time><i /><div><strong>CALL-E decision flow is replaying</strong><p>Five fictional outcomes resolve without creating a phone call</p></div>
                       </div>
                     )}
                   </div>
@@ -841,8 +839,8 @@ export function CapacityLineApp() {
             <button className="modal-close" onClick={() => setShowLaunch(false)} aria-label="Close"><X size={18} /></button>
             <div className="modal-symbol"><PhoneCall size={24} /></div>
             <span className="panel-kicker">RECOVERY SPRINT</span>
-            <h2 id="launch-title">Get the first actionable fallback.</h2>
-            <p>CapacityLine will contact approved suppliers in parallel and check every returned commitment against the buyer policy.</p>
+            <h2 id="launch-title">Watch the recovery decision unfold.</h2>
+            <p>This public experience replays five fictional supplier outcomes, evaluates every commitment, and never creates a phone call.</p>
 
             <div className="mode-picker">
               <button className={launchMode === "demo" ? "selected" : ""} onClick={() => { setLaunchMode("demo"); setError(null); }}>
@@ -850,11 +848,19 @@ export function CapacityLineApp() {
                 <div><strong>Safe demo</strong><small>Fictional results · no phone calls</small></div>
                 {launchMode === "demo" && <CheckCircle2 size={18} />}
               </button>
-              <button className={launchMode === "live" ? "selected" : ""} onClick={() => { setLaunchMode("live"); setError(null); }}>
-                <span><Activity size={18} /></span>
-                <div><strong>Live CALL-E</strong><small>{liveReady ? "Key + allow-list ready" : apiKeyReady ? "Recipient allow-list required" : "API key required"}</small></div>
-                {launchMode === "live" && <CheckCircle2 size={18} />}
-              </button>
+              {liveReady ? (
+                <button className={launchMode === "live" ? "selected" : ""} onClick={() => { setLaunchMode("live"); setError(null); }}>
+                  <span><Activity size={18} /></span>
+                  <div><strong>Private live pilot</strong><small>Key + allow-list ready</small></div>
+                  {launchMode === "live" && <CheckCircle2 size={18} />}
+                </button>
+              ) : (
+                <div className="private-pilot-card">
+                  <span><LockKeyhole size={18} /></span>
+                  <div><strong>Private live pilot</strong><small>Authenticated + metered deployments only</small></div>
+                  <ShieldCheck size={18} />
+                </div>
+              )}
             </div>
 
             {launchMode === "demo" ? (
@@ -898,7 +904,7 @@ export function CapacityLineApp() {
               <button className="secondary-button" onClick={() => setShowLaunch(false)}>Cancel</button>
               <button className="primary-button wide" onClick={launchMode === "demo" ? runDemo : runLive}>
                 {launchMode === "demo" ? <Play size={16} fill="currentColor" /> : <PhoneCall size={16} />}
-                {launchMode === "demo" ? "Run 12-minute scenario" : "Create authorized calls"}
+                {launchMode === "demo" ? "Run 6-second decision replay" : "Create authorized calls"}
               </button>
             </div>
             <div className="modal-foot"><ShieldCheck size={14} /> No purchase is placed. Unknown or ambiguous answers fail closed to human review.</div>
@@ -994,7 +1000,7 @@ function SupplierGraph({ suppliers, commitments, recommendedId }: { suppliers: S
               <div className={`graph-node graph-${supplier.status} ${recommendedId === supplier.id ? "graph-recommended" : ""}`} key={supplier.id}>
                 <span className="country-code">{supplier.countryCode}</span>
                 <div><strong>{supplier.name}{recommendedId === supplier.id && <em className="best-match-inline">Best</em>}</strong><small>{supplier.historicalReliability}% historical reliability</small></div>
-                <div className="node-signal"><i style={{ width: `${supplier.historicalReliability}%` }} />{commitment && <em>live</em>}</div>
+                <div className="node-signal"><i style={{ width: `${supplier.historicalReliability}%` }} />{commitment && <em>evidence</em>}</div>
               </div>
             );
           })}
@@ -1068,7 +1074,7 @@ function SupplierDrawer({
               <section className="drawer-section"><div className="drawer-section-title"><h3>Conditions stated</h3></div><ul className="constraint-list">{commitment.constraints.map((constraint) => <li key={constraint}>{constraint}</li>)}</ul></section>
             )}
             <section className="drawer-section transcript-section">
-              <div className="drawer-section-title"><h3>CALL-E transcript</h3><span>{formatDuration(commitment.callDurationSeconds)}</span></div>
+              <div className="drawer-section-title"><h3>Simulated CALL-E transcript</h3><span>{formatDuration(commitment.callDurationSeconds)}</span></div>
               <div className="transcript-list">
                 {commitment.transcript.map((turn, index) => (
                   <div className={`transcript-turn ${turn.speaker}`} key={`${turn.offsetSeconds}-${index}`}>

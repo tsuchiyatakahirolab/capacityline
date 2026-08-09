@@ -785,6 +785,7 @@ body {
 .launch-modal,
 .guide-modal { animation: modal-rise .42s cubic-bezier(.18,.82,.22,1) both; }
 .mode-picker button,
+.private-pilot-card,
 .preview-box,
 .live-warning,
 .phone-input-list input,
@@ -794,6 +795,33 @@ body {
 .drawer-section { border-radius: 2px; }
 .supplier-drawer { animation: drawer-in .42s cubic-bezier(.18,.82,.22,1); }
 .transcript-turn p { border-radius: 2px; }
+
+.private-pilot-card {
+  min-height: 73px;
+  display: grid;
+  grid-template-columns: 34px 1fr 18px;
+  align-items: center;
+  gap: 9px;
+  padding: 11px;
+  color: #5e6963;
+  border: 1px dashed #cfd7d1;
+  background: #f3f4f1;
+}
+
+.private-pilot-card > span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  color: #6a756f;
+  background: #e7eae6;
+}
+
+.private-pilot-card strong,
+.private-pilot-card small { display: block; }
+.private-pilot-card strong { color: #3f4b44; font-size: 10px; }
+.private-pilot-card small { margin-top: 4px; color: #818b85; font-size: 8px; }
+.private-pilot-card > svg { color: #76827b; }
 
 @keyframes ticker {
   to { transform: translateX(-50%); }

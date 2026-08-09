@@ -6,7 +6,7 @@ CapacityLine is an AI supply recovery desk that calls pre-approved backup suppli
 
 Built for the **Most Practical Use Case** prize in [CALL-E: Your Code Is Calling](https://call-e.devpost.com/).
 
-**[Open the live demo](https://capacityline.vercel.app)** · **[Watch the 2:44 demo video](https://youtu.be/5ond4ajvsMg)**
+**[Open the zero-call public demo](https://capacityline.vercel.app)** · **[Watch the 2:44 demo video](https://youtu.be/5ond4ajvsMg)**
 
 Choose **Safe demo** to run the complete fictional scenario with no phone call.
 
@@ -36,7 +36,7 @@ The north-star metric is **Time to First Qualified Fallback**: elapsed time from
 ## What the demo proves
 
 - A 90-second in-product guide makes the complete buyer journey understandable without training.
-- Five approved or conditionally approved suppliers are contacted in parallel.
+- Five fictional supplier outcomes are replayed in parallel without creating a phone call.
 - CALL-E is given a goal and a strict per-recipient JSON result schema.
 - Quantity, ship date, price, MOQ, exact/substitute part, origin, certifications, quote validity, respondent identity, authority, constraints, and an evidence statement are returned.
 - A deterministic policy engine classifies each result as `qualified`, `review`, `ineligible`, or `unreachable`.
@@ -59,7 +59,7 @@ CapacityLine uses the official [`@call-e/calle`](https://www.npmjs.com/package/@
 | Idempotency | Each recovery run sends a durable idempotency key. |
 | Live status | The browser polls the server, which reads status from CALL-E. |
 | Webhooks | `/api/webhooks/calle` validates event identity and is deliberately side-effect free in the prototype. |
-| Safety | Demo-first operation, E.164 validation, explicit authorization, optional number allow-list, disclosure, and human approval. |
+| Safety | Zero-call public demo, E.164 validation, explicit authorization, mandatory server allow-list, disclosure, and human approval. |
 
 The official CALL-E SDK and API describe structured results, transcripts, batch recipients, evidence, and idempotent task creation in the [CALL-E integration repository](https://github.com/CALLE-AI/call-e-integrations).
 
@@ -76,15 +76,17 @@ Open <http://localhost:3000>. Choose **Safe demo** to run the complete scenario 
 
 For the shortest product tour, click **Demo guide**, then **Start guided demo**. The fictional scenario resolves in about six seconds and automatically opens the recommended supplier's evidence record. Search is functional and can be focused with `Ctrl+K` or `⌘K`.
 
-### Opt-in live verification
+### Private, metered live verification
+
+The public Vercel deployment is intentionally demo-only: it has no production CALL-E key, creates no phone calls, and cannot incur call charges. Live mode appears only in a private deployment where both `CALLE_API_KEY` and a non-empty `CALLE_ALLOWED_NUMBERS` list are present.
 
 1. Create a CALL-E account and obtain a key from the CALL-E dashboard.
 2. Copy `.env.example` to `.env.local`.
 3. Set `CALLE_API_KEY`.
-4. Strongly recommended: set `CALLE_ALLOWED_NUMBERS` to a comma-separated list of consenting test numbers.
+4. Set `CALLE_ALLOWED_NUMBERS` to a comma-separated list of consenting test numbers. The server fails closed when this is empty.
 5. Restart the server, open the launch dialog, choose **Live CALL-E**, enter E.164 numbers, confirm contact authorization, and type `AUTHORIZE CALLS`.
 
-Live mode creates real outbound calls and may incur charges. It is intended only for the entrant's or judges' consenting test numbers. The UI masks demo numbers; no real contact data is committed to this repository.
+Live mode creates real outbound calls and may incur charges. It is reserved for authenticated, metered customer environments and consenting recipients. The UI masks demo numbers; no real contact data is committed to this repository.
 
 ## Quality checks
 
@@ -92,7 +94,7 @@ Live mode creates real outbound calls and may incur charges. It is intended only
 npm run check
 ```
 
-This runs ESLint, six Vitest checks, TypeScript compilation, and a production Next.js build. Production dependencies currently report zero known `npm audit` vulnerabilities.
+This runs ESLint, eight Vitest checks, TypeScript compilation, and a production Next.js build. Production dependencies currently report zero known `npm audit` vulnerabilities.
 
 ## Architecture
 
@@ -135,7 +137,7 @@ Next.js 16 · React 19 · TypeScript · CALL-E TypeScript SDK 0.6.0 · Vitest ·
 
 ## Status and scope
 
-This is a functional hackathon prototype created during the competition period. The complete safe-demo path, policy block, evidence inspection, RFQ approval, ledger, graph, search, keyboard dismissal, and production build are tested. Live CALL-E integration is implemented but requires the entrant's key and consenting test numbers for the final recorded verification. ERP writeback, durable multi-tenant storage, SSO, and production supplier consent management are deliberately outside the prototype scope.
+This is a functional hackathon prototype created during the competition period. The complete zero-call demo path, policy block, evidence inspection, RFQ approval, ledger, graph, search, keyboard dismissal, and production build are tested. Live CALL-E integration is implemented but disabled on the public deployment; a commercial rollout would enable it only inside authenticated, metered tenants with consenting allow-listed recipients. ERP writeback, durable multi-tenant storage, SSO, and production supplier consent management are deliberately outside the prototype scope.
 
 ## License
 
