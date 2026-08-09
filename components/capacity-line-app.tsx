@@ -170,6 +170,7 @@ function formatLineStop(value: string) {
     hour: "2-digit",
     minute: "2-digit",
     timeZoneName: "short",
+    timeZone: "Asia/Tokyo",
   }).format(date);
 }
 
