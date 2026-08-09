@@ -30,7 +30,20 @@ The best initial verticals are automotive components, industrial equipment, elec
 
 CALL-E currently advertises a flat `$0.05` per billable call after free starter calls on its [official site](https://www.heycall-e.com/). At five calls, raw CALL-E usage in the prototype scenario would be `$0.25` at that public rate. That rate is early-stage and may change; commercial pricing should pass through provider usage and be validated before contracting.
 
-The value metric is not call minutes. It is avoided buyer delay and avoided line-stop exposure. The demo's `$420,000/day` impact is a fictional plant assumption, not a market benchmark. For context, NIST's [2025 Annual Report on the U.S. Manufacturing Economy](https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=961007) cites downtime as a meaningful share of manufacturing loss, reinforcing that even a small reduction in recovery time can support a software budget.
+The value metric is not call minutes. It is avoided buyer delay and avoided line-stop exposure. The demo's `$420,000/day` impact is a fictional plant assumption, not a market benchmark. Provider pricing must be rechecked immediately before contracting and must never be treated as a fixed margin assumption.
+
+## Launch offer
+
+The first commercial product is a **Founding Private Pilot**, not open-ended self-service access:
+
+- subscription paid in advance through Stripe;
+- one customer-isolated deployment;
+- one plant or recovery desk and a contractually capped recipient roster;
+- founder-led policy and consent review before provider credentials are enabled;
+- a scoped monthly recovery-run ceiling priced above the worst-case provider exposure;
+- live access suspended immediately when Stripe cannot confirm the subscription.
+
+No plan is marketed as unlimited. Until durable atomic quotas exist, the commercial agreement and isolated deployment must define the maximum run volume and TSUCHIYA LAB must monitor it. Usage-based invoicing may be added for overage visibility, but postpaid usage alone is not a sufficient protection against provider cost.
 
 ## Go-to-market sequence
 

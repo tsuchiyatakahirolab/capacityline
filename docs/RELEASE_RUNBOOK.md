@@ -22,7 +22,7 @@ npm audit --omit=dev
 git status --short
 ```
 
-Expected: lint passes, 6 tests pass, production build passes, zero known production vulnerabilities, and only intentional release changes appear.
+Expected: lint passes, 15 tests pass, production build passes, zero known production vulnerabilities, and only intentional release changes appear.
 
 ## 2. One consenting live proof
 
@@ -62,13 +62,13 @@ AWESOME_PR_URL=
 
 ## 4. Deploy
 
-Set server secrets in the hosting dashboard, never in the repository:
+The judging deployment must stay zero-call. It needs only the public origin:
 
 ```dotenv
 NEXT_PUBLIC_APP_URL=https://FINAL_ORIGIN
-CALLE_API_KEY=SERVER_SECRET_ONLY
-CALLE_ALLOWED_NUMBERS=CONSENTING_TEST_NUMBERS_ONLY
 ```
+
+Do not add a CALL-E production key or real recipient list to the public demo. Configure billing and calling only in a customer-isolated Private Pilot by following `PRIVATE_PILOT_RUNBOOK.md`.
 
 After deployment, verify:
 

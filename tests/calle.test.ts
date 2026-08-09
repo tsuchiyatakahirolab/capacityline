@@ -52,11 +52,17 @@ describe("CALL-E recovery payload", () => {
     }
   });
 
-  it("reports live readiness only when both the key and allow-list are configured", async () => {
+  it("reports live readiness only when calling, allow-list, and billing are configured", async () => {
     const previousKey = process.env.CALLE_API_KEY;
     const previousAllowList = process.env.CALLE_ALLOWED_NUMBERS;
+    const previousStripeKey = process.env.STRIPE_SECRET_KEY;
+    const previousPrice = process.env.STRIPE_PILOT_PRICE_ID;
+    const previousSessionSecret = process.env.BILLING_SESSION_SECRET;
     process.env.CALLE_API_KEY = "test-key";
     delete process.env.CALLE_ALLOWED_NUMBERS;
+    process.env.STRIPE_SECRET_KEY = "sk_test_capacityline";
+    process.env.STRIPE_PILOT_PRICE_ID = "price_capacityline";
+    process.env.BILLING_SESSION_SECRET = "capacityline-test-secret-at-least-32-characters";
 
     try {
       const locked = await getHealth().json();
@@ -70,6 +76,12 @@ describe("CALL-E recovery payload", () => {
       else process.env.CALLE_API_KEY = previousKey;
       if (previousAllowList === undefined) delete process.env.CALLE_ALLOWED_NUMBERS;
       else process.env.CALLE_ALLOWED_NUMBERS = previousAllowList;
+      if (previousStripeKey === undefined) delete process.env.STRIPE_SECRET_KEY;
+      else process.env.STRIPE_SECRET_KEY = previousStripeKey;
+      if (previousPrice === undefined) delete process.env.STRIPE_PILOT_PRICE_ID;
+      else process.env.STRIPE_PILOT_PRICE_ID = previousPrice;
+      if (previousSessionSecret === undefined) delete process.env.BILLING_SESSION_SECRET;
+      else process.env.BILLING_SESSION_SECRET = previousSessionSecret;
     }
   });
 });

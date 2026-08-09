@@ -20,15 +20,16 @@ Outputs:
 
 ## Runtime flow
 
-1. The browser opens a recovery incident and selects **Safe demo** or **Live CALL-E**.
-2. Live mode collects consenting E.164 test numbers and an explicit `AUTHORIZE CALLS` confirmation.
-3. `POST /api/calls/launch` validates the request and optional server allow-list.
-4. The server builds a goal-driven batch task and strict per-recipient schema.
-5. The official CALL-E TypeScript SDK creates the call task with an idempotency key.
-6. The browser polls `GET /api/calls/{callId}` every seven seconds.
-7. Recipient results are normalized; unknown numeric values remain null.
-8. The policy engine evaluates seven checks. Missing hard requirements fail closed.
-9. The buyer inspects the transcript and explicitly approves an RFQ handoff.
+1. The public browser runs the fictional **Safe demo** with no external side effect.
+2. A pilot customer subscribes through Stripe-hosted Checkout; the return is bound to the initiating browser and creates a short-lived, signed httpOnly entitlement.
+3. A customer-isolated deployment collects consenting E.164 recipients and an explicit `AUTHORIZE CALLS` confirmation.
+4. `POST /api/calls/launch` re-verifies the exact Stripe subscription, server CALL-E key, mandatory recipient allow-list, and authorization.
+5. The server builds a goal-driven batch task and strict per-recipient schema.
+6. The official CALL-E TypeScript SDK creates the call task with an idempotency key.
+7. The browser polls `GET /api/calls/{callId}` every seven seconds.
+8. Recipient results are normalized; unknown numeric values remain null.
+9. The policy engine evaluates seven checks. Missing hard requirements fail closed.
+10. The buyer inspects the transcript and explicitly approves an RFQ handoff.
 
 ## Why policy evaluation is deterministic
 
@@ -42,7 +43,7 @@ That separation is testable and auditable. It also prevents a fluent but incompl
 
 ## Data model
 
-The prototype uses browser memory for the demo and polls CALL-E for live state. A commercial deployment would add tenant-isolated durable storage with these core entities:
+The demo and managed pilot use browser memory for the recovery view, Stripe for subscription truth, and CALL-E for live state. A multi-tenant self-service release would add tenant-isolated durable storage with these core entities:
 
 - `Incident`
 - `RequirementSet` with version hash
@@ -57,4 +58,4 @@ The last entity closes the learning loop: promised quantity/date versus actual r
 
 ## Deployment
 
-The application is a standard Next.js server deployment. Required secret: `CALLE_API_KEY`. Recommended controls include `CALLE_ALLOWED_NUMBERS`, SSO, role-based authorization, encrypted storage, retention policies, and an enterprise CALL-E local line for the destination region.
+The application is a standard Next.js server deployment. The zero-call public deployment needs no provider secret. A paid private pilot requires Stripe server secrets, a signed-session secret, `CALLE_API_KEY`, and a mandatory `CALLE_ALLOWED_NUMBERS` set. Each pilot should use a customer-isolated deployment until durable tenant isolation, quotas, consent storage, SSO, and role-based authorization are implemented.

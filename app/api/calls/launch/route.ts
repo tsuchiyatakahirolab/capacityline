@@ -1,7 +1,10 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { verifyBillingToken } from "@/lib/billing-token";
 import { createRecoveryCall } from "@/lib/calle";
 import { DEMO_INCIDENT } from "@/lib/demo-data";
 import { E164_PATTERN, getAllowedNumbers, isRecipientAllowListConfigured } from "@/lib/phone";
+import { BILLING_COOKIE, getBillingConfig, hasActivePilotSubscription } from "@/lib/stripe";
 import type { LiveRecipient } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -40,6 +43,25 @@ export async function POST(request: Request) {
   }
   if (body.authorized !== true || body.confirmation !== "AUTHORIZE CALLS") {
     return invalid("Live calls require explicit contact authorization and confirmation.", 403);
+  }
+
+  if (process.env.ALLOW_UNBILLED_LIVE_CALLS !== "true") {
+    const { checkoutReady, sessionSecret } = getBillingConfig();
+    if (!checkoutReady) {
+      return invalid("Live calls are locked until billing is configured.", 503);
+    }
+    const token = (await cookies()).get(BILLING_COOKIE)?.value;
+    const customerId = verifyBillingToken(token, sessionSecret);
+    if (!customerId) {
+      return invalid("An active paid pilot is required for live calls.", 402);
+    }
+    try {
+      if (!(await hasActivePilotSubscription(customerId))) {
+        return invalid("The paid pilot is not active.", 402);
+      }
+    } catch {
+      return invalid("Unable to verify the paid pilot entitlement.", 503);
+    }
   }
 
   const recipients = body.recipients ?? [];

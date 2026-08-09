@@ -6,7 +6,7 @@ CapacityLine is an AI supply recovery desk that calls pre-approved backup suppli
 
 Built for the **Most Practical Use Case** prize in [CALL-E: Your Code Is Calling](https://call-e.devpost.com/).
 
-**[Open the zero-call public demo](https://capacityline.vercel.app)** · **[Watch the 2:44 demo video](https://youtu.be/5ond4ajvsMg)**
+**[Open the zero-call public demo](https://capacityline.vercel.app)** · **[Private Pilot](https://capacityline.vercel.app/pilot)** · **[Watch the 2:44 demo video](https://youtu.be/5ond4ajvsMg)**
 
 Choose **Safe demo** to run the complete fictional scenario with no phone call.
 
@@ -76,17 +76,30 @@ Open <http://localhost:3000>. Choose **Safe demo** to run the complete scenario 
 
 For the shortest product tour, click **Demo guide**, then **Start guided demo**. The fictional scenario resolves in about six seconds and automatically opens the recommended supplier's evidence record. Search is functional and can be focused with `Ctrl+K` or `⌘K`.
 
-### Private, metered live verification
+### Paid Private Pilot and live verification
 
-The public Vercel deployment is intentionally demo-only: it has no production CALL-E key, creates no phone calls, and cannot incur call charges. Live mode appears only in a private deployment where both `CALLE_API_KEY` and a non-empty `CALLE_ALLOWED_NUMBERS` list are present.
+The public Vercel deployment is intentionally zero-call: it has no production CALL-E key, creates no phone calls, and cannot incur provider charges. `/pilot` is the commercial entry point. Stripe Checkout may collect a paid pilot subscription, but payment alone never creates a call.
+
+A private live deployment fails closed unless all of these gates pass:
+
+1. the configured non-zero Stripe pilot price has an `active` subscription and a paid invoice at request time;
+2. the customer has a valid signed, httpOnly billing entitlement;
+3. `CALLE_API_KEY` exists only on the private server;
+4. every consenting E.164 recipient is in `CALLE_ALLOWED_NUMBERS`;
+5. the operator explicitly confirms `AUTHORIZE CALLS`.
+
+Checkout, activation, Customer Portal, and signature-verified Stripe webhooks are implemented at `/api/billing/*` and `/api/webhooks/stripe`. The launch route re-queries Stripe before contacting CALL-E, so cancellation, nonpayment, or an unverifiable subscription blocks the provider request.
+
+To configure a private pilot locally:
 
 1. Create a CALL-E account and obtain a key from the CALL-E dashboard.
 2. Copy `.env.example` to `.env.local`.
-3. Set `CALLE_API_KEY`.
-4. Set `CALLE_ALLOWED_NUMBERS` to a comma-separated list of consenting test numbers. The server fails closed when this is empty.
-5. Restart the server, open the launch dialog, choose **Live CALL-E**, enter E.164 numbers, confirm contact authorization, and type `AUTHORIZE CALLS`.
+3. Set `STRIPE_SECRET_KEY`, `STRIPE_PILOT_PRICE_ID`, and a random `BILLING_SESSION_SECRET` of at least 32 characters.
+4. Configure a Stripe webhook for `/api/webhooks/stripe` and set `STRIPE_WEBHOOK_SECRET`.
+5. Set `CALLE_API_KEY` and `CALLE_ALLOWED_NUMBERS` to only the consenting pilot recipients.
+6. Restart the server, purchase the pilot in Stripe test mode, then open the launch dialog, choose **Live CALL-E**, enter E.164 numbers, confirm contact authorization, and type `AUTHORIZE CALLS`.
 
-Live mode creates real outbound calls and may incur charges. It is reserved for authenticated, metered customer environments and consenting recipients. The UI masks demo numbers; no real contact data is committed to this repository.
+Live mode creates real outbound calls and may incur charges. It is reserved for paid, customer-isolated pilot environments and consenting recipients. The UI masks demo numbers; no real contact data is committed to this repository. See the [Private Pilot runbook](docs/PRIVATE_PILOT_RUNBOOK.md).
 
 ## Quality checks
 
@@ -94,7 +107,7 @@ Live mode creates real outbound calls and may incur charges. It is reserved for 
 npm run check
 ```
 
-This runs ESLint, eight Vitest checks, TypeScript compilation, and a production Next.js build. Production dependencies currently report zero known `npm audit` vulnerabilities.
+This runs ESLint, fifteen Vitest checks, TypeScript compilation, and a production Next.js build. Production dependencies currently report zero known `npm audit` vulnerabilities.
 
 ## Architecture
 
@@ -106,11 +119,15 @@ Browser
          │
          ▼
 Next.js server routes
-  ├─ POST /api/calls/launch        explicit live-call gate
+  ├─ POST /api/billing/checkout    Stripe-hosted subscription checkout
+  ├─ GET  /api/billing/activate    bound checkout return + billing entitlement
+  ├─ POST /api/billing/portal      Stripe Customer Portal
+  ├─ POST /api/calls/launch        billing + consent + allow-list gate
   ├─ GET  /api/calls/:callId       CALL-E status/result proxy
-  ├─ POST /api/webhooks/calle      terminal event receiver
+  ├─ POST /api/webhooks/{provider} signature-validated event receivers
   └─ GET  /api/health              non-secret readiness state
          │
+         ├──────────────► Stripe
          ▼
 @call-e/calle server SDK
          │
@@ -133,11 +150,11 @@ See [Architecture](docs/ARCHITECTURE.md), [Safety and Privacy](docs/SAFETY_AND_P
 
 ## Technology
 
-Next.js 16 · React 19 · TypeScript · CALL-E TypeScript SDK 0.6.0 · Vitest · custom CSS
+Next.js 16 · React 19 · TypeScript · Stripe 22 · CALL-E TypeScript SDK 0.6.0 · Vitest · custom CSS
 
 ## Status and scope
 
-This is a functional hackathon prototype created during the competition period. The complete zero-call demo path, policy block, evidence inspection, RFQ approval, ledger, graph, search, keyboard dismissal, and production build are tested. Live CALL-E integration is implemented but disabled on the public deployment; a commercial rollout would enable it only inside authenticated, metered tenants with consenting allow-listed recipients. ERP writeback, durable multi-tenant storage, SSO, and production supplier consent management are deliberately outside the prototype scope.
+The public product proof and the paid, managed Private Pilot funnel are implemented. The complete zero-call demo path, policy block, evidence inspection, RFQ approval, ledger, graph, search, billing entitlement, and production build are tested. Live CALL-E integration remains disabled on the public deployment and can be enabled only in a paid, customer-isolated environment with consenting allow-listed recipients. This is a sellable founder-led pilot, not yet an unrestricted self-service SaaS: durable multi-tenant storage, SSO, automated tenant provisioning, production consent records, quotas, and ERP writeback remain scale-stage work.
 
 ## License
 

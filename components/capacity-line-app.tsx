@@ -549,6 +549,7 @@ export function CapacityLineApp() {
               ) : <kbd>Ctrl K</kbd>}
             </label>
             <button className="guide-button" onClick={() => setShowGuide(true)}><Route size={14} /> Demo guide</button>
+            <a className="pilot-button" href="/pilot"><LockKeyhole size={14} /> Private pilot</a>
             <div className="demo-chip"><Sparkles size={14} /> Zero-call demo</div>
           </div>
         </header>
@@ -855,11 +856,11 @@ export function CapacityLineApp() {
                   {launchMode === "live" && <CheckCircle2 size={18} />}
                 </button>
               ) : (
-                <div className="private-pilot-card">
+                <a className="private-pilot-card" href="/pilot">
                   <span><LockKeyhole size={18} /></span>
                   <div><strong>Private live pilot</strong><small>Authenticated + metered deployments only</small></div>
-                  <ShieldCheck size={18} />
-                </div>
+                  <ArrowRight size={18} />
+                </a>
               )}
             </div>
 
