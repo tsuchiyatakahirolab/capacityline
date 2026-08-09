@@ -84,8 +84,13 @@ Before the final edit, record one short CALL-E call to the entrant's or a teamma
 
 Replace no more than 10–12 seconds of the 0:30–1:08 section. Never publish the API key or full phone number. If a live insert cannot be completed, do not imply that a live call was executed; say that the live integration is implemented and use the safe demo honestly.
 
-## Ready-to-record visual asset
+## Ready-to-record visual assets
 
+- `/capacityline-recovery-film.mp4` — 12-second muted brand sequence without an on-screen duration label.
+- `/recovery-film-01-exception.webp` — Exception still and film poster.
+- `/recovery-film-02-evidence.webp` — Evidence chapter still.
+- `/recovery-film-03-decision.webp` — Human-decision chapter still.
+- `/recovery-film-storyboard-v1.png` — complete sequence storyboard.
 - `/capacityline-manifesto-v2.webp` — opening and final campaign frame.
 
 Only the consenting CALL-E insert may be labeled live proof.
