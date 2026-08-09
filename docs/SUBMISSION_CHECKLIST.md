@@ -18,18 +18,18 @@ The [Devpost overview](https://call-e.devpost.com/) and [official rules](https:/
 
 ## Required CALL-E repository PR
 
-- [ ] Fork [CALLE-AI/awesome-phone-call-agents](https://github.com/CALLE-AI/awesome-phone-call-agents).
-- [ ] Use branch `feat/capacityline-supply-recovery`.
-- [ ] Add the CapacityLine user-facing app contribution under `apps/typescript/capacityline/` or an approved concise app entry.
-- [ ] Document setup, side effects, credentials, no-call default, idempotency, and cancellation limitations.
-- [ ] Use English-only repository-facing content and masked/fictional numbers.
-- [ ] Run `python3 scripts/validate_repository.py` in the fork.
-- [ ] Open PR with title `feat(capacityline): add supply recovery desk`.
-- [ ] Add the PR URL to Devpost.
+- [x] Fork [CALLE-AI/awesome-phone-call-agents](https://github.com/CALLE-AI/awesome-phone-call-agents).
+- [x] Use branch `feat/capacityline-supply-recovery`.
+- [x] Add the CapacityLine user-facing app contribution under `apps/typescript/capacityline/` or an approved concise app entry.
+- [x] Document setup, side effects, credentials, no-call default, idempotency, and cancellation limitations.
+- [x] Use English-only repository-facing content and masked/fictional numbers.
+- [x] Run `python3 scripts/validate_repository.py` in the fork.
+- [x] Open PR with title `feat(capacityline): add supply recovery desk`.
+- [x] Add the PR URL to Devpost.
 
 ## Demo deployment
 
-- [ ] Deploy a production build over HTTPS.
+- [x] Deploy a production build over HTTPS.
 - [ ] Set `NEXT_PUBLIC_APP_URL` to the final HTTPS origin before the deployment build.
 - [ ] Set `CALLE_API_KEY` only as a server secret if live judge testing is offered.
 - [ ] Set `CALLE_ALLOWED_NUMBERS` for coordinated live testing.

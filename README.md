@@ -6,6 +6,8 @@ CapacityLine is an AI supply recovery desk that calls pre-approved backup suppli
 
 Built for the **Most Practical Use Case** prize in [CALL-E: Your Code Is Calling](https://call-e.devpost.com/).
 
+**[Open the live demo](https://capacityline.vercel.app)** — choose **Safe demo** to run the complete fictional scenario with no phone call.
+
 > The included scenario, suppliers, transcripts, impact figures, and benchmark times are fictional. Demo mode never creates a phone call.
 
 ## The problem

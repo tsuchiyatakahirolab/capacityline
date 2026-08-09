@@ -72,7 +72,7 @@ CALL-E · TypeScript · Next.js · React · Vitest
 
 ## Testing instructions
 
-1. Open the demo URL.
+1. Open [capacityline.vercel.app](https://capacityline.vercel.app).
 2. Click **Run recovery sprint**.
 3. Keep **Safe demo** selected and click **Run 12-minute scenario**. No calls are created.
 4. Wait approximately six seconds for the accelerated results.
@@ -86,10 +86,10 @@ First-time testers can instead click **Demo guide** and follow the same path fro
 
 Live testing is opt-in and requires the entrant-provided server configuration plus consenting E.164 test numbers. Judges should use Safe demo unless live testing has been coordinated.
 
-## Links to complete before submission
+## Submission links
 
-- Demo app: `TBD`
-- Source repository: `TBD`
-- CALL-E awesome repository pull request: `TBD`
+- Demo app: https://capacityline.vercel.app
+- Source repository: https://github.com/tsuchiyatakahirolab/capacityline
+- CALL-E awesome repository pull request: https://github.com/CALLE-AI/awesome-phone-call-agents/pull/129
 - YouTube/Vimeo video: `TBD`
 - CALL-E account email: enter privately in the Devpost form
