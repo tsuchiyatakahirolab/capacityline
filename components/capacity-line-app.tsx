@@ -145,6 +145,7 @@ export function CapacityLineApp() {
   const [approvedSupplierId, setApprovedSupplierId] = useState<string | null>(null);
   const [showLaunch, setShowLaunch] = useState(false);
   const [launchMode, setLaunchMode] = useState<LaunchMode>("demo");
+  const [apiKeyReady, setApiKeyReady] = useState(false);
   const [liveReady, setLiveReady] = useState(false);
   const [allowListEnabled, setAllowListEnabled] = useState(false);
   const [livePhones, setLivePhones] = useState<Record<string, string>>({});
@@ -158,11 +159,13 @@ export function CapacityLineApp() {
   const [showGuide, setShowGuide] = useState(false);
   const timers = useRef<number[]>([]);
   const searchInput = useRef<HTMLInputElement>(null);
+  const shell = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/health")
       .then((response) => response.json())
-      .then((data: { liveReady?: boolean; allowListEnabled?: boolean }) => {
+      .then((data: { apiKeyReady?: boolean; liveReady?: boolean; allowListEnabled?: boolean }) => {
+        setApiKeyReady(Boolean(data.apiKeyReady));
         setLiveReady(Boolean(data.liveReady));
         setAllowListEnabled(Boolean(data.allowListEnabled));
       })
@@ -302,7 +305,7 @@ export function CapacityLineApp() {
   async function runLive() {
     const chosen = suppliers.filter((supplier) => livePhones[supplier.id]?.trim());
     if (!liveReady) {
-      setError("Add CALLE_API_KEY on the server before using live mode.");
+      setError("Live mode requires both the CALL-E server key and a recipient allow-list.");
       return;
     }
     if (chosen.length === 0) {
@@ -452,8 +455,24 @@ export function CapacityLineApp() {
     },
   ];
 
+  const trackPointer = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    if (!shell.current) return;
+    shell.current.style.setProperty("--pointer-x", `${event.clientX}px`);
+    shell.current.style.setProperty("--pointer-y", `${event.clientY}px`);
+  }, []);
+
   return (
-    <div className="app-shell">
+    <div
+      className="app-shell"
+      data-phase={phase}
+      data-view={view}
+      onPointerMove={trackPointer}
+      ref={shell}
+    >
+      <div className="kinetic-atmosphere" aria-hidden="true">
+        <i className="atmosphere-grid" />
+        <i className="atmosphere-glow" />
+      </div>
       <aside className="sidebar">
         <div className="brand-lockup">
           <div className="brand-mark"><span /><span /><span /></div>
@@ -499,6 +518,19 @@ export function CapacityLineApp() {
       </aside>
 
       <main className="main-content">
+        <div className="signal-ticker" aria-hidden="true">
+          <div className="signal-ticker-track">
+            {[0, 1].map((copy) => (
+              <div className="signal-ticker-set" key={copy}>
+                <span><i /> INCIDENT {DEMO_INCIDENT.id}</span>
+                <span>6,000 UNIT SHORTFALL</span>
+                <span>OSAKA / E-DRIVE LINE 2</span>
+                <span>{phase === "ready" ? "RECOVERY WINDOW OPEN" : phase === "running" ? "PARALLEL CALLS LIVE" : "DECISION EVIDENCE READY"}</span>
+                <span>HUMAN AUTHORITY REQUIRED</span>
+              </div>
+            ))}
+          </div>
+        </div>
         <header className="topbar">
           <div>
             <div className="eyebrow">NORTHSTAR MOBILITY / OSAKA PLANT</div>
@@ -540,7 +572,7 @@ export function CapacityLineApp() {
                   <span>{DEMO_INCIDENT.id}</span>
                   <span>Opened 4 min ago</span>
                 </div>
-                <h2>Recover supply before the line stops.</h2>
+                <h2><span>Recover supply.</span><em>Before the line stops.</em></h2>
                 <p>
                   {DEMO_INCIDENT.incumbentSupplier} reported an unplanned outage. Verify live capacity
                   across approved backups and surface the first actionable fallback.
@@ -552,18 +584,34 @@ export function CapacityLineApp() {
                 </div>
               </div>
               <div className="countdown-card">
-                <span>ESTIMATED LINE STOP</span>
-                <Countdown />
-                <small>AUG 11 · 09:30 JST</small>
-                {phase === "ready" ? (
-                  <button className="primary-button" onClick={() => setShowLaunch(true)}>
-                    <Play size={16} fill="currentColor" /> Run recovery sprint
-                  </button>
-                ) : (
-                  <button className="secondary-button inverse" onClick={reset}>
-                    <RotateCcw size={15} /> Reset scenario
-                  </button>
-                )}
+                <div className="radar-stage" aria-hidden="true">
+                  <i className="radar-ring radar-ring-one" />
+                  <i className="radar-ring radar-ring-two" />
+                  <i className="radar-ring radar-ring-three" />
+                  <i className="radar-crosshair horizontal" />
+                  <i className="radar-crosshair vertical" />
+                  <i className="radar-sweep" />
+                  <span className="radar-core"><PhoneCall size={19} /></span>
+                  {suppliers.map((supplier, index) => (
+                    <span className={`radar-node radar-node-${index + 1} radar-${supplier.status}`} key={supplier.id}>
+                      <i />{supplier.countryCode}
+                    </span>
+                  ))}
+                </div>
+                <div className="countdown-panel">
+                  <span>TIME UNTIL LINE STOP</span>
+                  <Countdown />
+                  <small>AUG 11 · 09:30 JST</small>
+                  {phase === "ready" ? (
+                    <button className="primary-button" onClick={() => setShowLaunch(true)}>
+                      <Play size={16} fill="currentColor" /> Run recovery sprint
+                    </button>
+                  ) : (
+                    <button className="secondary-button inverse" onClick={reset}>
+                      <RotateCcw size={15} /> Reset scenario
+                    </button>
+                  )}
+                </div>
               </div>
             </section>
 
@@ -804,7 +852,7 @@ export function CapacityLineApp() {
               </button>
               <button className={launchMode === "live" ? "selected" : ""} onClick={() => { setLaunchMode("live"); setError(null); }}>
                 <span><Activity size={18} /></span>
-                <div><strong>Live CALL-E</strong><small>{liveReady ? "Server key detected" : "API key required"}</small></div>
+                <div><strong>Live CALL-E</strong><small>{liveReady ? "Key + allow-list ready" : apiKeyReady ? "Recipient allow-list required" : "API key required"}</small></div>
                 {launchMode === "live" && <CheckCircle2 size={18} />}
               </button>
             </div>

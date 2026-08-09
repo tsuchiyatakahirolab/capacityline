@@ -13,3 +13,7 @@ export function getAllowedNumbers() {
       .filter(Boolean),
   );
 }
+
+export function isRecipientAllowListConfigured(allowedNumbers = getAllowedNumbers()) {
+  return allowedNumbers.size > 0;
+}

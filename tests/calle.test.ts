@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { GET as getHealth } from "@/app/api/health/route";
 import { buildCreateCallInput, buildRecoveryTask } from "@/lib/calle-schema";
 import { DEMO_INCIDENT } from "@/lib/demo-data";
+import { getAllowedNumbers, isRecipientAllowListConfigured } from "@/lib/phone";
 
 describe("CALL-E recovery payload", () => {
   it("states the commercial boundary and required evidence in the call task", () => {
@@ -34,5 +36,40 @@ describe("CALL-E recovery payload", () => {
       type: "object",
       additionalProperties: false,
     });
+  });
+
+  it("treats an empty server recipient allow-list as unconfigured", () => {
+    const previousAllowList = process.env.CALLE_ALLOWED_NUMBERS;
+    delete process.env.CALLE_ALLOWED_NUMBERS;
+
+    try {
+      expect(isRecipientAllowListConfigured(getAllowedNumbers())).toBe(false);
+      process.env.CALLE_ALLOWED_NUMBERS = "+14155550100";
+      expect(isRecipientAllowListConfigured(getAllowedNumbers())).toBe(true);
+    } finally {
+      if (previousAllowList === undefined) delete process.env.CALLE_ALLOWED_NUMBERS;
+      else process.env.CALLE_ALLOWED_NUMBERS = previousAllowList;
+    }
+  });
+
+  it("reports live readiness only when both the key and allow-list are configured", async () => {
+    const previousKey = process.env.CALLE_API_KEY;
+    const previousAllowList = process.env.CALLE_ALLOWED_NUMBERS;
+    process.env.CALLE_API_KEY = "test-key";
+    delete process.env.CALLE_ALLOWED_NUMBERS;
+
+    try {
+      const locked = await getHealth().json();
+      expect(locked).toMatchObject({ apiKeyReady: true, allowListEnabled: false, liveReady: false });
+
+      process.env.CALLE_ALLOWED_NUMBERS = "+14155550100";
+      const ready = await getHealth().json();
+      expect(ready).toMatchObject({ apiKeyReady: true, allowListEnabled: true, liveReady: true });
+    } finally {
+      if (previousKey === undefined) delete process.env.CALLE_API_KEY;
+      else process.env.CALLE_API_KEY = previousKey;
+      if (previousAllowList === undefined) delete process.env.CALLE_ALLOWED_NUMBERS;
+      else process.env.CALLE_ALLOWED_NUMBERS = previousAllowList;
+    }
   });
 });

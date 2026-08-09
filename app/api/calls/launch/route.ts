@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createRecoveryCall } from "@/lib/calle";
 import { DEMO_INCIDENT } from "@/lib/demo-data";
-import { E164_PATTERN, getAllowedNumbers } from "@/lib/phone";
+import { E164_PATTERN, getAllowedNumbers, isRecipientAllowListConfigured } from "@/lib/phone";
 import type { LiveRecipient } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -54,7 +54,10 @@ export async function POST(request: Request) {
   }
 
   const allowedNumbers = getAllowedNumbers();
-  if (allowedNumbers.size > 0 && recipients.some((recipient) => !allowedNumbers.has(recipient.phone))) {
+  if (!isRecipientAllowListConfigured(allowedNumbers)) {
+    return invalid("Live calls are locked until a server-side recipient allow-list is configured.", 503);
+  }
+  if (recipients.some((recipient) => !allowedNumbers.has(recipient.phone))) {
     return invalid("A recipient is outside the server-side live-call allow-list.", 403);
   }
 
