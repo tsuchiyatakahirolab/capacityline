@@ -686,8 +686,8 @@ export function CapacityLineApp() {
               </article>
               <article className="metric-card">
                 <div className="metric-icon amber"><Headphones size={19} /></div>
-                <div><span>LIVE COMMITMENTS</span><strong>{completedCount}<em> / {suppliers.length}</em></strong></div>
-                <small>{phase === "running" ? "Calls in progress" : "Transcript-grounded"}</small>
+                <div><span>REPLAYED COMMITMENTS</span><strong>{completedCount}<em> / {suppliers.length}</em></strong></div>
+                <small>{phase === "running" ? "Replay in progress" : "Transcript-grounded replay"}</small>
               </article>
               <article className="metric-card">
                 <div className="metric-icon blue"><CircleDollarSign size={19} /></div>
@@ -699,7 +699,7 @@ export function CapacityLineApp() {
             <section className="workspace-grid">
               <article className="panel supplier-panel">
                 <div className="panel-header">
-                  <div><span className="panel-kicker">PARALLEL OUTREACH</span><h3>Approved backup suppliers</h3></div>
+                  <div><span className="panel-kicker">SIMULATED PARALLEL OUTREACH</span><h3>Approved backup suppliers</h3></div>
                   <div className="panel-header-meta">
                     {phase === "running" && <span className="live-pill"><i /> REPLAY</span>}
                     <span>{completedCount} of {suppliers.length} returned</span>
@@ -750,7 +750,7 @@ export function CapacityLineApp() {
                   )}
                 </div>
                 <div className="table-footnote">
-                  <ShieldCheck size={15} /> Only pre-approved or conditionally approved contacts are callable. A human approves every commercial next step.
+                  <ShieldCheck size={15} /> This public replay never calls these fictional contacts. Private live deployments require allow-listed consent and human approval.
                 </div>
               </article>
 
