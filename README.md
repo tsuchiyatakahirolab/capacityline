@@ -86,7 +86,8 @@ A private live deployment fails closed unless all of these gates pass:
 2. the customer has a valid signed, httpOnly billing entitlement;
 3. `CALLE_API_KEY` exists only on the private server;
 4. every consenting E.164 recipient is in `CALLE_ALLOWED_NUMBERS`;
-5. the operator explicitly confirms `AUTHORIZE CALLS`.
+5. the operator records the operational purpose, existing supplier relationship, consent reference, jurisdiction/calling-window review, and approved disclosure script;
+6. the operator explicitly confirms `AUTHORIZE SUPPLIER RECOVERY`.
 
 Checkout, activation, Customer Portal, and signature-verified Stripe webhooks are implemented at `/api/billing/*` and `/api/webhooks/stripe`. The launch route re-queries Stripe before contacting CALL-E, so cancellation, nonpayment, or an unverifiable subscription blocks the provider request.
 
@@ -97,7 +98,7 @@ To configure a private pilot locally:
 3. Set `STRIPE_SECRET_KEY`, `STRIPE_PILOT_PRICE_ID`, and a random `BILLING_SESSION_SECRET` of at least 32 characters.
 4. Configure a Stripe webhook for `/api/webhooks/stripe` and set `STRIPE_WEBHOOK_SECRET`.
 5. Set `CALLE_API_KEY` and `CALLE_ALLOWED_NUMBERS` to only the consenting pilot recipients.
-6. Restart the server, purchase the pilot in Stripe test mode, then open the launch dialog, choose **Live CALL-E**, enter E.164 numbers, confirm contact authorization, and type `AUTHORIZE CALLS`.
+6. Restart the server, purchase the pilot in Stripe test mode, then open the launch dialog, choose **Private live pilot**, enter E.164 numbers, complete the authority record, and type `AUTHORIZE SUPPLIER RECOVERY`.
 
 Live mode creates real outbound calls and may incur charges. It is reserved for paid, customer-isolated pilot environments and consenting recipients. The UI masks demo numbers; no real contact data is committed to this repository. See the [Private Pilot runbook](docs/PRIVATE_PILOT_RUNBOOK.md).
 

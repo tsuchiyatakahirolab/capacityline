@@ -22,7 +22,9 @@ export interface RecoveryIncident {
   id: string;
   title: string;
   cause: string;
+  buyerOrganization: string;
   plant: string;
+  plantTimeZone: string;
   productionLine: string;
   partNumber: string;
   partName: string;
@@ -92,7 +94,19 @@ export interface SupplierEvaluation {
 
 export interface LiveRecipient {
   supplierId: string;
+  supplierName: string;
   phone: string;
   region: string;
   locale: string;
+}
+
+export interface CallComplianceProfile {
+  purpose: "supplier_capacity_verification";
+  operatorName: string;
+  consentReference: string;
+  operationalPurposeConfirmed: true;
+  existingBusinessRelationship: true;
+  priorExpressConsent: true;
+  jurisdictionAndCallingWindowReviewed: true;
+  disclosureScriptApproved: true;
 }

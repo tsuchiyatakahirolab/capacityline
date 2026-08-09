@@ -20,7 +20,8 @@ Every live run requires all of the following:
 4. Between one and eight recipients are supplied.
 5. Every number is valid E.164.
 6. The operator affirms authorization to contact those business recipients.
-7. The operator types the exact confirmation `AUTHORIZE CALLS`.
+7. The operator records operational purpose, existing relationship, consent evidence, regional calling review, and disclosure approval.
+8. The operator types the exact confirmation `AUTHORIZE SUPPLIER RECOVERY`.
 8. `CALLE_ALLOWED_NUMBERS` is non-empty and every number is on that server-side allow-list.
 9. The request receives an idempotency key to prevent accidental duplicate creation on network retry.
 

@@ -9,6 +9,9 @@ describe("CALL-E recovery payload", () => {
     const task = buildRecoveryTask(DEMO_INCIDENT);
 
     expect(task).toContain("AI calling assistant");
+    expect(task).toContain("Northstar Mobility");
+    expect(task).toContain("not marketing or sales prospecting");
+    expect(task).toContain("transcribed for a decision record");
     expect(task).toContain("Do not place an order");
     expect(task).toContain("IATF 16949");
     expect(task).toContain("Return only facts established during this call");
@@ -20,17 +23,29 @@ describe("CALL-E recovery payload", () => {
       [
         {
           supplierId: "sup-kanto",
+          supplierName: "Kanto Flow Systems",
           phone: "+14155550100",
           region: "US",
           locale: "en-US",
         },
       ],
       "https://example.test/api/webhooks/calle",
+      {
+        purpose: "supplier_capacity_verification",
+        operatorName: "Morgan Reed",
+        consentReference: "CONSENT-017",
+        operationalPurposeConfirmed: true,
+        existingBusinessRelationship: true,
+        priorExpressConsent: true,
+        jurisdictionAndCallingWindowReviewed: true,
+        disclosureScriptApproved: true,
+      },
     );
 
     expect(input.recipients).toHaveLength(1);
     expect(input.metadata?.supplier_ids).toEqual(["sup-kanto"]);
     expect(input.metadata?.human_approval_required).toBe(true);
+    expect(input.metadata?.consent_reference).toBe("CONSENT-017");
     expect(input.webhookUrl).toContain("/api/webhooks/calle");
     expect(input.recipientResultSchema).toMatchObject({
       type: "object",

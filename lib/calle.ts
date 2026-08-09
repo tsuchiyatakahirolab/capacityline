@@ -2,7 +2,7 @@ import "server-only";
 
 import { CalleClient, type Call } from "@call-e/calle";
 import { buildCreateCallInput } from "@/lib/calle-schema";
-import type { LiveRecipient, RecoveryIncident } from "@/lib/types";
+import type { CallComplianceProfile, LiveRecipient, RecoveryIncident } from "@/lib/types";
 
 function getClient() {
   const apiKey = process.env.CALLE_API_KEY;
@@ -19,9 +19,10 @@ export async function createRecoveryCall(
   incident: RecoveryIncident,
   recipients: LiveRecipient[],
   idempotencyKey: string,
+  compliance: CallComplianceProfile,
 ): Promise<Call> {
   return getClient().calls.create(
-    buildCreateCallInput(incident, recipients, process.env.CALLE_WEBHOOK_URL),
+    buildCreateCallInput(incident, recipients, process.env.CALLE_WEBHOOK_URL, compliance),
     { idempotencyKey },
   );
 }

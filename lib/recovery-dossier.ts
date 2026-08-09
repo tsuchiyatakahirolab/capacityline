@@ -13,6 +13,7 @@ export interface RecoveryDossierInput {
   approvedSupplierId: string | null;
   decisionLatencySeconds: number | null;
   runMode: "demo" | "live";
+  authorityRecord?: { operatorName: string; consentReference: string } | null;
   generatedAt?: string;
 }
 
@@ -57,6 +58,15 @@ export function buildRecoveryDossier(input: RecoveryDossierInput) {
       unknownAnswersFailClosed: true,
       humanApprovalRequired: true,
       purchaseOrderAuthority: false,
+      launchAuthority: input.authorityRecord ? {
+        operatorName: input.authorityRecord.operatorName,
+        consentReference: input.authorityRecord.consentReference,
+        operationalPurposeConfirmed: true,
+        existingBusinessRelationshipConfirmed: true,
+        priorExpressConsentConfirmed: true,
+        jurisdictionAndCallingWindowReviewed: true,
+        disclosureScriptApproved: true,
+      } : null,
     },
     outcomes,
   };
@@ -72,7 +82,7 @@ export function buildCommitmentCsv(input: RecoveryDossierInput) {
     "incident_id", "supplier_id", "supplier_name", "disposition", "fit_score",
     "quantity_available", "earliest_ship_date", "unit_price", "currency", "part",
     "origin", "respondent", "authority_confirmed", "evidence_confidence",
-    "evidence_quote", "failed_checks", "rfq_handoff_approved",
+    "evidence_quote", "failed_checks", "rfq_handoff_approved", "operator_name", "consent_reference",
   ];
   const rows = input.suppliers
     .filter((supplier) => supplier.id in input.commitments)
@@ -90,6 +100,8 @@ export function buildCommitmentCsv(input: RecoveryDossierInput) {
         commitment?.evidenceQuote,
         evaluation?.checks.filter((check) => !check.passed).map((check) => check.label).join(" | "),
         input.approvedSupplierId === supplier.id,
+        input.authorityRecord?.operatorName,
+        input.authorityRecord?.consentReference,
       ].map(csvCell).join(",");
     });
   return [headers.map(csvCell).join(","), ...rows].join("\r\n");

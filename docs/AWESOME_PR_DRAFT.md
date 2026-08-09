@@ -24,7 +24,7 @@ Adds CapacityLine, a runnable TypeScript/Next.js CALL-E app for manufacturing su
 ## Safety and side effects
 
 - Safe demo is the default and creates no call.
-- Live mode requires a server API key, valid E.164 numbers, explicit contact authorization, and the typed phrase `AUTHORIZE CALLS`.
+- Live mode requires a server API key, valid E.164 numbers, a complete operational authority profile, and the typed phrase `AUTHORIZE SUPPLIER RECOVERY`.
 - An optional server-side allow-list restricts live demo recipients.
 - Stable idempotency keys prevent duplicate task creation on retry.
 - The task discloses AI identity and purpose, respects refusals, and forbids purchase or payment commitments.

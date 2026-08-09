@@ -14,6 +14,8 @@ describe("validateRecoveryIncident", () => {
     if (result.ok) {
       expect(result.value.requirements.quantity).toBe(6_000);
       expect(result.value.requirements.currency).toBe("USD");
+      expect(result.value.buyerOrganization).toBe("Northstar Mobility");
+      expect(result.value.plantTimeZone).toBe("Asia/Tokyo");
     }
   });
 
@@ -23,6 +25,11 @@ describe("validateRecoveryIncident", () => {
       requirements: { ...DEMO_INCIDENT.requirements, approvedSubstituteParts: [] },
     });
 
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects an invalid plant time zone", () => {
+    const result = validateRecoveryIncident({ ...DEMO_INCIDENT, plantTimeZone: "Central-ish" });
     expect(result.ok).toBe(false);
   });
 });

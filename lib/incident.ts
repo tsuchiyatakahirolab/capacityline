@@ -44,6 +44,16 @@ function cleanDate(value: unknown, label: string) {
   return date;
 }
 
+function cleanTimeZone(value: unknown) {
+  const timeZone = cleanText(value, "Plant time zone", 64);
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone }).format(new Date());
+  } catch {
+    throw new Error("Plant time zone must be a valid IANA time zone, for example America/Chicago.");
+  }
+  return timeZone;
+}
+
 export function validateRecoveryIncident(value: unknown): ValidationResult {
   try {
     if (!isRecord(value) || !isRecord(value.requirements)) {
@@ -61,7 +71,9 @@ export function validateRecoveryIncident(value: unknown): ValidationResult {
         id: cleanText(value.id, "Incident ID", 48),
         title: cleanText(value.title, "Incident title"),
         cause: cleanText(value.cause, "Incident cause", 240),
+        buyerOrganization: cleanText(value.buyerOrganization, "Buyer organization"),
         plant: cleanText(value.plant, "Plant"),
+        plantTimeZone: cleanTimeZone(value.plantTimeZone),
         productionLine: cleanText(value.productionLine, "Production line"),
         partNumber: cleanText(value.partNumber, "Part number", 64),
         partName: cleanText(value.partName, "Part name"),

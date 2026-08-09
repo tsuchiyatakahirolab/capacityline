@@ -88,6 +88,8 @@ input:focus-visible {
   align-items: center;
   gap: 11px;
   padding: 2px 7px 26px;
+  color: inherit;
+  text-decoration: none;
 }
 
 .brand-lockup strong {
@@ -818,7 +820,7 @@ input:focus-visible {
 
 .launch-modal {
   position: relative;
-  width: min(610px, 100%);
+  width: min(760px, 100%);
   max-height: calc(100vh - 40px);
   overflow: auto;
   padding: 26px;
@@ -868,13 +870,34 @@ input:focus-visible {
 .phone-input-list label small { margin-left: 6px; color: #89938e; font-size: 7px; }
 .phone-input-list input,
 .confirmation-field input { width: 100%; min-height: 32px; padding: 0 9px; border: 1px solid #d8dfda; border-radius: 7px; background: #fff; font-family: Consolas, monospace; font-size: 9px; }
+.live-roster { padding: 8px; border: 1px solid #dfe5e0; border-radius: 7px; background: #f6f8f6; }
+.live-roster-head,
+.live-recipient-row { display: grid; grid-template-columns: minmax(150px, 1.2fr) 62px 76px minmax(145px, 1fr); gap: 7px; }
+.live-roster-head { padding: 0 2px 6px; color: #7a8780; font: 700 7px/1 Consolas, monospace; letter-spacing: .05em; text-transform: uppercase; }
+.live-recipient-row + .live-recipient-row { margin-top: 6px; }
+.live-recipient-row input { min-width: 0; }
 .allowlist-note { display: flex; align-items: center; gap: 5px; margin-top: 9px; color: var(--green); font-size: 8px; }
+.compliance-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.compliance-fields label { display: grid; gap: 5px; }
+.compliance-fields span { color: #6b7870; font-size: 8px; }
+.compliance-fields input { width: 100%; min-height: 35px; padding: 0 9px; border: 1px solid #d8dfda; border-radius: 7px; background: #fff; font-size: 9px; }
+.compliance-checklist { display: grid; gap: 0; margin-top: 11px; padding: 5px 10px; border: 1px solid #dfe5e0; border-radius: 7px; background: #f6f8f6; }
 .consent-check { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; color: #5f6f66; font-size: 8.5px; line-height: 1.4; }
+.compliance-checklist .consent-check { margin-top: 0; padding: 6px 0; }
+.compliance-checklist .consent-check + .consent-check { border-top: 1px solid #e4e9e5; }
 .consent-check input { accent-color: var(--green); }
 .confirmation-field { display: grid; gap: 5px; margin-top: 10px; }
 .confirmation-field span { color: #6b7870; font-size: 8px; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 17px; }
 .modal-foot { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; color: #7a8780; font-size: 7.5px; }
+
+@media (max-width: 560px) {
+  .compliance-fields { grid-template-columns: 1fr; }
+  .live-roster-head { display: none; }
+  .live-recipient-row { grid-template-columns: 1fr 55px 72px; padding: 7px 0; }
+  .live-recipient-row + .live-recipient-row { border-top: 1px solid #dfe5e0; }
+  .live-recipient-row input:last-child { grid-column: 1 / -1; }
+}
 
 .drawer-backdrop { z-index: 60; place-items: stretch end; padding: 0; background: rgba(7,18,14,.42); }
 .supplier-drawer { width: min(490px, 100%); height: 100vh; display: flex; flex-direction: column; background: #f7f8f6; box-shadow: -25px 0 65px rgba(6,22,14,.22); animation: drawer-in .22s ease-out; }

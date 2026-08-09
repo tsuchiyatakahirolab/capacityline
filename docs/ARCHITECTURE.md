@@ -22,7 +22,7 @@ Outputs:
 
 1. The public browser runs the fictional **Safe demo** with no external side effect.
 2. A pilot customer subscribes through Stripe-hosted Checkout; the return is bound to the initiating browser and creates a short-lived, signed httpOnly entitlement.
-3. A customer-isolated deployment collects consenting E.164 recipients and an explicit `AUTHORIZE CALLS` confirmation.
+3. A customer-isolated deployment collects consenting E.164 recipients, an auditable operational authority profile, and an explicit `AUTHORIZE SUPPLIER RECOVERY` confirmation.
 4. `POST /api/calls/launch` re-verifies the exact Stripe subscription, server CALL-E key, mandatory recipient allow-list, and authorization.
 5. The server builds a goal-driven batch task and strict per-recipient schema.
 6. The official CALL-E TypeScript SDK creates the call task with an idempotency key.

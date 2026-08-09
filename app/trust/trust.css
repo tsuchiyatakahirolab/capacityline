@@ -1,0 +1,41 @@
+.trust-page { min-height: 100vh; color: #17241e; background: #f0eee6; }
+.trust-header { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 0 clamp(22px, 4vw, 70px); color: #e9efeb; border-bottom: 1px solid rgba(215,255,99,.13); background: #06110c; }
+.trust-header nav { display: flex; align-items: center; gap: 24px; }
+.trust-header nav a { display: flex; align-items: center; gap: 6px; color: #9aaca2; text-decoration: none; font: 700 8px/1 Consolas, monospace; letter-spacing: .07em; }
+.trust-header nav a:last-child { padding: 11px 13px; color: #07130d; background: #d7ff63; }
+.trust-hero { min-height: 590px; display: grid; grid-template-columns: 1fr .55fr; align-items: center; gap: 60px; padding: 80px clamp(25px, 7vw, 125px); color: #e7eee9; background: radial-gradient(circle at 8% 12%, rgba(215,255,99,.11), transparent 29%), linear-gradient(rgba(215,255,99,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(215,255,99,.035) 1px, transparent 1px), #06110c; background-size: auto, 34px 34px, 34px 34px, auto; }
+.trust-hero > div:first-child > span,
+.scope-heading > span,
+.control-heading > span,
+.truth-copy > span,
+.regional-heading > span,
+.trust-contact span { color: #8ea096; font: 750 8px/1 Consolas, monospace; letter-spacing: .16em; }
+.trust-hero h1 { margin: 24px 0; font: 300 clamp(55px, 7vw, 104px)/.9 "Arial Narrow", Bahnschrift, sans-serif; letter-spacing: -.08em; }
+.trust-hero h1 em { color: #d7ff63; font-family: Georgia, serif; font-size: .73em; font-weight: 400; }
+.trust-hero p { max-width: 700px; margin: 0; color: #9eafa6; font-size: 12px; line-height: 1.8; }
+.scope-seal { position: relative; width: min(330px, 100%); aspect-ratio: 1; display: grid; place-items: center; align-content: center; gap: 12px; margin: auto; color: #d7ff63; border: 1px solid rgba(215,255,99,.3); border-radius: 50%; box-shadow: inset 0 0 50px rgba(215,255,99,.04), 0 0 0 32px rgba(215,255,99,.018), 0 0 0 64px rgba(215,255,99,.01); }
+.scope-seal::after { content: ""; position: absolute; inset: -7px; border: 1px dashed rgba(215,255,99,.17); border-radius: 50%; animation: trust-orbit 18s linear infinite; }
+.scope-seal strong { font: 800 18px/1 Consolas, monospace; letter-spacing: .12em; }.scope-seal span { color: #87a094; font: 700 7px/1 Consolas, monospace; letter-spacing: .16em; }
+.scope-section { display: grid; grid-template-columns: .65fr 1.35fr; gap: clamp(40px, 7vw, 120px); padding: clamp(80px, 10vw, 145px) clamp(24px, 6vw, 110px); }
+.scope-heading h2,
+.control-heading h2,
+.truth-copy h2,
+.regional-heading h2 { margin: 18px 0; font: 400 clamp(39px, 5vw, 68px)/1 Georgia, serif; letter-spacing: -.055em; }
+.scope-statements { border-top: 1px solid rgba(18,48,31,.2); }
+.scope-statements article { min-height: 120px; display: grid; grid-template-columns: 35px .72fr 1fr; align-items: center; gap: 18px; border-bottom: 1px solid rgba(18,48,31,.14); }
+.scope-statements svg { color: #347651; }.scope-statements strong { font: 400 18px/1.2 Georgia, serif; }.scope-statements p { margin: 0; color: #68776f; font-size: 10px; line-height: 1.6; }
+.control-section { display: grid; grid-template-columns: .7fr 1.3fr; gap: clamp(40px, 7vw, 115px); padding: clamp(80px, 10vw, 145px) clamp(24px, 6vw, 110px); color: #e6ede9; background: #07130d; }
+.control-heading { align-self: start; position: sticky; top: 120px; }.control-heading p { color: #91a49a; font-size: 10px; line-height: 1.7; }
+.trust-controls { border-top: 1px solid rgba(215,255,99,.16); }
+.trust-controls article { min-height: 105px; display: grid; grid-template-columns: 48px 1fr; align-items: center; gap: 18px; border-bottom: 1px solid rgba(215,255,99,.12); }
+.trust-controls article > span { color: #d7ff63; font: 700 8px/1 Consolas, monospace; }.trust-controls article div { display: grid; grid-template-columns: .6fr 1fr; gap: 20px; align-items: center; }.trust-controls strong { font: 400 18px/1.2 Georgia, serif; }.trust-controls p { margin: 0; color: #90a299; font-size: 9px; line-height: 1.65; }
+.truth-section { padding: clamp(85px, 10vw, 145px) clamp(24px, 6vw, 110px); background: #f7f5ee; }
+.truth-copy { max-width: 850px; }.truth-copy p { max-width: 650px; color: #697970; font-size: 11px; line-height: 1.7; }
+.truth-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 60px; border: 1px solid rgba(18,48,31,.16); }
+.truth-grid article { min-height: 340px; padding: clamp(27px, 4vw, 50px); }.truth-grid article + article { border-left: 1px solid rgba(18,48,31,.13); }.truth-grid article > span { color: #708079; font: 750 8px/1 Consolas, monospace; letter-spacing: .14em; }.truth-grid ul { display: grid; gap: 15px; margin: 30px 0 0; padding: 0; list-style: none; }.truth-grid li { position: relative; padding-left: 18px; color: #56675d; font-size: 10px; line-height: 1.5; }.truth-grid li::before { content: ""; position: absolute; top: 6px; left: 0; width: 6px; height: 6px; background: #4b8c66; }.truth-grid .truth-now { color: #e4ece7; background: #0b2117; }.truth-grid .truth-now > span { color: #d7ff63; }.truth-grid .truth-now li { color: #b1c0b8; }.truth-grid .truth-now li::before { background: #d7ff63; }
+.regional-section { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(45px, 7vw, 120px); padding: clamp(85px, 10vw, 145px) clamp(24px, 6vw, 110px); background: #e6e3da; }.regional-copy > p { max-width: 760px; margin: 6px 0 34px; color: #607168; font-size: 11px; line-height: 1.8; }.source-list { border-top: 1px solid rgba(18,48,31,.18); }.source-list a { min-height: 79px; display: grid; grid-template-columns: .52fr 1fr; align-items: center; gap: 20px; border-bottom: 1px solid rgba(18,48,31,.14); text-decoration: none; }.source-list a span { color: #74837b; font: 700 7px/1 Consolas, monospace; letter-spacing: .1em; }.source-list strong { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 10px; }.source-list a:hover strong { color: #296446; }
+.trust-contact { min-height: 360px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 32px; padding: 70px clamp(24px, 7vw, 125px); color: #e5ece8; background: #06110c; }.trust-contact > svg { color: #d7ff63; }.trust-contact h2 { max-width: 940px; margin: 15px 0 0; font: 400 clamp(28px, 4vw, 51px)/1.08 Georgia, serif; letter-spacing: -.045em; }.trust-contact > a { min-height: 50px; display: flex; align-items: center; gap: 8px; padding: 0 18px; color: #07130d; background: #d7ff63; text-decoration: none; font-size: 9px; font-weight: 800; white-space: nowrap; }
+.trust-footer { min-height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 0 clamp(24px, 5vw, 90px); color: #6d7d74; background: #06110c; border-top: 1px solid rgba(215,255,99,.1); font: 700 7px/1 Consolas, monospace; letter-spacing: .08em; }.trust-footer div { display: flex; gap: 19px; }.trust-footer a { color: #8ea097; text-decoration: none; }
+@keyframes trust-orbit { to { transform: rotate(360deg); } }
+@media (max-width: 920px) { .trust-hero,.scope-section,.control-section,.regional-section { grid-template-columns: 1fr; }.scope-seal { width: 250px; }.control-heading { position: static; }.truth-grid { grid-template-columns: 1fr; }.truth-grid article + article { border-top: 1px solid rgba(18,48,31,.13); border-left: 0; }.trust-contact { grid-template-columns: auto 1fr; }.trust-contact > a { grid-column: 2; width: max-content; } }
+@media (max-width: 620px) { .trust-header nav a:nth-child(2) { display: none; }.trust-hero { padding: 70px 20px; }.scope-statements article { grid-template-columns: 28px 1fr; padding: 22px 0; }.scope-statements p { grid-column: 2; }.trust-controls article div { grid-template-columns: 1fr; gap: 7px; padding: 20px 0; }.regional-section,.scope-section,.control-section,.truth-section { padding-left: 20px; padding-right: 20px; }.source-list a { grid-template-columns: 1fr; gap: 8px; padding: 18px 0; }.trust-contact { grid-template-columns: 1fr; }.trust-contact > a { grid-column: auto; width: 100%; justify-content: center; }.trust-footer { align-items: flex-start; flex-direction: column; padding-block: 25px; }.trust-footer div { flex-wrap: wrap; } }

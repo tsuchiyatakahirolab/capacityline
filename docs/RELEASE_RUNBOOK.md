@@ -39,7 +39,7 @@ Then:
 1. Start the production build locally.
 2. Open **Run recovery sprint → Live CALL-E**.
 3. Enter only the allow-listed consenting number.
-4. Confirm authorization and type `AUTHORIZE CALLS`.
+4. Complete the operational authority record and type `AUTHORIZE SUPPLIER RECOVERY`.
 5. Record the authorization gate, ringing/call state, returned structured result, and transcript.
 6. Stop after one successful proof; do not call fictional supplier numbers.
 7. Verify `.env.local` remains ignored and no personal data entered Git history.

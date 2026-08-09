@@ -3,22 +3,30 @@ import "./globals.css";
 import "./kinetic.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://capacityline.vercel.app"),
   applicationName: "CapacityLine",
-  title: "CapacityLine — AI Supply Recovery Desk",
+  title: {
+    default: "CapacityLine — Supplier recovery, from exception to evidence",
+    template: "%s",
+  },
   description:
-    "Call approved backup suppliers, verify live capacity, and surface the first actionable fallback before production stops.",
-  keywords: ["supply recovery", "procurement", "supplier capacity", "CALL-E", "manufacturing resilience"],
+    "Reach approved suppliers in parallel, verify comparable commitments, and hand procurement an evidence-backed recovery option before production stops.",
+  keywords: ["supplier recovery", "procurement", "supplier capacity", "manufacturing resilience", "supply chain disruption"],
+  authors: [{ name: "TSUCHIYA LAB", url: "https://tsuchiyalab.com" }],
+  creator: "TSUCHIYA LAB",
+  publisher: "TSUCHIYA LAB",
   openGraph: {
-    title: "CapacityLine — AI Supply Recovery Desk",
-    description: "Call suppliers. Secure capacity. Keep the line moving.",
+    title: "CapacityLine — Supplier recovery, from exception to evidence",
+    description: "Parallel outreach. Verified commitments. Human authority.",
     type: "website",
     siteName: "CapacityLine",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "CapacityLine supplier recovery platform" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "CapacityLine — AI Supply Recovery Desk",
-    description: "Call suppliers. Secure capacity. Keep the line moving.",
+    title: "CapacityLine — Supplier recovery, from exception to evidence",
+    description: "Parallel outreach. Verified commitments. Human authority.",
+    images: ["/og.png"],
   },
 };
 

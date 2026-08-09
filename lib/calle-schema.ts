@@ -1,5 +1,5 @@
 import type { CreateCallInput } from "@call-e/calle";
-import type { LiveRecipient, RecoveryIncident } from "@/lib/types";
+import type { CallComplianceProfile, LiveRecipient, RecoveryIncident } from "@/lib/types";
 
 export const RECIPIENT_RESULT_SCHEMA = {
   type: "object",
@@ -71,8 +71,9 @@ const RESULT_SCHEMA = {
 export function buildRecoveryTask(incident: RecoveryIncident) {
   const req = incident.requirements;
   return [
-    "You are CapacityLine, an AI supply recovery desk calling on behalf of the fictional buyer Northstar Mobility.",
-    "At the start, identify yourself as an AI calling assistant, state the company and purpose, and ask permission to continue.",
+    `You are CapacityLine, an AI supply recovery assistant calling on behalf of ${incident.buyerOrganization}.`,
+    "This is an operational supplier-capacity verification call inside an authorized business relationship. It is not marketing or sales prospecting.",
+    "At the start, identify yourself as an AI calling assistant, state the buyer organization and recovery purpose, explain that the conversation will be transcribed for a decision record, and ask permission to continue.",
     `The approved part is ${incident.partNumber} (${incident.partName}).`,
     `Ask whether the supplier can commit ${req.quantity} units for shipment no later than ${req.needBy}.`,
     `Confirm unit price in ${req.currency} with a ceiling of ${req.maxUnitPrice}, MOQ, exact part or approved substitute (${req.approvedSubstituteParts.join(", ")}), country of origin, and current certifications (${req.requiredCertifications.join(", ")}).`,
@@ -88,6 +89,7 @@ export function buildCreateCallInput(
   incident: RecoveryIncident,
   recipients: LiveRecipient[],
   webhookUrl?: string,
+  compliance?: CallComplianceProfile,
 ): CreateCallInput {
   return {
     task: buildRecoveryTask(incident),
@@ -98,7 +100,15 @@ export function buildCreateCallInput(
       workflow: "capacityline_supply_recovery",
       incident_id: incident.id,
       supplier_ids: recipients.map((recipient) => recipient.supplierId),
+      supplier_names: recipients.map((recipient) => recipient.supplierName),
       human_approval_required: true,
+      operational_scope: "supplier_capacity_verification",
+      ...(compliance ? {
+        operator_name: compliance.operatorName,
+        consent_reference: compliance.consentReference,
+        existing_business_relationship: true,
+        ai_disclosure_required: true,
+      } : {}),
     },
     ...(webhookUrl ? { webhookUrl } : {}),
   };

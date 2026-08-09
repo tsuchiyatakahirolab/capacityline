@@ -37,6 +37,7 @@ import {
   XCircle,
   Zap,
 } from "lucide-react";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   buildDemoCommitments,
@@ -161,7 +162,7 @@ function Countdown({ target }: { target: string }) {
   );
 }
 
-function formatLineStop(value: string) {
+function formatLineStop(value: string, timeZone: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat("en-US", {
@@ -170,7 +171,7 @@ function formatLineStop(value: string) {
     hour: "2-digit",
     minute: "2-digit",
     timeZoneName: "short",
-    timeZone: "Asia/Tokyo",
+    timeZone,
   }).format(date);
 }
 
@@ -187,7 +188,16 @@ export function CapacityLineApp() {
   const [liveReady, setLiveReady] = useState(false);
   const [allowListEnabled, setAllowListEnabled] = useState(false);
   const [livePhones, setLivePhones] = useState<Record<string, string>>({});
+  const [liveSupplierNames, setLiveSupplierNames] = useState<Record<string, string>>(() => Object.fromEntries(DEMO_SUPPLIERS.map((supplier) => [supplier.id, supplier.name])));
+  const [liveRegions, setLiveRegions] = useState<Record<string, string>>(() => Object.fromEntries(DEMO_SUPPLIERS.map((supplier) => [supplier.id, supplier.countryCode])));
+  const [liveLocales, setLiveLocales] = useState<Record<string, string>>(() => Object.fromEntries(DEMO_SUPPLIERS.map((supplier) => [supplier.id, supplier.locale])));
   const [authorized, setAuthorized] = useState(false);
+  const [operationalPurposeConfirmed, setOperationalPurposeConfirmed] = useState(false);
+  const [relationshipConfirmed, setRelationshipConfirmed] = useState(false);
+  const [jurisdictionReviewed, setJurisdictionReviewed] = useState(false);
+  const [disclosureScriptApproved, setDisclosureScriptApproved] = useState(false);
+  const [operatorName, setOperatorName] = useState("");
+  const [consentReference, setConsentReference] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [activeCallId, setActiveCallId] = useState<string | null>(null);
   const [liveSupplierIds, setLiveSupplierIds] = useState<string[]>([]);
@@ -199,6 +209,7 @@ export function CapacityLineApp() {
   const [runMode, setRunMode] = useState<LaunchMode>("demo");
   const [runStartedAt, setRunStartedAt] = useState<number | null>(null);
   const [decisionReadyAt, setDecisionReadyAt] = useState<number | null>(null);
+  const [authorityRecord, setAuthorityRecord] = useState<{ operatorName: string; consentReference: string } | null>(null);
   const timers = useRef<number[]>([]);
   const searchInput = useRef<HTMLInputElement>(null);
   const shell = useRef<HTMLDivElement>(null);
@@ -324,6 +335,7 @@ export function CapacityLineApp() {
     setError(null);
     setRunStartedAt(null);
     setDecisionReadyAt(null);
+    setAuthorityRecord(null);
   }, [clearTimers]);
 
   async function runDemo() {
@@ -374,16 +386,37 @@ export function CapacityLineApp() {
       setError("Live phone numbers must use E.164 format, for example +14155550100.");
       return;
     }
-    if (!authorized || confirmation !== "AUTHORIZE CALLS") {
-      setError("Confirm contact authorization and type AUTHORIZE CALLS.");
+    if (chosen.some((supplier) => !liveSupplierNames[supplier.id]?.trim())) {
+      setError("Enter a supplier name for every live recipient.");
+      return;
+    }
+    if (chosen.some((supplier) => !/^[A-Z]{2}$/.test((liveRegions[supplier.id] ?? "").trim().toUpperCase()))) {
+      setError("Live recipient regions must use two-letter ISO country codes.");
+      return;
+    }
+    if (chosen.some((supplier) => !/^[a-z]{2}(?:-[A-Z]{2})?$/.test((liveLocales[supplier.id] ?? "").trim()))) {
+      setError("Live recipient locales must look like en-US or en.");
+      return;
+    }
+    if (!operatorName.trim() || !consentReference.trim()) {
+      setError("Record the responsible operator and a consent or authorization reference.");
+      return;
+    }
+    if (!authorized || !operationalPurposeConfirmed || !relationshipConfirmed || !jurisdictionReviewed || !disclosureScriptApproved) {
+      setError("Complete every live-operation authority and jurisdiction confirmation.");
+      return;
+    }
+    if (confirmation !== "AUTHORIZE SUPPLIER RECOVERY") {
+      setError("Type AUTHORIZE SUPPLIER RECOVERY exactly to continue.");
       return;
     }
 
     const recipients: LiveRecipient[] = chosen.map((supplier) => ({
       supplierId: supplier.id,
+      supplierName: liveSupplierNames[supplier.id].trim(),
       phone: livePhones[supplier.id].trim(),
-      region: supplier.countryCode,
-      locale: supplier.locale,
+      region: liveRegions[supplier.id].trim().toUpperCase(),
+      locale: liveLocales[supplier.id].trim(),
     }));
 
     setError(null);
@@ -395,6 +428,9 @@ export function CapacityLineApp() {
     setSuppliers((current) =>
       current.map((supplier) => ({
         ...supplier,
+        name: recipients.find((recipient) => recipient.supplierId === supplier.id)?.supplierName ?? supplier.name,
+        countryCode: recipients.find((recipient) => recipient.supplierId === supplier.id)?.region ?? supplier.countryCode,
+        locale: recipients.find((recipient) => recipient.supplierId === supplier.id)?.locale ?? supplier.locale,
         status: recipients.some((recipient) => recipient.supplierId === supplier.id) ? "calling" : "ready",
       })),
     );
@@ -410,6 +446,16 @@ export function CapacityLineApp() {
           confirmation,
           runKey: crypto.randomUUID(),
           incident,
+          compliance: {
+            purpose: "supplier_capacity_verification",
+            operatorName: operatorName.trim(),
+            consentReference: consentReference.trim(),
+            operationalPurposeConfirmed: true,
+            existingBusinessRelationship: true,
+            priorExpressConsent: true,
+            jurisdictionAndCallingWindowReviewed: true,
+            disclosureScriptApproved: true,
+          },
         }),
       });
       const data = (await response.json()) as {
@@ -420,6 +466,7 @@ export function CapacityLineApp() {
       if (!response.ok || !data.call) throw new Error(data.error || "CALL-E did not return a call task.");
       setActiveCallId(data.call.id);
       setLiveSupplierIds(data.supplierIds ?? recipients.map((recipient) => recipient.supplierId));
+      setAuthorityRecord({ operatorName: operatorName.trim(), consentReference: consentReference.trim() });
     } catch (caught) {
       setPhase("ready");
       setSuppliers(DEMO_SUPPLIERS.map((item) => ({ ...item })));
@@ -484,13 +531,15 @@ export function CapacityLineApp() {
       ...incident,
       title: `${String(form.get("partName") ?? "").trim()} supply interruption`,
       cause: String(form.get("cause") ?? ""),
+      buyerOrganization: String(form.get("buyerOrganization") ?? ""),
       plant: String(form.get("plant") ?? ""),
+      plantTimeZone: String(form.get("plantTimeZone") ?? ""),
       productionLine: String(form.get("productionLine") ?? ""),
       partNumber: String(form.get("partNumber") ?? ""),
       partName: String(form.get("partName") ?? ""),
       incumbentSupplier: String(form.get("incumbentSupplier") ?? ""),
       shortfall: Number(form.get("shortfall")),
-      lineStopAt: lineStopLocal ? `${lineStopLocal}:00+09:00` : `${needBy}T09:30:00+09:00`,
+      lineStopAt: lineStopLocal || `${needBy}T09:30:00Z`,
       estimatedDowntimeCost: Number(form.get("estimatedDowntimeCost")),
       requirements: {
         quantity: Number(form.get("shortfall")),
@@ -528,6 +577,7 @@ export function CapacityLineApp() {
       approvedSupplierId,
       decisionLatencySeconds,
       runMode,
+      authorityRecord,
     } as const;
     const content = format === "json"
       ? JSON.stringify(buildRecoveryDossier(input), null, 2)
@@ -605,13 +655,13 @@ export function CapacityLineApp() {
         <i className="atmosphere-glow" />
       </div>
       <aside className="sidebar">
-        <div className="brand-lockup">
+        <Link className="brand-lockup" href="/" aria-label="CapacityLine home">
           <div className="brand-mark"><span /><span /><span /></div>
           <div>
             <strong>CapacityLine</strong>
             <small>SUPPLY RECOVERY</small>
           </div>
-        </div>
+        </Link>
 
         <nav className="nav-list" aria-label="Primary navigation">
           <button className={view === "desk" ? "active" : ""} onClick={() => setView("desk")}>
@@ -643,8 +693,8 @@ export function CapacityLineApp() {
           <span className="connection-state"><i /> Public demo · zero calls</span>
         </div>
         <div className="profile-chip">
-          <div className="avatar">TT</div>
-          <div><strong>Takahiro Tsuchiya</strong><small>Resilience operator</small></div>
+          <div className="avatar">CL</div>
+          <div><strong>Demo workspace</strong><small>Recovery operator</small></div>
         </div>
       </aside>
 
@@ -734,7 +784,7 @@ export function CapacityLineApp() {
                 <div className="countdown-panel">
                   <span>TIME UNTIL LINE STOP</span>
                   <Countdown key={incident.lineStopAt} target={incident.lineStopAt} />
-                  <small>{formatLineStop(incident.lineStopAt)}</small>
+                  <small>{formatLineStop(incident.lineStopAt, incident.plantTimeZone)}</small>
                   {phase === "ready" ? (
                     <button className="primary-button" onClick={() => setShowLaunch(true)}>
                       <Play size={16} fill="currentColor" /> Run zero-call demo
@@ -950,7 +1000,7 @@ export function CapacityLineApp() {
           />
         )}
 
-        {view === "graph" && <SupplierGraph suppliers={suppliers} commitments={commitments} recommendedId={recommendedSupplier?.id} />}
+        {view === "graph" && <SupplierGraph incident={incident} suppliers={suppliers} commitments={commitments} recommendedId={recommendedSupplier?.id} />}
       </main>
 
       {showBrief && (
@@ -963,7 +1013,9 @@ export function CapacityLineApp() {
             </div>
             <p>These facts become the CALL-E task, the eight buyer guardrails, and the exported decision record. The public run remains a fictional zero-call replay.</p>
             <div className="brief-grid">
+              <label><span>Buyer organization</span><input name="buyerOrganization" defaultValue={incident.buyerOrganization} required /></label>
               <label><span>Plant</span><input name="plant" defaultValue={incident.plant} required /></label>
+              <label><span>Plant time zone <small>IANA</small></span><input name="plantTimeZone" defaultValue={incident.plantTimeZone} placeholder="America/Chicago" required /></label>
               <label><span>Production line</span><input name="productionLine" defaultValue={incident.productionLine} required /></label>
               <label className="brief-wide"><span>Incident cause</span><input name="cause" defaultValue={incident.cause} required /></label>
               <label><span>Incumbent supplier</span><input name="incumbentSupplier" defaultValue={incident.incumbentSupplier} required /></label>
@@ -971,7 +1023,7 @@ export function CapacityLineApp() {
               <label><span>Part name</span><input name="partName" defaultValue={incident.partName} required /></label>
               <label><span>Shortfall quantity</span><input name="shortfall" type="number" min="1" step="1" defaultValue={incident.shortfall} required /></label>
               <label><span>Need-by date</span><input name="needBy" type="date" defaultValue={incident.requirements.needBy} required /></label>
-              <label><span>Line-stop time (JST)</span><input name="lineStopAt" type="datetime-local" defaultValue={incident.lineStopAt.slice(0, 16)} required /></label>
+              <label className="brief-wide"><span>Line-stop timestamp <small>ISO 8601 with UTC offset</small></span><input name="lineStopAt" defaultValue={incident.lineStopAt} placeholder="2026-08-11T09:30:00-05:00" required /></label>
               <label><span>Unit price ceiling</span><input name="maxUnitPrice" type="number" min="0.01" step="0.01" defaultValue={incident.requirements.maxUnitPrice} required /></label>
               <label><span>Currency</span><input name="currency" maxLength={3} defaultValue={incident.requirements.currency} required /></label>
               <label><span>Daily downtime exposure</span><input name="estimatedDowntimeCost" type="number" min="1" step="1" defaultValue={incident.estimatedDowntimeCost} required /></label>
@@ -1043,17 +1095,37 @@ export function CapacityLineApp() {
               <div className="preview-box">
                 <div><strong>5</strong><small>supplier calls replayed</small></div>
                 <ArrowRight size={17} />
-                <div><strong>7</strong><small>guardrails checked</small></div>
+                <div><strong>8</strong><small>guardrails checked</small></div>
                 <ArrowRight size={17} />
                 <div><strong>1</strong><small>human approval</small></div>
               </div>
             ) : (
               <div className="live-config">
-                <div className="live-warning"><AlertTriangle size={16} /><span>Live mode creates real outbound calls and may incur CALL-E charges. Use only contacts who expect this test.</span></div>
-                <div className="phone-input-list">
+                <div className="live-warning"><AlertTriangle size={16} /><span>Live mode creates real outbound calls and provider cost. It is restricted to an operational supply exception and business contacts who expect the call.</span></div>
+                <div className="compliance-fields">
+                  <label><span>Responsible operator</span><input value={operatorName} onChange={(event) => setOperatorName(event.target.value)} placeholder="Full name" /></label>
+                  <label><span>Consent / authorization reference</span><input value={consentReference} onChange={(event) => setConsentReference(event.target.value)} placeholder="CRM record, email, or agreement ID" /></label>
+                </div>
+                <div className="phone-input-list live-roster">
+                  <div className="live-roster-head"><span>Supplier</span><span>Region</span><span>Locale</span><span>Allow-listed number</span></div>
                   {suppliers.map((supplier) => (
-                    <label key={supplier.id}>
-                      <span>{supplier.name}<small>{supplier.countryCode}</small></span>
+                    <div className="live-recipient-row" key={supplier.id}>
+                      <input
+                        value={liveSupplierNames[supplier.id] ?? ""}
+                        onChange={(event) => setLiveSupplierNames((current) => ({ ...current, [supplier.id]: event.target.value }))}
+                        aria-label={`${supplier.name} supplier name`}
+                      />
+                      <input
+                        value={liveRegions[supplier.id] ?? ""}
+                        onChange={(event) => setLiveRegions((current) => ({ ...current, [supplier.id]: event.target.value.toUpperCase().slice(0, 2) }))}
+                        aria-label={`${supplier.name} country code`}
+                        maxLength={2}
+                      />
+                      <input
+                        value={liveLocales[supplier.id] ?? ""}
+                        onChange={(event) => setLiveLocales((current) => ({ ...current, [supplier.id]: event.target.value }))}
+                        aria-label={`${supplier.name} locale`}
+                      />
                       <input
                         value={livePhones[supplier.id] ?? ""}
                         onChange={(event) => setLivePhones((current) => ({ ...current, [supplier.id]: event.target.value }))}
@@ -1061,16 +1133,19 @@ export function CapacityLineApp() {
                         inputMode="tel"
                         aria-label={`${supplier.name} phone number`}
                       />
-                    </label>
+                    </div>
                   ))}
                 </div>
                 {allowListEnabled && <div className="allowlist-note"><ShieldCheck size={14} /> Server-side number allow-list is enabled.</div>}
-                <label className="consent-check">
-                  <input type="checkbox" checked={authorized} onChange={(event) => setAuthorized(event.target.checked)} />
-                  <span>I am authorized to call these business contacts for this test.</span>
-                </label>
+                <div className="compliance-checklist">
+                  <label className="consent-check"><input type="checkbox" checked={operationalPurposeConfirmed} onChange={(event) => setOperationalPurposeConfirmed(event.target.checked)} /><span>This is supplier capacity verification for a real operational exception—not marketing or prospecting.</span></label>
+                  <label className="consent-check"><input type="checkbox" checked={relationshipConfirmed} onChange={(event) => setRelationshipConfirmed(event.target.checked)} /><span>Every recipient is an existing supplier or a business contact specifically authorized for this call.</span></label>
+                  <label className="consent-check"><input type="checkbox" checked={authorized} onChange={(event) => setAuthorized(event.target.checked)} /><span>Prior express consent or equivalent authorization is documented in the reference above.</span></label>
+                  <label className="consent-check"><input type="checkbox" checked={jurisdictionReviewed} onChange={(event) => setJurisdictionReviewed(event.target.checked)} /><span>I reviewed the applicable jurisdiction, local calling window, caller ID, and recording/transcription rules.</span></label>
+                  <label className="consent-check"><input type="checkbox" checked={disclosureScriptApproved} onChange={(event) => setDisclosureScriptApproved(event.target.checked)} /><span>The AI identity, buyer, purpose, transcript notice, and immediate-stop disclosure script is approved.</span></label>
+                </div>
                 <label className="confirmation-field">
-                  <span>Type <strong>AUTHORIZE CALLS</strong> to continue</span>
+                  <span>Type <strong>AUTHORIZE SUPPLIER RECOVERY</strong> to continue</span>
                   <input value={confirmation} onChange={(event) => setConfirmation(event.target.value)} />
                 </label>
               </div>
@@ -1080,7 +1155,7 @@ export function CapacityLineApp() {
               <button className="secondary-button" onClick={() => setShowLaunch(false)}>Cancel</button>
               <button className="primary-button wide" onClick={launchMode === "demo" ? runDemo : runLive}>
                 {launchMode === "demo" ? <Play size={16} fill="currentColor" /> : <PhoneCall size={16} />}
-                {launchMode === "demo" ? "Run 6-second decision replay" : "Create authorized calls"}
+                {launchMode === "demo" ? "Run 6-second decision replay" : "Launch governed supplier calls"}
               </button>
             </div>
             <div className="modal-foot"><ShieldCheck size={14} /> No purchase is placed. Unknown or ambiguous answers fail closed to human review.</div>
@@ -1167,7 +1242,7 @@ function LedgerView({
   );
 }
 
-function SupplierGraph({ suppliers, commitments, recommendedId }: { suppliers: Supplier[]; commitments: Record<string, SupplierCommitment | null | undefined>; recommendedId?: string }) {
+function SupplierGraph({ incident, suppliers, commitments, recommendedId }: { incident: RecoveryIncident; suppliers: Supplier[]; commitments: Record<string, SupplierCommitment | null | undefined>; recommendedId?: string }) {
   return (
     <div className="page-stack graph-page">
       <section className="section-intro">
@@ -1175,7 +1250,7 @@ function SupplierGraph({ suppliers, commitments, recommendedId }: { suppliers: S
         <div className="graph-stat"><Network size={24} /><strong>5</strong><span>approved supplier edges</span></div>
       </section>
       <section className="panel graph-canvas">
-        <div className="buyer-node"><div className="node-logo">N</div><strong>Northstar Mobility</strong><small>Osaka · E-Drive Line 2</small></div>
+        <div className="buyer-node"><div className="node-logo">{incident.buyerOrganization.charAt(0).toUpperCase()}</div><strong>{incident.buyerOrganization}</strong><small>{incident.plant} · {incident.productionLine}</small></div>
         <div className="graph-lines" aria-hidden="true">
           {suppliers.map((supplier, index) => <i key={supplier.id} style={{ top: `${14 + index * 18}%`, width: `${38 + index * 4}%` }} />)}
         </div>
