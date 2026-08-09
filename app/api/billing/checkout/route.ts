@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { hasAcceptedPilotTerms } from "@/lib/pilot-terms";
 import { BILLING_CHECKOUT_COOKIE, getBillingConfig, getStripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
   let termsAccepted = false;
   try {
     const form = await request.formData();
-    termsAccepted = form.get("accept_terms") === "accepted";
+    termsAccepted = hasAcceptedPilotTerms(form);
   } catch {
     termsAccepted = false;
   }
