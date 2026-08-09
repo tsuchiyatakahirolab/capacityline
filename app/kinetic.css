@@ -20,7 +20,7 @@
 
 body {
   background: var(--bone);
-  font-family: "Bahnschrift", "Arial Narrow", "Segoe UI", sans-serif;
+  font-family: var(--font-body), "Segoe UI", sans-serif;
 }
 
 .app-shell {
@@ -1130,3 +1130,9 @@ body {
   .atmosphere-glow { display: none; }
   .signal-ticker-track { transform: none; }
 }
+
+/* Shared CapacityLine typography roles. */
+:is(.app-shell,.topbar,.modal-card) { font-family:var(--font-body),sans-serif; }
+:is(.incident-copy h2,.topbar h1,.recovery-heading h2,.section-heading h2) { font-family:var(--font-display),sans-serif; }
+:is(.incident-copy h2 em,.playbook-bar strong,.metric-card strong,.playbook-modal-heading h2,.playbook-grid button > strong,.brief-heading h2,.decision-spotlight strong) { font-family:var(--font-editorial),serif; }
+:is(.eyebrow,.hero-badges > span,.signal-ticker,.countdown-value,.metric-card span,.playbook-grid button > span,.brief-grid label > span) { font-family:var(--font-technical),monospace; }

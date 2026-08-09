@@ -34,7 +34,7 @@ body {
   overflow-x: hidden;
   color: var(--ink);
   background: var(--soft);
-  font-family: Inter, "Aptos", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body), "Aptos", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 

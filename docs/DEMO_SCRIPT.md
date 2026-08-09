@@ -4,7 +4,7 @@ The video must be public on YouTube or Vimeo, in English, and under three minute
 
 ## 0:00–0:14 — The operational problem
 
-**Screen:** Open for two seconds on the **Recover the commitment** campaign image, then cut directly to the Recovery desk hero, 47-hour countdown, 6,000-unit shortfall, and modeled exposure.
+**Screen:** Open on the landing-page brand film as it moves from **Exception** to **Evidence** (four to five seconds), then hard-cut to the Recovery desk hero, 47-hour countdown, 6,000-unit shortfall, and modeled exposure. The opening film is an original brand visualization—not the live-call proof.
 
 **Narration:**
 
@@ -83,6 +83,16 @@ Before the final edit, record one short CALL-E call to the entrant's or a teamma
 - the returned structured result and transcript in CapacityLine.
 
 Replace no more than 10–12 seconds of the 0:30–1:08 section. Never publish the API key or full phone number. If a live insert cannot be completed, do not imply that a live call was executed; say that the live integration is implemented and use the safe demo honestly.
+
+## Ready-to-record visual assets
+
+- `/capacityline-recovery-film.mp4` — 12-second muted 1280 × 720 brand film; use only the opening four to five seconds in the submission edit.
+- `/recovery-film-01-exception.webp` — film poster and Exception still.
+- `/recovery-film-02-evidence.webp` — Evidence chapter still.
+- `/recovery-film-03-decision.webp` — Human decision chapter still.
+- `/capacityline-manifesto-v2.webp` — final campaign frame.
+
+Keep the generated brand sequence visually and verbally distinct from the later consenting CALL-E recording. Only the CALL-E insert may be labeled live proof.
 
 ## Final edit QA
 

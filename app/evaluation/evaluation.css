@@ -83,3 +83,9 @@
     animation-range:entry 5% cover 27%;
   }
 }
+
+/* Shared CapacityLine typography roles. */
+.evaluation-page { font-family:var(--font-body),sans-serif; }
+.evaluation-page :is(.evaluation-hero h1,.evaluation-heading h2,.architecture-copy h2,.evaluation-final h2) { font-family:var(--font-display),sans-serif; }
+.evaluation-page :is(.evaluation-hero h1 em,.evaluation-command h2,.criteria-card h3,.commercial-grid h3) { font-family:var(--font-editorial),serif; }
+.evaluation-page :is(.evaluation-kicker,.evaluation-command > span,.criteria-top,.architecture-flow em,.commercial-grid span) { font-family:var(--font-technical),monospace; }

@@ -22,6 +22,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { COMMERCIAL_USE_CASES } from "@/lib/use-cases";
+import { CinematicRecoveryFilm } from "@/components/cinematic-recovery-film";
 import "./lp.css";
 
 export const metadata: Metadata = {
@@ -158,6 +159,18 @@ export default function Home() {
               <div className="manifesto-facts"><span><i /> KNOWN NETWORK</span><span><i /> GROUNDED EVIDENCE</span><span><i /> HUMAN RELEASE</span></div>
             </div>
           </div>
+        </section>
+
+        <section className="film-section" aria-labelledby="film-title">
+          <div className="film-intro">
+            <div>
+              <span className="lp-kicker">ONE EXCEPTION / THREE MOMENTS</span>
+              <h2 id="film-title">The scramble becomes<br /><em>a sequence you can inspect.</em></h2>
+            </div>
+            <p>From the instant a commitment breaks to the moment a qualified fallback reaches human review, CapacityLine gives the recovery team one visible operating rhythm—not another invisible agent.</p>
+          </div>
+          <CinematicRecoveryFilm />
+          <p className="film-disclosure">Brand film created from original campaign photography. Product claims remain verifiable in the zero-call demo; live-call evidence is presented separately.</p>
         </section>
 
         <section className="lp-use-cases" id="use-cases">

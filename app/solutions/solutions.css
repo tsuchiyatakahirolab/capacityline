@@ -150,3 +150,9 @@
     animation-range:entry 5% cover 27%;
   }
 }
+
+/* Shared CapacityLine typography roles. */
+.solutions-page { font-family:var(--font-body),sans-serif; }
+.solutions-page :is(.solutions-hero h1,.solutions-heading h2,.solution-detail-copy h1,.solutions-cta h2) { font-family:var(--font-display),sans-serif; }
+.solutions-page :is(.solutions-hero h1 em,.solutions-invariant h2,.solution-card h3,.solution-card blockquote,.ad-section h2,.ad-rail strong,.entry-grid h3,.detail-brief blockquote,.detail-situation h3,.proof-field-grid div,.detail-boundary h3) { font-family:var(--font-editorial),serif; }
+.solutions-page :is(.solution-kicker,.solution-card-top,.solution-status,.invariant-flow > div > span,.ad-rail article > span,.campaign-visual figcaption,.entry-grid article > span) { font-family:var(--font-technical),monospace; }

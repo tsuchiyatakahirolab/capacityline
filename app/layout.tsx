@@ -1,6 +1,35 @@
 import type { Metadata } from "next";
+import { Barlow_Condensed, Cormorant_Garamond, IBM_Plex_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import "./kinetic.css";
+
+const bodyFont = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const displayFont = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const editorialFont = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-editorial",
+  display: "swap",
+});
+
+const technicalFont = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-technical",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://capacityline.vercel.app"),
@@ -32,7 +61,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable} ${editorialFont.variable} ${technicalFont.variable}`}>
       <body>{children}</body>
     </html>
   );
