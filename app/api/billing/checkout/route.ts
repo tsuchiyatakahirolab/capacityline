@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       ],
       custom_text: {
         submit: {
-          message: "Your subscription activates a managed pilot. Live calling remains locked until recipient-consent and allow-list review.",
+          message: "Your subscription activates a managed pilot. Live calling remains locked until recipient consent and approval are reviewed.",
         },
       },
       subscription_data: {

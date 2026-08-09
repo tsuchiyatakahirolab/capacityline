@@ -102,10 +102,10 @@ export async function POST(request: Request) {
 
   const allowedNumbers = getAllowedNumbers();
   if (!isRecipientAllowListConfigured(allowedNumbers)) {
-    return invalid("Live calls are locked until a server-side recipient allow-list is configured.", 503);
+    return invalid("Live calling is not enabled for this workspace.", 503);
   }
   if (safeRecipients.some((recipient) => !allowedNumbers.has(recipient.phone))) {
-    return invalid("A recipient is outside the server-side live-call allow-list.", 403);
+    return invalid("A recipient is not approved for live operations.", 403);
   }
 
   const safeRunKey = (body.runKey || crypto.randomUUID()).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 64);

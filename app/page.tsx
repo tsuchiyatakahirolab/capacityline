@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 
 const workflow = [
   ["01", "Frame the exception", "Set the part, shortfall, deadline, price ceiling, certifications, origin, and approved substitutes."],
-  ["02", "Reach the approved network", "Contact allow-listed suppliers in parallel through a governed operational workflow—not a sales campaign."],
+  ["02", "Reach the approved network", "Contact approved suppliers in parallel through a controlled operational workflow."],
   ["03", "Verify the commitment", "Normalize quantity, ship date, price, part, origin, certifications, respondent authority, and transcript evidence."],
   ["04", "Move with human authority", "Rank eligible fallbacks, export the Evidence Pack, and send one option to RFQ review. CapacityLine never places the order."],
 ];
@@ -92,7 +92,7 @@ export default function Home() {
               and an evidence-backed fallback—before the line stops.
             </p>
             <div className="hero-actions">
-              <Link href="/demo" className="hero-primary"><Play size={16} fill="currentColor" /> Run the zero-call demo</Link>
+              <Link href="/demo" className="hero-primary"><Play size={16} fill="currentColor" /> Explore the product</Link>
               <a href="#workflow" className="hero-secondary">See the operating model <ArrowRight size={15} /></a>
             </div>
             <div className="hero-boundary">
@@ -170,7 +170,6 @@ export default function Home() {
             <p>From the instant a commitment breaks to the moment a qualified fallback reaches human review, CapacityLine gives the recovery team one visible operating rhythm—not another invisible agent.</p>
           </div>
           <CinematicRecoveryFilm />
-          <p className="film-disclosure">Brand film created from original campaign photography. Product claims remain verifiable in the zero-call demo; live-call evidence is presented separately.</p>
         </section>
 
         <section className="lp-use-cases" id="use-cases">
@@ -219,7 +218,7 @@ export default function Home() {
             <p>Every field stays attached to its source. Unknown answers remain unknown. Failed guardrails remain visible.</p>
             <ul>
               <li><Check size={15} /> Comparable commitment matrix across every reached supplier</li>
-              <li><Check size={15} /> Eight deterministic buyer-policy checks</li>
+              <li><Check size={15} /> Eight explicit buyer-policy checks</li>
               <li><Check size={15} /> Respondent name, title, authority, and evidence quote</li>
               <li><Check size={15} /> JSON Evidence Pack and CSV export for review</li>
             </ul>
@@ -247,9 +246,9 @@ export default function Home() {
           <div className="global-copy">
             <span className="lp-kicker">GLOBAL BY DESIGN / GOVERNED BY DEFAULT</span>
             <h2>Built for cross-border supplier networks. Restricted to legitimate operations.</h2>
-            <p>CapacityLine is not a telemarketing platform. Private deployments are gated by paid entitlement, an approved recipient allow-list, operational purpose, consent evidence, AI disclosure, and a final human decision.</p>
+            <p>CapacityLine is not a telemarketing platform. Live operations require an active subscription, approved recipients, a documented operational purpose, consent evidence, AI disclosure, and a final human decision.</p>
             <div className="control-grid">
-              <div><LockKeyhole size={17} /><strong>Fail-closed launch</strong><span>Missing billing, consent, or allow-list stops the run server-side.</span></div>
+              <div><LockKeyhole size={17} /><strong>Controlled launch</strong><span>Missing subscription, consent, or recipient approval blocks the call.</span></div>
               <div><Network size={17} /><strong>Supplier-only scope</strong><span>Existing or authorized business contacts—not prospecting lists.</span></div>
               <div><ShieldCheck size={17} /><strong>Human authority</strong><span>No purchase order, contract, or payment is created on a call.</span></div>
             </div>
@@ -264,14 +263,14 @@ export default function Home() {
           </div>
           <div className="pricing-grid">
             <article>
-              <span>PUBLIC PROOF</span><h3>Interactive demo</h3><strong>$0</strong><p>Explore the full decision workflow using a deterministic fictional scenario. No phone calls. No provider cost.</p>
+              <span>PRODUCT SANDBOX</span><h3>Interactive simulation</h3><strong>$0</strong><p>Explore the full decision workflow with a realistic sample scenario. No phone calls or usage cost.</p>
               <ul><li><Check size={14} /> Five supplier outcomes</li><li><Check size={14} /> Evidence Pack export</li><li><Check size={14} /> Human approval workflow</li></ul>
               <Link href="/demo">Run it now <ArrowRight size={14} /></Link>
             </article>
             <article className="featured-price">
               <div className="price-ribbon">FOUNDING COHORT</div>
-              <span>PRIVATE PILOT</span><h3>Recovery cell</h3><strong><small>$</small>499 <em>/ month</em></strong><p>Prove one supplier-recovery workflow with controlled live operations and founder-led implementation.</p>
-              <ul><li><Check size={14} /> 10 governed recovery runs / month</li><li><Check size={14} /> Up to five suppliers per run</li><li><Check size={14} /> Custom policy + isolated allow-list</li><li><Check size={14} /> Monthly outcome review</li></ul>
+              <span>PRIVATE PILOT</span><h3>Recovery cell</h3><strong><small>$</small>499 <em>/ month</em></strong><p>Prove one supplier-recovery workflow with controlled live operations and guided implementation.</p>
+              <ul><li><Check size={14} /> 10 governed recovery runs / month</li><li><Check size={14} /> Up to five suppliers per run</li><li><Check size={14} /> Custom policy + approved recipient setup</li><li><Check size={14} /> Monthly outcome review</li></ul>
               <Link href="/pilot">View pilot controls <ArrowRight size={14} /></Link>
             </article>
             <article>
@@ -290,7 +289,7 @@ export default function Home() {
           </div>
           <div className="scale-grid">
             <article><span>01</span><strong>No ERP prerequisite</strong><p>Begin from an approved contact list and a recovery brief. CSV and supplier-master integration are expansion paths, not blockers.</p></article>
-            <article><span>02</span><strong>Pay for governed recovery</strong><p>Public proof remains free. The founding pilot pays for policy configuration, a controlled live boundary, and monthly outcome review—not minutes of telephony.</p></article>
+            <article><span>02</span><strong>Pay for governed recovery</strong><p>The product sandbox remains free. The founding pilot pays for policy configuration, controlled live operations, and monthly outcome review—not minutes of telephony.</p></article>
             <article><span>03</span><strong>Scale after evidence</strong><p>Add sites, roles, regional policy, and reconciliation only after the first workflow proves lower time to qualified fallback or fewer manual touches.</p></article>
           </div>
         </section>
@@ -299,13 +298,13 @@ export default function Home() {
           <span className="lp-kicker">NEXT SUPPLY EXCEPTION / CONTROL THE RESPONSE</span>
           <h2>Do not let the recovery decision live in five inboxes and a spreadsheet.</h2>
           <div><Link href="/demo"><Play size={16} fill="currentColor" /> See the product work</Link><Link href="/pilot">Start the founding pilot <ArrowRight size={15} /></Link></div>
-          <small>Public demo: zero calls · Private pilot: paid, allow-listed, and human-governed</small>
+          <small>Product sandbox: no calls · Private pilot: approved recipients and human review</small>
         </section>
       </main>
 
       <footer className="lp-footer">
         <div><strong>CapacityLine</strong><span>Supplier recovery, from exception to evidence.</span></div>
-        <div><Link href="/demo">Product</Link><Link href="/solutions">Use cases</Link><Link href="/pilot">Pilot</Link><Link href="/trust">Trust</Link><Link href="/evaluation">Evaluation</Link><a href="https://tsuchiyalab.com/privacy">Privacy</a><a href="https://tsuchiyalab.com/terms">Terms</a><a href="mailto:info@tsuchiyalab.com">Contact</a></div>
+        <div><Link href="/demo">Product</Link><Link href="/solutions">Use cases</Link><Link href="/pilot">Pilot</Link><Link href="/trust">Trust</Link><Link href="/evaluation">Product proof</Link><a href="https://tsuchiyalab.com/privacy">Privacy</a><a href="https://tsuchiyalab.com/terms">Terms</a><a href="mailto:info@tsuchiyalab.com">Contact</a></div>
         <small>© 2026 TSUCHIYA LAB</small>
       </footer>
     </div>

@@ -68,7 +68,7 @@ export function CinematicRecoveryFilm() {
           playsInline
           preload="metadata"
           poster="/recovery-film-01-exception.webp"
-          aria-label="A cinematic brand sequence showing a supply exception becoming evidence and a human-authorized recovery decision"
+          aria-label="A supply exception becomes verified evidence and a human-authorized recovery decision"
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
           onTimeUpdate={(event) => {
@@ -81,8 +81,8 @@ export function CinematicRecoveryFilm() {
         <div className="film-vignette" aria-hidden="true" />
         <div className="film-grid" aria-hidden="true" />
         <div className="film-status" aria-hidden="true">
-          <span><i className={playing ? "is-playing" : ""} /> BRAND FILM / 00:12</span>
-          <span>NO SYNTHETIC UI · HUMAN AUTHORITY</span>
+          <span><i className={playing ? "is-playing" : ""} /> RECOVERY SEQUENCE / 00:12</span>
+          <span>EVIDENCE IN · DECISION OUT</span>
         </div>
         <div className="film-playhead" aria-hidden="true"><i /></div>
       </div>

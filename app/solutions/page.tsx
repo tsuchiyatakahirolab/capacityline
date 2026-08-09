@@ -24,7 +24,7 @@ export default function SolutionsPage() {
             <span className="solution-kicker">ONE EXCEPTION-TO-COMMITMENT ENGINE</span>
             <h1>Different disruption.<br /><em>Same missing decision.</em></h1>
             <p>When normal workflow breaks, teams still need the same thing: a comparable commitment from a known business partner, grounded in evidence, before an operational deadline.</p>
-            <div className="solutions-hero-actions"><Link href="/demo"><Play size={15} fill="currentColor" /> Try six zero-call playbooks</Link><Link href="/pilot">Design a private pilot <ArrowRight size={14} /></Link></div>
+            <div className="solutions-hero-actions"><Link href="/demo"><Play size={15} fill="currentColor" /> Explore six playbooks</Link><Link href="/pilot">Design a private pilot <ArrowRight size={14} /></Link></div>
           </div>
           <aside className="solutions-invariant">
             <span>THE SHARED OPERATING MODEL</span>
@@ -51,7 +51,7 @@ export default function SolutionsPage() {
         </section>
 
         <section className="ad-section">
-          <div className="ad-section-copy"><span className="solution-kicker">CAMPAIGN SYSTEM / NOT GENERIC AI COPY</span><h2>Lead with the operational moment people already recognize.</h2><p>Every campaign starts with a concrete exception, names the commitment to recover, and ends at the human decision. “AI calling” is the mechanism—not the promise.</p></div>
+          <div className="ad-section-copy"><span className="solution-kicker">SIX OPERATING MOMENTS / ONE RECOVERY MODEL</span><h2>Start with the operational moment your team already recognizes.</h2><p>Each playbook starts with a concrete exception, defines the commitment to recover, and ends at a human decision. The operating outcome—not the call—is the point.</p></div>
           <div className="ad-evidence">
             <figure className="campaign-visual"><Image src="/campaign-commitment-network.png" width={1680} height={877} alt="Six operational material categories connected to one controlled recovery decision" priority={false} /><figcaption>One exception-to-commitment model across distinct operating contexts.</figcaption></figure>
             <div className="ad-rail">
@@ -63,8 +63,8 @@ export default function SolutionsPage() {
         <section className="entry-section">
           <div className="solutions-heading"><span className="solution-kicker">ONE VALUE PROPOSITION / THREE ENTRY POINTS</span><h2>Useful to a 30-person operator.<br />Governable by a global enterprise.</h2></div>
           <div className="entry-grid">
-            <article><span>PUBLIC / ANY TEAM</span><h3>Prove the workflow at zero cost.</h3><p>Run fictional playbooks, edit the brief, inspect policy failures, and export the Evidence Pack. No phone call or provider charge is created.</p><Link href="/demo">Open the product <ArrowRight size={13} /></Link></article>
-            <article><span>SMALL &amp; MIDSIZE OPERATIONS</span><h3>Start without an ERP project.</h3><p>Use an approved contact list and one critical exception. The managed founding pilot configures the policy, allow-list, and measurable outcome.</p><Link href="/pilot">See the managed pilot <ArrowRight size={13} /></Link></article>
+            <article><span>PRODUCT SANDBOX / ANY TEAM</span><h3>Explore the workflow at zero cost.</h3><p>Run sample playbooks, edit the brief, inspect policy failures, and export the Evidence Pack. No phone call or usage charge is created.</p><Link href="/demo">Open the product <ArrowRight size={13} /></Link></article>
+            <article><span>SMALL &amp; MIDSIZE OPERATIONS</span><h3>Start without an ERP project.</h3><p>Use an approved contact list and one critical exception. The managed pilot configures the policy, recipient approvals, and measurable outcome.</p><Link href="/pilot">See the managed pilot <ArrowRight size={13} /></Link></article>
             <article><span>ENTERPRISE / MULTI-SITE</span><h3>Integrate after the recovery loop proves value.</h3><p>Identity, regional policy, supplier master data, and ERP reconciliation are enterprise expansion paths—not prerequisites for the first controlled result.</p><a href="mailto:info@tsuchiyalab.com?subject=CapacityLine%20Enterprise%20Recovery">Discuss enterprise scope <ArrowRight size={13} /></a></article>
           </div>
         </section>

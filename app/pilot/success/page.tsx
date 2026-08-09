@@ -34,8 +34,8 @@ export default async function PilotSuccessPage() {
         <h1>{active ? "Subscription confirmed." : "Activation remains locked."}</h1>
         <p className="result-copy">
           {active
-            ? "Payment is active. No phone call has been created. TSUCHIYA LAB will review the workspace, recipient consent, and allow-list before live access is enabled."
-            : "We could not verify an active pilot subscription. No phone call or provider cost has been created."}
+            ? "Payment is active. No phone call has been created. TSUCHIYA LAB will review the workspace, recipient consent, and approved contacts before live access is enabled."
+            : "We could not verify an active pilot subscription. No phone call or usage cost has been created."}
         </p>
         <div className="result-actions">
           {active && (

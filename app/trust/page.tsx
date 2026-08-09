@@ -6,16 +6,16 @@ import "./trust.css";
 
 export const metadata: Metadata = {
   title: "Trust & operating boundary — CapacityLine",
-  description: "How CapacityLine limits live supplier recovery to paid, authorized, allow-listed, human-governed operations.",
+  description: "How CapacityLine limits live supplier recovery to paid, authorized, approved-recipient, human-governed operations.",
   alternates: { canonical: "/trust" },
 };
 
 const controls = [
-  ["01", "Paid entitlement", "A valid private-pilot subscription is checked server-side. Public demo state cannot create provider calls."],
+  ["01", "Active subscription", "A valid private-pilot subscription is required. The product sandbox cannot create live calls."],
   ["02", "Operational purpose", "The operator certifies that the run concerns a real supply exception—not advertising, prospecting, or a sales campaign."],
   ["03", "Existing relationship", "Every recipient must be an existing supplier or a business contact specifically authorized for this operational call."],
   ["04", "Consent evidence", "A consent or authorization reference and the operator’s identity are recorded with the launch request."],
-  ["05", "Recipient allow-list", "Every E.164 number must match a server-side allow-list. Unknown numbers fail closed before reaching the provider."],
+  ["05", "Approved recipients", "Every phone number must be approved for the workspace. Unknown numbers are blocked before any call begins."],
   ["06", "AI disclosure", "The task requires the assistant to identify itself as AI, state the buyer and purpose, ask permission, and stop on refusal."],
   ["07", "No commercial authority", "The call cannot place an order, promise payment, negotiate outside policy, or form a contract."],
   ["08", "Human decision", "CapacityLine can recommend an eligible fallback. A person must approve the next procurement step."],
@@ -70,9 +70,9 @@ export default function TrustPage() {
             <p>CapacityLine is a founding managed pilot. We describe the product as it operates today, without borrowing enterprise claims from a future roadmap.</p>
           </div>
           <div className="truth-grid">
-            <article className="truth-now"><span>AVAILABLE NOW</span><ul><li>Zero-call public product demo</li><li>Server-side billing and allow-list gates</li><li>Custom recovery brief and deterministic policy</li><li>Structured commitments and transcript evidence</li><li>Human RFQ approval and Evidence Pack export</li></ul></article>
-            <article><span>PILOT DEPLOYMENT</span><ul><li>One isolated recovery workspace</li><li>Founder-led policy and supplier setup</li><li>Up to five approved recipients per run</li><li>Ten governed recovery runs per month</li><li>Monthly operating outcome review</li></ul></article>
-            <article><span>NOT CLAIMED</span><ul><li>No SOC 2 or ISO 27001 certification claim</li><li>No universal legal-compliance guarantee</li><li>No self-serve multi-tenant general availability</li><li>No ERP write-back or automatic order placement</li><li>No savings claim from modeled exposure</li></ul></article>
+            <article className="truth-now"><span>AVAILABLE NOW</span><ul><li>No-call product sandbox</li><li>Subscription and recipient-approval controls</li><li>Custom recovery brief and explicit buyer policy</li><li>Structured commitments and transcript evidence</li><li>Human RFQ approval and Evidence Pack export</li></ul></article>
+            <article><span>PILOT DEPLOYMENT</span><ul><li>One private recovery workspace</li><li>Guided policy and supplier setup</li><li>Up to five approved recipients per run</li><li>Ten governed recovery runs per month</li><li>Monthly operating outcome review</li></ul></article>
+            <article><span>CURRENT BOUNDARY</span><ul><li>Independent security certifications are not yet in place</li><li>Regional legal review remains customer-specific</li><li>Access is provided through a managed private pilot</li><li>ERP write-back and order placement are not enabled</li><li>Modeled exposure is not presented as realized savings</li></ul></article>
           </div>
         </section>
 

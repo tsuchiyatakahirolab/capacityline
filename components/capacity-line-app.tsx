@@ -410,7 +410,7 @@ export function CapacityLineApp() {
   async function runLive() {
     const chosen = suppliers.filter((supplier) => livePhones[supplier.id]?.trim());
     if (!liveReady) {
-      setError("Live mode requires both the CALL-E server key and a recipient allow-list.");
+      setError("Live calling is not enabled for this workspace.");
       return;
     }
     if (chosen.length === 0) {
@@ -630,10 +630,10 @@ export function CapacityLineApp() {
   const activityItems = [
     { time: "09:31", title: "Supply exception opened", detail: `${incident.shortfall.toLocaleString()} ${incident.quantityUnit} short against ${incident.productionLine}`, tone: "danger" },
     ...(phase !== "ready"
-      ? [{ time: "09:32", title: "Recovery replay launched", detail: "Five approved supplier calls simulated in parallel", tone: "active" }]
+      ? [{ time: "09:32", title: "Recovery simulation launched", detail: "Five approved supplier outcomes started in parallel", tone: "active" }]
       : []),
     ...(revealCount > 0
-      ? [{ time: "09:36", title: "Simulated responses returned", detail: `${completedCount} commitments grounded in replay evidence`, tone: "active" }]
+      ? [{ time: "09:36", title: "Sample responses returned", detail: `${completedCount} commitments include supporting evidence`, tone: "active" }]
       : []),
     ...(qualifiedCount > 0
       ? [{ time: "09:44", title: "Qualified fallback found", detail: "All eight procurement guardrails passed", tone: "success" }]
@@ -652,7 +652,7 @@ export function CapacityLineApp() {
     },
     {
       label: "Call",
-      detail: phase === "ready" ? "5 backups queued" : phase === "running" ? "CALL-E replay" : "5 attempts closed",
+      detail: phase === "ready" ? "5 backups queued" : phase === "running" ? "Simulation running" : "5 attempts closed",
       icon: <Radio size={16} />,
       state: phase === "ready" ? "pending" : phase === "running" ? "active" : "complete",
     },
@@ -724,11 +724,11 @@ export function CapacityLineApp() {
         <div className="provider-card">
           <div><Zap size={15} fill="currentColor" /> Powered by CALL-E</div>
           <p>Goal-driven parallel calls with structured results and transcript evidence.</p>
-          <span className="connection-state"><i /> Public demo · zero calls</span>
+          <span className="connection-state"><i /> Sandbox · no calls</span>
         </div>
         <div className="profile-chip">
           <div className="avatar">CL</div>
-          <div><strong>Demo workspace</strong><small>Recovery operator</small></div>
+          <div><strong>Recovery workspace</strong><small>Recovery operator</small></div>
         </div>
       </aside>
 
@@ -740,7 +740,7 @@ export function CapacityLineApp() {
                 <span><i /> INCIDENT {incident.id}</span>
                 <span>{incident.shortfall.toLocaleString()} {incident.quantityUnit.toUpperCase()} SHORT</span>
                 <span>{incident.plant.toUpperCase()} / {incident.productionLine.toUpperCase()}</span>
-                <span>{phase === "ready" ? "ZERO-CALL PUBLIC DEMO" : phase === "running" ? "DECISION REPLAY RUNNING" : "DECISION EVIDENCE READY"}</span>
+                <span>{phase === "ready" ? "SANDBOX READY" : phase === "running" ? "RECOVERY SIMULATION RUNNING" : "DECISION RECORD READY"}</span>
                 <span>HUMAN AUTHORITY REQUIRED</span>
               </div>
             ))}
@@ -767,9 +767,9 @@ export function CapacityLineApp() {
             </label>
             <button className="guide-button brief-button" onClick={() => setShowBrief(true)}><FilePenLine size={14} /> Recovery brief</button>
             <button className="guide-button" onClick={() => setShowPlaybooks(true)}><Layers3 size={14} /> Playbooks</button>
-            <button className="guide-button" onClick={() => setShowGuide(true)}><Route size={14} /> Demo guide</button>
+            <button className="guide-button" onClick={() => setShowGuide(true)}><Route size={14} /> Quick tour</button>
             <a className="pilot-button" href="/pilot"><LockKeyhole size={14} /> Private pilot</a>
-            <div className="demo-chip"><Sparkles size={14} /> Zero-call demo</div>
+            <div className="demo-chip"><Sparkles size={14} /> Safe simulation</div>
           </div>
         </header>
 
@@ -829,7 +829,7 @@ export function CapacityLineApp() {
                   <small>{formatLineStop(incident.lineStopAt, incident.plantTimeZone)}</small>
                   {phase === "ready" ? (
                     <button className="primary-button" onClick={() => setShowLaunch(true)}>
-                      <Play size={16} fill="currentColor" /> Run zero-call demo
+                      <Play size={16} fill="currentColor" /> Run recovery simulation
                     </button>
                   ) : (
                     <button className="secondary-button inverse" onClick={reset}>
@@ -908,7 +908,7 @@ export function CapacityLineApp() {
               <article className="metric-card accent">
                 <div className="metric-icon"><Gauge size={19} /></div>
                 <div><span>TIME TO DECISION EVIDENCE</span><strong>{formatLatency(decisionLatencySeconds)}</strong></div>
-                <small>{decisionLatencySeconds !== null ? `${runMode === "demo" ? "Measured replay" : "Measured live run"} elapsed time` : "Clock starts at launch"}</small>
+                <small>{decisionLatencySeconds !== null ? `${runMode === "demo" ? "Measured simulation" : "Measured live run"} elapsed time` : "Clock starts at launch"}</small>
               </article>
               <article className="metric-card">
                 <div className="metric-icon green"><BadgeCheck size={19} /></div>
@@ -932,7 +932,7 @@ export function CapacityLineApp() {
                 <div className="panel-header">
                   <div><span className="panel-kicker">SIMULATED PARALLEL OUTREACH</span><h3>Approved backup suppliers</h3></div>
                   <div className="panel-header-meta">
-                    {phase === "running" && <span className="live-pill"><i /> REPLAY</span>}
+                    {phase === "running" && <span className="live-pill"><i /> SIMULATION</span>}
                     <span>{completedCount} of {suppliers.length} returned</span>
                   </div>
                 </div>
@@ -959,7 +959,7 @@ export function CapacityLineApp() {
                         </span>
                         <span className="commitment-cell">
                           {supplier.status === "calling" ? (
-                            <span className="calling-wave"><i /><i /><i /><i /><small>CALL-E speaking</small></span>
+                            <span className="calling-wave"><i /><i /><i /><i /><small>Commitment in progress</small></span>
                           ) : commitment ? (
                             <><strong>{commitment.quantityAvailable?.toLocaleString() ?? "—"} {incident.quantityUnit}</strong><small>{formatDate(commitment.earliestShipDate)} · {commitment.currency} {commitment.unitPrice?.toFixed(2) ?? "—"}</small></>
                           ) : supplier.status === "unreachable" ? (
@@ -981,7 +981,7 @@ export function CapacityLineApp() {
                   )}
                 </div>
                 <div className="table-footnote">
-                  <ShieldCheck size={15} /> This public replay never calls these fictional contacts. Private live deployments require allow-listed consent and human approval.
+                  <ShieldCheck size={15} /> This simulation never contacts suppliers. Live operations require approved recipients, documented consent, and human authorization.
                 </div>
               </article>
 
@@ -1001,7 +1001,7 @@ export function CapacityLineApp() {
                     <div><span>Decision authority</span><strong>Must be confirmed</strong></div>
                   </div>
                   <button className="text-button" onClick={() => setSelectedSupplierId(qualifiedCount ? "sup-kanto" : null)}>
-                    View evaluation logic <ArrowRight size={14} />
+                    Inspect buyer checks <ArrowRight size={14} />
                   </button>
                 </article>
 
@@ -1020,7 +1020,7 @@ export function CapacityLineApp() {
                     ))}
                     {phase === "running" && (
                       <div className="activity-item pending">
-                        <time>NOW</time><i /><div><strong>CALL-E decision flow is replaying</strong><p>Five fictional outcomes resolve without creating a phone call</p></div>
+                        <time>NOW</time><i /><div><strong>Decision flow is running</strong><p>Five sample commitments resolve without creating a phone call</p></div>
                       </div>
                     )}
                   </div>
@@ -1054,7 +1054,7 @@ export function CapacityLineApp() {
               <span className="modal-symbol"><Layers3 size={23} /></span>
               <div><span className="panel-kicker">RECOVERY PLAYBOOK LIBRARY</span><h2 id="playbook-title">One decision engine. Six operating contexts.</h2></div>
             </div>
-            <p>Choose a fictional scenario. CapacityLine changes the incident, supplier roster, quantity unit, policy, and evidence fields—while keeping the same governed recovery loop.</p>
+            <p>Choose a sample scenario. CapacityLine changes the incident, supplier roster, quantity unit, policy, and evidence fields—while keeping the same governed recovery loop.</p>
             <div className="playbook-grid">
               {RECOVERY_PLAYBOOKS.map((playbook, index) => (
                 <button
@@ -1069,7 +1069,7 @@ export function CapacityLineApp() {
                 </button>
               ))}
             </div>
-            <div className="playbook-proof"><ShieldCheck size={15} /><span>All public playbooks are fictional zero-call replays. Live use remains paid, allow-listed, disclosed, and human-authorized.</span></div>
+            <div className="playbook-proof"><ShieldCheck size={15} /><span>Sandbox playbooks use sample outcomes and make no calls. Live operations require approved recipients, disclosure, and human authorization.</span></div>
           </section>
         </div>
       )}
@@ -1082,7 +1082,7 @@ export function CapacityLineApp() {
               <span className="modal-symbol"><FilePenLine size={23} /></span>
               <div><span className="panel-kicker">OPERATIONAL INPUT</span><h2 id="brief-title">Define the recovery brief.</h2></div>
             </div>
-            <p>These facts become the CALL-E task, the eight buyer guardrails, and the exported decision record. The public run remains a fictional zero-call replay.</p>
+            <p>These facts define the supplier outreach, the eight buyer guardrails, and the exported decision record. The simulation uses sample results and makes no calls.</p>
             <div className="brief-grid">
               <label><span>Buyer organization</span><input name="buyerOrganization" defaultValue={incident.buyerOrganization} required /></label>
               <label><span>Plant</span><input name="plant" defaultValue={incident.plant} required /></label>
@@ -1103,7 +1103,7 @@ export function CapacityLineApp() {
               <label className="brief-wide"><span>Required certifications <small>comma separated</small></span><input name="requiredCertifications" defaultValue={incident.requirements.requiredCertifications.join(", ")} required /></label>
               <label className="brief-wide"><span>Allowed origins <small>ISO country codes</small></span><input name="allowedOrigins" defaultValue={incident.requirements.allowedOrigins.join(", ")} required /></label>
             </div>
-            <div className="brief-proof"><ShieldCheck size={15} /><span>Validated server-side before a paid live call. Unknown or malformed fields fail closed.</span></div>
+            <div className="brief-proof"><ShieldCheck size={15} /><span>Validated before live outreach. Unknown or malformed fields stop the run.</span></div>
             <div className="modal-actions brief-actions">
               <button type="button" className="secondary-button" onClick={restoreReferenceBrief}>Restore reference</button>
               <button type="submit" className="primary-button wide"><FileCheck2 size={16} /> Apply brief &amp; reset run</button>
@@ -1115,20 +1115,20 @@ export function CapacityLineApp() {
       {showGuide && (
         <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowGuide(false)}>
           <section className="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-title" onMouseDown={(event) => event.stopPropagation()}>
-            <button className="modal-close" onClick={() => setShowGuide(false)} aria-label="Close demo guide"><X size={18} /></button>
+            <button className="modal-close" onClick={() => setShowGuide(false)} aria-label="Close product tour"><X size={18} /></button>
             <div className="guide-hero">
               <span className="modal-symbol"><Route size={23} /></span>
               <div><span className="panel-kicker">90-SECOND PRODUCT TOUR</span><h2 id="guide-title">See the decision, not just the calls.</h2></div>
             </div>
-            <p>Run one fictional recovery sprint, then inspect why CapacityLine recommends one supplier and blocks a cheaper one.</p>
+            <p>Run one sample recovery sprint, then inspect why CapacityLine recommends one supplier and blocks a cheaper one.</p>
             <div className="guide-steps">
               <div><span>01</span><div><strong>Launch</strong><small>Start the safe six-second scenario. No phone calls are created.</small></div></div>
               <div><span>02</span><div><strong>Compare</strong><small>Watch five supplier outcomes resolve into qualified, review, blocked, and no-answer states.</small></div></div>
               <div><span>03</span><div><strong>Verify</strong><small>Trace all eight checks—including approved-part validation—to identity and transcript evidence.</small></div></div>
               <div><span>04</span><div><strong>Approve</strong><small>Send the qualified option to RFQ review. CapacityLine never places the order.</small></div></div>
             </div>
-            <div className="guide-disclaimer"><ShieldCheck size={15} /><span>Fictional public replay · input-modeled exposure · no claimed savings</span></div>
-            <div className="modal-actions"><button className="secondary-button" onClick={() => setShowGuide(false)}>Close</button><button className="primary-button wide" onClick={() => { setShowGuide(false); setShowLaunch(true); }}><Play size={15} fill="currentColor" /> Start guided demo</button></div>
+            <div className="guide-disclaimer"><ShieldCheck size={15} /><span>Sample scenario · modeled exposure · no claimed savings</span></div>
+            <div className="modal-actions"><button className="secondary-button" onClick={() => setShowGuide(false)}>Close</button><button className="primary-button wide" onClick={() => { setShowGuide(false); setShowLaunch(true); }}><Play size={15} fill="currentColor" /> Start guided tour</button></div>
           </section>
         </div>
       )}
@@ -1140,24 +1140,24 @@ export function CapacityLineApp() {
             <div className="modal-symbol"><PhoneCall size={24} /></div>
             <span className="panel-kicker">RECOVERY SPRINT</span>
             <h2 id="launch-title">Watch the recovery decision unfold.</h2>
-            <p>This public experience replays five fictional supplier outcomes, evaluates every commitment, and never creates a phone call.</p>
+            <p>This sandbox evaluates five sample supplier outcomes and never creates a phone call.</p>
 
             <div className="mode-picker">
               <button className={launchMode === "demo" ? "selected" : ""} onClick={() => { setLaunchMode("demo"); setError(null); }}>
                 <span><Sparkles size={18} /></span>
-                <div><strong>Safe demo</strong><small>Fictional results · no phone calls</small></div>
+                <div><strong>Safe simulation</strong><small>Sample results · no phone calls</small></div>
                 {launchMode === "demo" && <CheckCircle2 size={18} />}
               </button>
               {liveReady ? (
                 <button className={launchMode === "live" ? "selected" : ""} onClick={() => { setLaunchMode("live"); setError(null); }}>
                   <span><Activity size={18} /></span>
-                  <div><strong>Private live pilot</strong><small>Key + allow-list ready</small></div>
+                  <div><strong>Private live pilot</strong><small>Approved recipients only</small></div>
                   {launchMode === "live" && <CheckCircle2 size={18} />}
                 </button>
               ) : (
                 <a className="private-pilot-card" href="/pilot">
                   <span><LockKeyhole size={18} /></span>
-                  <div><strong>Private live pilot</strong><small>Authenticated + metered deployments only</small></div>
+                  <div><strong>Private live pilot</strong><small>Managed and usage-controlled</small></div>
                   <ArrowRight size={18} />
                 </a>
               )}
@@ -1165,7 +1165,7 @@ export function CapacityLineApp() {
 
             {launchMode === "demo" ? (
               <div className="preview-box">
-                <div><strong>5</strong><small>supplier calls replayed</small></div>
+                <div><strong>5</strong><small>sample supplier outcomes</small></div>
                 <ArrowRight size={17} />
                 <div><strong>8</strong><small>guardrails checked</small></div>
                 <ArrowRight size={17} />
@@ -1173,13 +1173,13 @@ export function CapacityLineApp() {
               </div>
             ) : (
               <div className="live-config">
-                <div className="live-warning"><AlertTriangle size={16} /><span>Live mode creates real outbound calls and provider cost. It is restricted to an operational supply exception and business contacts who expect the call.</span></div>
+                <div className="live-warning"><AlertTriangle size={16} /><span>Live mode creates real outbound calls and usage cost. It is restricted to an operational supply exception and business contacts who expect the call.</span></div>
                 <div className="compliance-fields">
                   <label><span>Responsible operator</span><input value={operatorName} onChange={(event) => setOperatorName(event.target.value)} placeholder="Full name" /></label>
                   <label><span>Consent / authorization reference</span><input value={consentReference} onChange={(event) => setConsentReference(event.target.value)} placeholder="CRM record, email, or agreement ID" /></label>
                 </div>
                 <div className="phone-input-list live-roster">
-                  <div className="live-roster-head"><span>Supplier</span><span>Region</span><span>Locale</span><span>Allow-listed number</span></div>
+                  <div className="live-roster-head"><span>Supplier</span><span>Region</span><span>Locale</span><span>Approved number</span></div>
                   {suppliers.map((supplier) => (
                     <div className="live-recipient-row" key={supplier.id}>
                       <input
@@ -1208,7 +1208,7 @@ export function CapacityLineApp() {
                     </div>
                   ))}
                 </div>
-                {allowListEnabled && <div className="allowlist-note"><ShieldCheck size={14} /> Server-side number allow-list is enabled.</div>}
+                {allowListEnabled && <div className="allowlist-note"><ShieldCheck size={14} /> Recipient approval is active.</div>}
                 <div className="compliance-checklist">
                   <label className="consent-check"><input type="checkbox" checked={operationalPurposeConfirmed} onChange={(event) => setOperationalPurposeConfirmed(event.target.checked)} /><span>This is supplier capacity verification for a real operational exception—not marketing or prospecting.</span></label>
                   <label className="consent-check"><input type="checkbox" checked={relationshipConfirmed} onChange={(event) => setRelationshipConfirmed(event.target.checked)} /><span>Every recipient is an existing supplier or a business contact specifically authorized for this call.</span></label>
@@ -1227,10 +1227,10 @@ export function CapacityLineApp() {
               <button className="secondary-button" onClick={() => setShowLaunch(false)}>Cancel</button>
               <button className="primary-button wide" onClick={launchMode === "demo" ? runDemo : runLive}>
                 {launchMode === "demo" ? <Play size={16} fill="currentColor" /> : <PhoneCall size={16} />}
-                {launchMode === "demo" ? "Run 6-second decision replay" : "Launch governed supplier calls"}
+                {launchMode === "demo" ? "Run decision simulation" : "Launch governed supplier calls"}
               </button>
             </div>
-            <div className="modal-foot"><ShieldCheck size={14} /> No purchase is placed. Unknown or ambiguous answers fail closed to human review.</div>
+            <div className="modal-foot"><ShieldCheck size={14} /> No purchase is placed. Unknown or ambiguous answers are sent to human review.</div>
           </section>
         </div>
       )}
@@ -1321,7 +1321,7 @@ function SupplierGraph({ incident, suppliers, commitments, recommendedId }: { in
   return (
     <div className="page-stack graph-page">
       <section className="section-intro">
-        <div><span className="panel-kicker">COMPOUNDING DATA ASSET</span><h2>From contact list to commitment graph.</h2><p>CapacityLine learns who answers, who has authority, what they commit, and—after ERP reconciliation—what they actually deliver. Records remain tenant-private.</p></div>
+        <div><span className="panel-kicker">PRIVATE OPERATING HISTORY</span><h2>From contact list to commitment graph.</h2><p>CapacityLine learns who answers, who has authority, what they commit, and—after ERP reconciliation—what they actually deliver. Records stay private to each customer workspace.</p></div>
         <div className="graph-stat"><Network size={24} /><strong>5</strong><span>approved supplier edges</span></div>
       </section>
       <section className="panel graph-canvas">

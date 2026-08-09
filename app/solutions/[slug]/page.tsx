@@ -31,8 +31,8 @@ export default async function SolutionDetailPage({ params }: { params: Promise<{
       <SolutionsNav />
       <main>
         <section className="solution-detail-hero">
-          <div className="solution-detail-copy"><span className="solution-kicker">CAPACITYLINE FOR {useCase.sector.toUpperCase()}</span><h1>{useCase.headline}</h1><p>{useCase.value}</p><span className="detail-audience">BUILT FOR / {useCase.audience.toUpperCase()}</span><div className="solutions-hero-actions"><Link href="/demo"><Play size={15} fill="currentColor" /> Run the zero-call product</Link><Link href="/pilot">Scope this pilot <ArrowRight size={14} /></Link></div></div>
-          <aside className="detail-brief"><span>CAMPAIGN MESSAGE / OPERATIONAL, NOT ABSTRACT</span><blockquote>“{useCase.adHeadline}”</blockquote><p>{useCase.adBody}</p></aside>
+          <div className="solution-detail-copy"><span className="solution-kicker">CAPACITYLINE FOR {useCase.sector.toUpperCase()}</span><h1>{useCase.headline}</h1><p>{useCase.value}</p><span className="detail-audience">BUILT FOR / {useCase.audience.toUpperCase()}</span><div className="solutions-hero-actions"><Link href="/demo"><Play size={15} fill="currentColor" /> Explore this playbook</Link><Link href="/pilot">Scope this pilot <ArrowRight size={14} /></Link></div></div>
+          <aside className="detail-brief"><span>THE OPERATING MOMENT</span><blockquote>“{useCase.adHeadline}”</blockquote><p>{useCase.adBody}</p></aside>
         </section>
 
         <section className="detail-proof">

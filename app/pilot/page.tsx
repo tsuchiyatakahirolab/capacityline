@@ -25,7 +25,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Founding Private Pilot — CapacityLine",
   description:
-    "A managed, paid, allow-listed supplier recovery pilot for global manufacturing and procurement teams.",
+    "A managed, paid supplier recovery pilot for global manufacturing and procurement teams using approved business contacts.",
   alternates: { canonical: "/pilot" },
 };
 
@@ -100,7 +100,7 @@ export default async function PilotPage({
                 CapacityLine turns a real supply exception into comparable, evidence-backed supplier commitments.
                 Your first recovery cell is configured with TSUCHIYA LAB and operated inside a controlled private environment.
               </p>
-              <span><ShieldCheck size={15} /> No entitlement, no allow-list, no live call.</span>
+              <span><ShieldCheck size={15} /> No active subscription or recipient approval, no live call.</span>
             </div>
           </div>
           <div className="pilot-gate-visual" aria-hidden="true">
@@ -109,7 +109,7 @@ export default async function PilotPage({
             <div className="gate-core"><PhoneCall size={28} /></div>
             <span className="gate-node node-pay"><CircleDollarSign size={14} /> PAID</span>
             <span className="gate-node node-consent"><BadgeCheck size={14} /> CONSENT</span>
-            <span className="gate-node node-policy"><ShieldCheck size={14} /> ALLOW-LIST</span>
+            <span className="gate-node node-policy"><ShieldCheck size={14} /> RECIPIENT APPROVAL</span>
             <i className="gate-lock-line" />
           </div>
         </section>
@@ -127,7 +127,7 @@ export default async function PilotPage({
           <div className="offer-terms">
             <div><span>01</span><strong>10 governed recovery runs / month</strong><p>Up to five approved suppliers per incident, with recorded authorization before every live run.</p></div>
             <div><span>02</span><strong>Custom policy + Evidence Pack</strong><p>Your incident brief drives eight guardrails; JSON audit record and CSV commitment matrix are included.</p></div>
-            <div><span>03</span><strong>Isolated setup + founder implementation</strong><p>One private workspace, supplier allow-list, policy calibration, operating review, and global English workflow.</p></div>
+            <div><span>03</span><strong>Private setup + guided implementation</strong><p>One private workspace, approved recipient setup, policy calibration, operating review, and global English workflow.</p></div>
           </div>
           <div className="offer-action">
             {pilot.active ? (
@@ -151,7 +151,7 @@ export default async function PilotPage({
                 <a href="mailto:info@tsuchiyalab.com?subject=CapacityLine%20Private%20Pilot">
                   Request founding-pilot activation <ArrowRight size={15} />
                 </a>
-                <small>Stripe sandbox connection pending · no payment can be submitted yet</small>
+                <small>Online checkout is not available yet · no payment can be submitted</small>
               </>
             )}
           </div>
@@ -164,16 +164,16 @@ export default async function PilotPage({
           </div>
           <div className="boundary-sequence">
             <article><CircleDollarSign size={19} /><span>Stripe</span><strong>Subscription active</strong><p>Cancelled, unpaid, or unverifiable accounts stop here.</p></article>
-            <article><LockKeyhole size={19} /><span>Tenant</span><strong>Private deployment</strong><p>Public demo credentials can never reach the live provider.</p></article>
+            <article><LockKeyhole size={19} /><span>Workspace</span><strong>Private deployment</strong><p>The product sandbox can never reach the live calling service.</p></article>
             <article><BadgeCheck size={19} /><span>Purpose</span><strong>Authority recorded</strong><p>Operational purpose, existing relationship, consent reference, and operator identity are required.</p></article>
-            <article><Gauge size={19} /><span>Server</span><strong>Allow-list match</strong><p>Unknown numbers fail closed before CALL-E receives a request.</p></article>
+            <article><Gauge size={19} /><span>Recipients</span><strong>Approved-number match</strong><p>Unknown numbers are blocked before CALL-E receives a request.</p></article>
           </div>
         </section>
 
         <section className="pilot-operating-model">
-          <div><span>PUBLIC</span><strong>Zero-call product proof</strong><p>Free, deterministic, and safe for evaluation—without creating provider cost.</p></div>
+          <div><span>SANDBOX</span><strong>No-call product simulation</strong><p>Free, realistic, and safe to explore—without creating usage cost.</p></div>
           <i />
-          <div><span>PRIVATE</span><strong>$499 founding pilot</strong><p>Ten monthly runs, custom guardrails, evidence exports, and founder-led outcome review.</p></div>
+          <div><span>PRIVATE</span><strong>$499 founding pilot</strong><p>Ten monthly runs, custom guardrails, evidence exports, and a guided outcome review.</p></div>
           <i />
           <div><span>SCALE</span><strong>Multi-site enterprise</strong><p>Identity, ERP integration, regional controls, and larger supplier networks after pilot evidence.</p></div>
         </section>
