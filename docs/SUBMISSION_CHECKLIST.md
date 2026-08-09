@@ -11,7 +11,7 @@ The [Devpost overview](https://call-e.devpost.com/) and [official rules](https:/
 - [ ] All committed work is original or correctly licensed.
 - [ ] Repository contains no API keys, real phone numbers, transcripts with personal data, or unlicensed media.
 - [ ] `npm run check` passes from a clean install.
-- [ ] Safe demo works without credentials.
+- [x] Safe demo works without credentials.
 - [x] Guided demo, result comparison, evidence drawer, search, RFQ approval, ledger, and graph work in a production build.
 - [x] Generated application icon and Open Graph image build successfully.
 - [ ] Live CALL-E path is verified once with a consenting test number.
@@ -30,27 +30,27 @@ The [Devpost overview](https://call-e.devpost.com/) and [official rules](https:/
 ## Demo deployment
 
 - [x] Deploy a production build over HTTPS.
-- [ ] Set `NEXT_PUBLIC_APP_URL` to the final HTTPS origin before the deployment build.
+- [x] Set `NEXT_PUBLIC_APP_URL` to the final HTTPS origin before the deployment build.
 - [ ] Set `CALLE_API_KEY` only as a server secret if live judge testing is offered.
 - [ ] Set `CALLE_ALLOWED_NUMBERS` for coordinated live testing.
-- [ ] Confirm `/api/health` returns `ok: true` without exposing secrets.
+- [x] Confirm `/api/health` returns `ok: true` without exposing secrets.
 - [ ] Test desktop and mobile layouts.
-- [ ] Confirm `/opengraph-image` renders on the deployed origin and social preview text is readable.
-- [ ] Provide simple Safe demo testing instructions; judges are not required to test.
+- [x] Confirm `/opengraph-image` renders on the deployed origin and social preview text is readable.
+- [x] Provide simple Safe demo testing instructions; judges are not required to test.
 - [ ] Keep the app available free of charge through the end of judging.
 
 ## Video
 
-- [ ] English narration or complete English translation.
-- [ ] Runtime under 2:55; target 2:44.
-- [ ] Shows the working product on its intended device.
-- [ ] Opens with the line-stop problem and operator—not architecture.
-- [ ] Shows CALL-E integration and one consenting live proof insert if available.
-- [ ] Shows Delta's certification failure.
-- [ ] Shows transcript evidence and human RFQ approval.
-- [ ] Labels fictional data, synthetic timing, and modeled exposure.
-- [ ] Contains no third-party logos, copyrighted music, API keys, or unmasked phone numbers.
-- [ ] Uploaded publicly to YouTube or Vimeo.
+- [x] English narration or complete English translation.
+- [x] Runtime under 2:55; target 2:44.
+- [x] Shows the working product on its intended device.
+- [x] Opens with the line-stop problem and operator—not architecture.
+- [x] Shows CALL-E integration; no live call is implied before the separate consenting verification.
+- [x] Shows Delta's certification failure.
+- [x] Shows transcript evidence and human RFQ approval.
+- [x] Labels fictional data, synthetic timing, and modeled exposure.
+- [x] Contains no third-party logos, copyrighted music, API keys, or unmasked phone numbers.
+- [x] Uploaded publicly to YouTube or Vimeo.
 
 ## Devpost form
 

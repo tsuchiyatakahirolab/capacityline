@@ -91,5 +91,5 @@ Live testing is opt-in and requires the entrant-provided server configuration pl
 - Demo app: https://capacityline.vercel.app
 - Source repository: https://github.com/tsuchiyatakahirolab/capacityline
 - CALL-E awesome repository pull request: https://github.com/CALLE-AI/awesome-phone-call-agents/pull/129
-- YouTube/Vimeo video: `TBD`
+- YouTube video: https://youtu.be/5ond4ajvsMg
 - CALL-E account email: enter privately in the Devpost form
