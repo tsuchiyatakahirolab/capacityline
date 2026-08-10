@@ -421,6 +421,10 @@ export function CapacityLineApp() {
       setError("Live phone numbers must use E.164 format, for example +14155550100.");
       return;
     }
+    if (new Set(chosen.map((supplier) => livePhones[supplier.id].trim())).size !== chosen.length) {
+      setError("Each approved phone number may appear only once in a live run.");
+      return;
+    }
     if (chosen.some((supplier) => !liveSupplierNames[supplier.id]?.trim())) {
       setError("Enter a supplier name for every live recipient.");
       return;
@@ -479,7 +483,6 @@ export function CapacityLineApp() {
           recipients,
           authorized: true,
           confirmation,
-          runKey: crypto.randomUUID(),
           incident,
           compliance: {
             purpose: "supplier_capacity_verification",

@@ -2,6 +2,10 @@ import "server-only";
 
 import { CalleClient, type Call } from "@call-e/calle";
 import { buildCreateCallInput } from "@/lib/calle-schema";
+import {
+  buildPayloadBoundIdempotencyKey,
+  requireOfficialCalleBaseUrl,
+} from "@/lib/live-call-safety";
 import type { CallComplianceProfile, LiveRecipient, RecoveryIncident } from "@/lib/types";
 
 function getClient() {
@@ -11,19 +15,25 @@ function getClient() {
   }
   return new CalleClient({
     apiKey,
-    baseUrl: process.env.CALLE_BASE_URL || "https://api.heycall-e.com",
+    baseUrl: requireOfficialCalleBaseUrl(),
   });
 }
 
 export async function createRecoveryCall(
   incident: RecoveryIncident,
   recipients: LiveRecipient[],
-  idempotencyKey: string,
+  persistedRunKey: string,
   compliance: CallComplianceProfile,
 ): Promise<Call> {
+  const input = buildCreateCallInput(
+    incident,
+    recipients,
+    process.env.CALLE_WEBHOOK_URL,
+    compliance,
+  );
   return getClient().calls.create(
-    buildCreateCallInput(incident, recipients, process.env.CALLE_WEBHOOK_URL, compliance),
-    { idempotencyKey },
+    input,
+    { idempotencyKey: buildPayloadBoundIdempotencyKey(persistedRunKey, input) },
   );
 }
 

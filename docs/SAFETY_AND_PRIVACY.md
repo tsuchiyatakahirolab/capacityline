@@ -15,15 +15,17 @@ Phone calls create real-world side effects. CapacityLine is designed to make tho
 Every live run requires all of the following:
 
 1. `CALLE_API_KEY` exists on the server.
-2. Stripe Checkout, the pilot price, and the signed billing session are configured.
-3. Stripe reports the exact non-zero pilot price as `active` with a paid invoice immediately before the provider request.
-4. Between one and eight recipients are supplied.
-5. Every number is valid E.164.
-6. The operator affirms authorization to contact those business recipients.
-7. The operator records operational purpose, existing relationship, consent evidence, regional calling review, and disclosure approval.
-8. The operator types the exact confirmation `AUTHORIZE SUPPLIER RECOVERY`.
-8. `CALLE_ALLOWED_NUMBERS` is non-empty and every number is on that server-side allow-list.
-9. The request receives an idempotency key to prevent accidental duplicate creation on network retry.
+2. `CALLE_BASE_URL` is the exact official `https://api.heycall-e.com` HTTPS origin.
+3. `CAPACITYLINE_RUN_KEY` is persisted for the authorized payload and reused across ambiguous retries.
+4. Stripe Checkout, the pilot price, and the signed billing session are configured.
+5. Stripe reports the exact non-zero pilot price as `active` with a paid invoice immediately before the provider request.
+6. Between one and five recipients are supplied.
+7. Every destination is valid E.164 and appears only once in the batch.
+8. The operator affirms authorization to contact those business recipients.
+9. The operator records operational purpose, existing relationship, consent evidence, regional calling review, and disclosure approval.
+10. The operator types the exact confirmation `AUTHORIZE SUPPLIER RECOVERY`.
+11. `CALLE_ALLOWED_NUMBERS` is non-empty and every number is on that server-side allow-list.
+12. The provider idempotency key is an HMAC of the persisted run key and exact create payload.
 
 `ALLOW_UNBILLED_LIVE_CALLS` exists only as an explicit internal test override. It must remain `false` on every public or customer deployment.
 

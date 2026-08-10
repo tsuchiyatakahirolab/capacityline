@@ -37,11 +37,13 @@ Never add `CALLE_API_KEY` or real recipients to the public deployment.
 1. Confirm the commercial scope, monthly run ceiling, support boundary, retention period, and incident contacts.
 2. Collect supplier contact authorization and opt-out handling outside the app until the durable consent ledger exists.
 3. Create a customer-isolated deployment and secrets.
-4. Add only reviewed, consenting E.164 recipients to `CALLE_ALLOWED_NUMBERS`.
-5. Leave `ALLOW_UNBILLED_LIVE_CALLS=false`.
-6. Complete payment and verify Stripe reports the exact configured non-zero price as `active` with a paid invoice.
-7. Run one consenting internal call, inspect the structured result, and stop.
-8. Enable the contracted supplier roster only after the customer approves the test record.
+4. Keep `CALLE_BASE_URL` fixed to the official `https://api.heycall-e.com` origin.
+5. Add only reviewed, consenting E.164 recipients to `CALLE_ALLOWED_NUMBERS`; each destination must appear once per run.
+6. Persist one 32–128 character `CAPACITYLINE_RUN_KEY` for the authorized batch. Reuse it for every retry until the provider result is reconciled, then rotate it only for an intentionally new batch.
+7. Leave `ALLOW_UNBILLED_LIVE_CALLS=false`.
+8. Complete payment and verify Stripe reports the exact configured non-zero price as `active` with a paid invoice.
+9. Run one consenting internal call, inspect the structured result, and stop.
+10. Enable the contracted supplier roster only after the customer approves the test record.
 
 ## Stop conditions
 
@@ -51,6 +53,7 @@ Disable or remove the CALL-E key immediately when any of these occurs:
 - the agreed run ceiling is reached;
 - a recipient disputes consent or requests no further contact;
 - the allow-list or customer isolation cannot be verified;
+- the official provider origin or persisted run key cannot be verified;
 - provider spend differs from the contracted cost model.
 
 The launch route already blocks missing billing, missing allow-list, invalid numbers, missing authorization, and inactive subscriptions. Durable atomic monthly quotas are the remaining technical prerequisite before pooled self-service access.

@@ -86,9 +86,11 @@ A private live deployment fails closed unless all of these gates pass:
 1. the configured non-zero Stripe pilot price has an `active` subscription and a paid invoice at request time;
 2. the customer has a valid signed, httpOnly billing entitlement;
 3. `CALLE_API_KEY` exists only on the private server;
-4. every consenting E.164 recipient is in `CALLE_ALLOWED_NUMBERS`;
-5. the operator records the operational purpose, existing supplier relationship, consent reference, jurisdiction/calling-window review, and approved disclosure script;
-6. the operator explicitly confirms `AUTHORIZE SUPPLIER RECOVERY`.
+4. `CALLE_BASE_URL` resolves to the exact official `https://api.heycall-e.com` origin;
+5. `CAPACITYLINE_RUN_KEY` is a persisted 32–128 character token for the authorized batch and is never regenerated during an ambiguous retry;
+6. every consenting E.164 recipient is in `CALLE_ALLOWED_NUMBERS`, and destination phones are unique within the batch;
+7. the operator records the operational purpose, existing supplier relationship, consent reference, jurisdiction/calling-window review, and approved disclosure script;
+8. the operator explicitly confirms `AUTHORIZE SUPPLIER RECOVERY`.
 
 Checkout, activation, Customer Portal, and signature-verified Stripe webhooks are implemented at `/api/billing/*` and `/api/webhooks/stripe`. The launch route re-queries Stripe before contacting CALL-E, so cancellation, nonpayment, or an unverifiable subscription blocks the provider request.
 
@@ -98,8 +100,9 @@ To configure a private pilot locally:
 2. Copy `.env.example` to `.env.local`.
 3. Set `STRIPE_SECRET_KEY`, `STRIPE_PILOT_PRICE_ID`, and a random `BILLING_SESSION_SECRET` of at least 32 characters.
 4. Configure a Stripe webhook for `/api/webhooks/stripe` and set `STRIPE_WEBHOOK_SECRET`.
-5. Set `CALLE_API_KEY` and `CALLE_ALLOWED_NUMBERS` to only the consenting pilot recipients.
-6. Restart the server, purchase the pilot in Stripe test mode, then open the launch dialog, choose **Private live pilot**, enter E.164 numbers, complete the authority record, and type `AUTHORIZE SUPPLIER RECOVERY`.
+5. Set `CALLE_API_KEY`, keep `CALLE_BASE_URL=https://api.heycall-e.com`, and set `CALLE_ALLOWED_NUMBERS` to only the consenting pilot recipients.
+6. Create and persist one `CAPACITYLINE_RUN_KEY` for the authorized batch. Keep it unchanged through every retry and reconciliation; rotate it only before an intentionally new batch.
+7. Restart the server, purchase the pilot in Stripe test mode, then open the launch dialog, choose **Private live pilot**, enter unique E.164 numbers, complete the authority record, and type `AUTHORIZE SUPPLIER RECOVERY`.
 
 Live mode creates real outbound calls and may incur charges. It is reserved for paid, customer-isolated pilot environments and consenting recipients. The UI masks demo numbers; no real contact data is committed to this repository. See the [Private Pilot runbook](docs/PRIVATE_PILOT_RUNBOOK.md).
 

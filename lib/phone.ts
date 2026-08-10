@@ -10,7 +10,7 @@ export function getAllowedNumbers() {
     (process.env.CALLE_ALLOWED_NUMBERS ?? "")
       .split(",")
       .map((value) => value.trim())
-      .filter(Boolean),
+      .filter((value) => E164_PATTERN.test(value)),
   );
 }
 

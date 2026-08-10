@@ -22,7 +22,7 @@ npm audit --omit=dev
 git status --short
 ```
 
-Expected: lint passes, 15 tests pass, production build passes, zero known production vulnerabilities, and only intentional release changes appear.
+Expected: lint and the complete test suite pass, the production build succeeds, production dependencies have zero known vulnerabilities, and only intentional release changes appear.
 
 ## 2. One consenting live proof
 
@@ -31,6 +31,8 @@ Create `.env.local` locally:
 ```dotenv
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 CALLE_API_KEY=replace-locally
+CALLE_BASE_URL=https://api.heycall-e.com
+CAPACITYLINE_RUN_KEY=replace-with-one-persisted-32-character-minimum-token
 CALLE_ALLOWED_NUMBERS=+REPLACE_WITH_CONSENTING_E164
 ```
 
@@ -41,8 +43,9 @@ Then:
 3. Enter only the allow-listed consenting number.
 4. Complete the operational authority record and type `AUTHORIZE SUPPLIER RECOVERY`.
 5. Record the authorization gate, ringing/call state, returned structured result, and transcript.
-6. Stop after one successful proof; do not call fictional supplier numbers.
-7. Verify `.env.local` remains ignored and no personal data entered Git history.
+6. If the create response is ambiguous, keep `CAPACITYLINE_RUN_KEY` unchanged while reconciling or retrying the exact payload.
+7. Stop after one successful proof; do not call fictional supplier numbers.
+8. Verify `.env.local` remains ignored and no personal data entered Git history.
 
 ## 3. Publish source and required CALL-E contribution
 

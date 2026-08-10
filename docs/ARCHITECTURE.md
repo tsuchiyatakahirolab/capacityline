@@ -58,4 +58,4 @@ The last entity closes the learning loop: promised quantity/date versus actual r
 
 ## Deployment
 
-The application is a standard Next.js server deployment. The zero-call public deployment needs no provider secret. A paid private pilot requires Stripe server secrets, a signed-session secret, `CALLE_API_KEY`, and a mandatory `CALLE_ALLOWED_NUMBERS` set. Each pilot should use a customer-isolated deployment until durable tenant isolation, quotas, consent storage, SSO, and role-based authorization are implemented.
+The application is a standard Next.js server deployment. The zero-call public deployment needs no provider secret. A paid private pilot requires Stripe server secrets, a signed-session secret, `CALLE_API_KEY`, the exact official CALL-E HTTPS origin, a persisted payload-bound `CAPACITYLINE_RUN_KEY`, and a mandatory `CALLE_ALLOWED_NUMBERS` set. Each pilot should use a customer-isolated deployment until durable tenant isolation, quotas, consent storage, SSO, and role-based authorization are implemented.

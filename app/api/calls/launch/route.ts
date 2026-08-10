@@ -5,18 +5,22 @@ import { createRecoveryCall } from "@/lib/calle";
 import { validateCallCompliance } from "@/lib/compliance";
 import { DEMO_INCIDENT } from "@/lib/demo-data";
 import { validateRecoveryIncident } from "@/lib/incident";
-import { E164_PATTERN, getAllowedNumbers, isRecipientAllowListConfigured } from "@/lib/phone";
+import {
+  requireOfficialCalleBaseUrl,
+  requirePersistedRunKey,
+  validateLiveRecipients,
+} from "@/lib/live-call-safety";
+import { getAllowedNumbers, isRecipientAllowListConfigured } from "@/lib/phone";
 import { BILLING_COOKIE, getBillingConfig, hasActivePilotSubscription } from "@/lib/stripe";
-import type { CallComplianceProfile, LiveRecipient, RecoveryIncident } from "@/lib/types";
+import type { CallComplianceProfile, RecoveryIncident } from "@/lib/types";
 
 export const runtime = "nodejs";
 
 interface LaunchRequest {
   mode?: "demo" | "live";
-  recipients?: LiveRecipient[];
+  recipients?: unknown;
   authorized?: boolean;
   confirmation?: string;
-  runKey?: string;
   incident?: RecoveryIncident;
   compliance?: CallComplianceProfile;
 }
@@ -45,6 +49,13 @@ export async function POST(request: Request) {
   if (!process.env.CALLE_API_KEY) {
     return invalid("Live CALL-E calls are not configured on this deployment.", 503);
   }
+  let persistedRunKey: string;
+  try {
+    requireOfficialCalleBaseUrl();
+    persistedRunKey = requirePersistedRunKey();
+  } catch {
+    return invalid("Live CALL-E safety configuration is incomplete or invalid.", 503);
+  }
   if (body.authorized !== true || body.confirmation !== "AUTHORIZE SUPPLIER RECOVERY") {
     return invalid("Live calls require explicit contact authorization and confirmation.", 403);
   }
@@ -55,6 +66,18 @@ export async function POST(request: Request) {
   const incidentResult = validateRecoveryIncident(body.incident ?? DEMO_INCIDENT);
   if (!incidentResult.ok) return invalid(incidentResult.error);
   const incident = incidentResult.value;
+
+  const recipientResult = validateLiveRecipients(body.recipients);
+  if (!recipientResult.ok) return invalid(recipientResult.error);
+  const safeRecipients = recipientResult.value;
+
+  const allowedNumbers = getAllowedNumbers();
+  if (!isRecipientAllowListConfigured(allowedNumbers)) {
+    return invalid("Live calling is not enabled for this workspace.", 503);
+  }
+  if (safeRecipients.some((recipient) => !allowedNumbers.has(recipient.phone))) {
+    return invalid("A recipient is not approved for live operations.", 403);
+  }
 
   if (process.env.ALLOW_UNBILLED_LIVE_CALLS !== "true") {
     const { checkoutReady, sessionSecret } = getBillingConfig();
@@ -75,45 +98,13 @@ export async function POST(request: Request) {
     }
   }
 
-  const recipients = body.recipients ?? [];
-  if (recipients.length < 1 || recipients.length > 5) {
-    return invalid("Provide between 1 and 5 authorized recipients.");
-  }
-  if (new Set(recipients.map((recipient) => recipient.supplierId)).size !== recipients.length) {
-    return invalid("Each supplier may appear only once.");
-  }
-  if (recipients.some((recipient) => !E164_PATTERN.test(recipient.phone))) {
-    return invalid("Every live phone number must use E.164 format.");
-  }
-  if (recipients.some((recipient) => typeof recipient.supplierName !== "string" || !recipient.supplierName.trim() || recipient.supplierName.trim().length > 120)) {
-    return invalid("Every live recipient requires a supplier name of 1–120 characters.");
-  }
-  if (recipients.some((recipient) => !/^[A-Z]{2}$/.test(recipient.region) || !/^[a-z]{2}(?:-[A-Z]{2})?$/.test(recipient.locale))) {
-    return invalid("Every live recipient requires a two-letter region and a valid language locale.");
-  }
-
-  const safeRecipients = recipients.map((recipient) => ({
-    supplierId: recipient.supplierId.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 64),
-    supplierName: recipient.supplierName.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim(),
-    phone: recipient.phone,
-    region: recipient.region,
-    locale: recipient.locale,
-  }));
-
-  const allowedNumbers = getAllowedNumbers();
-  if (!isRecipientAllowListConfigured(allowedNumbers)) {
-    return invalid("Live calling is not enabled for this workspace.", 503);
-  }
-  if (safeRecipients.some((recipient) => !allowedNumbers.has(recipient.phone))) {
-    return invalid("A recipient is not approved for live operations.", 403);
-  }
-
-  const safeRunKey = (body.runKey || crypto.randomUUID()).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 64);
-  const safeIncidentId = incident.id.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 48);
-  const idempotencyKey = `capacityline_${safeIncidentId}_${safeRunKey}`;
-
   try {
-    const call = await createRecoveryCall(incident, safeRecipients, idempotencyKey, complianceResult.value);
+    const call = await createRecoveryCall(
+      incident,
+      safeRecipients,
+      persistedRunKey,
+      complianceResult.value,
+    );
     return NextResponse.json({
       mode: "live",
       call,
