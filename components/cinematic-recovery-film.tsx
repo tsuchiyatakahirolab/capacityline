@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 const chapters = [
   { start: 0, number: "01", label: "Exception", detail: "The promise breaks." },
-  { start: 4, number: "02", label: "Evidence", detail: "Responses become comparable." },
-  { start: 8, number: "03", label: "Human decision", detail: "Authority stays with the team." },
+  { start: 5.85, number: "02", label: "Evidence", detail: "Responses become comparable." },
+  { start: 11.4, number: "03", label: "Human decision", detail: "Authority stays with the team." },
 ];
 
 export function CinematicRecoveryFilm() {
@@ -32,7 +32,7 @@ export function CinematicRecoveryFilm() {
 
     const handleMotionChange = () => {
       if (reducedMotion.matches) {
-        video.currentTime = 4;
+        video.currentTime = chapters[1].start + 1;
         video.pause();
       } else if (stage.getBoundingClientRect().top < window.innerHeight) {
         void video.play().catch(() => undefined);
@@ -65,15 +65,15 @@ export function CinematicRecoveryFilm() {
           muted
           loop
           playsInline
-          preload="metadata"
-          poster="/recovery-film-01-exception.webp"
+          preload="auto"
+          poster="/capacityline-recovery-film-v2-poster.jpg"
           aria-label="A supply exception becomes verified evidence and a human-authorized recovery decision"
           onTimeUpdate={(event) => {
             const time = event.currentTarget.currentTime;
-            setActiveChapter(time >= 8 ? 2 : time >= 4 ? 1 : 0);
+            setActiveChapter(time >= chapters[2].start ? 2 : time >= chapters[1].start ? 1 : 0);
           }}
         >
-          <source src="/capacityline-recovery-film.mp4" type="video/mp4" />
+          <source src="/capacityline-recovery-film-v2.mp4" type="video/mp4" />
         </video>
         <div className="film-vignette" aria-hidden="true" />
         <div className="film-grid" aria-hidden="true" />

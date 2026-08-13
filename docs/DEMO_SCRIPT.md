@@ -86,8 +86,9 @@ Replace no more than 10–12 seconds of the 0:30–1:08 section. Never publish t
 
 ## Ready-to-record visual assets
 
-- `/capacityline-recovery-film.mp4` — 12-second muted brand sequence without an on-screen duration label.
-- `/recovery-film-01-exception.webp` — Exception still and film poster.
+- `/capacityline-recovery-film-v2.mp4` — 18-second muted image-to-video brand sequence: exception, evidence, then human decision.
+- `/capacityline-recovery-film-v2-poster.jpg` — Film poster drawn from the evidence-review scene.
+- `/recovery-film-01-exception.webp` — Original exception reference still.
 - `/recovery-film-02-evidence.webp` — Evidence chapter still.
 - `/recovery-film-03-decision.webp` — Human-decision chapter still.
 - `/recovery-film-storyboard-v1.png` — complete sequence storyboard.
